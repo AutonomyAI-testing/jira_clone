@@ -61,11 +61,25 @@ export const TaskItem = styled.div`
   border-radius: 3px;
   border: 1px solid ${color.borderLightest};
   transition: all 0.1s;
+  cursor: grab;
 
   &:hover {
     background: #fff;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
   }
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  ${props =>
+    props.isBeingDragged &&
+    `
+    transform: rotate(3deg);
+    box-shadow: 5px 10px 30px 0px rgba(9, 30, 66, 0.15);
+    background: #fff;
+    cursor: grabbing;
+  `}
 `;
 
 export const Checkbox = styled.input`

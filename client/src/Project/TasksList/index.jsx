@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { Icon } from 'shared/components';
 
@@ -78,6 +79,25 @@ const TasksList = ({ initialTasks }) => {
     [handleAddTask],
   );
 
+  const handleDragEnd = useCallback(
+    result => {
+      const { destination, source } = result;
+
+      // Dropped outside the list
+      if (!destination) return;
+
+      // No position change
+      if (destination.index === source.index) return;
+
+      const reorderedTasks = Array.from(tasks);
+      const [movedTask] = reorderedTasks.splice(source.index, 1);
+      reorderedTasks.splice(destination.index, 0, movedTask);
+
+      setTasks(reorderedTasks);
+    },
+    [tasks],
+  );
+
   return (
     <Container>
       <Heading>Tasks List</Heading>
@@ -98,21 +118,37 @@ const TasksList = ({ initialTasks }) => {
       {tasks.length === 0 ? (
         <EmptyState>No tasks yet. Add your first task above!</EmptyState>
       ) : (
-        <TasksListContainer>
-          {tasks.map(task => (
-            <TaskItem key={task.id}>
-              <Checkbox
-                type="checkbox"
-                checked={task.completed}
-                onChange={() => handleToggleComplete(task.id)}
-              />
-              <TaskText completed={task.completed}>{task.text}</TaskText>
-              <DeleteButton onClick={() => handleDeleteTask(task.id)} title="Delete task">
-                <Icon type="trash" size={16} />
-              </DeleteButton>
-            </TaskItem>
-          ))}
-        </TasksListContainer>
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="tasks-list">
+            {provided => (
+              <TasksListContainer {...provided.droppableProps} ref={provided.innerRef}>
+                {tasks.map((task, index) => (
+                  <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
+                    {(provided, snapshot) => (
+                      <TaskItem
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        isBeingDragged={snapshot.isDragging}
+                      >
+                        <Checkbox
+                          type="checkbox"
+                          checked={task.completed}
+                          onChange={() => handleToggleComplete(task.id)}
+                        />
+                        <TaskText completed={task.completed}>{task.text}</TaskText>
+                        <DeleteButton onClick={() => handleDeleteTask(task.id)} title="Delete task">
+                          <Icon type="trash" size={16} />
+                        </DeleteButton>
+                      </TaskItem>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </TasksListContainer>
+            )}
+          </Droppable>
+        </DragDropContext>
       )}
     </Container>
   );
