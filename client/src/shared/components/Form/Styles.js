@@ -27,3 +27,7 @@ export const FieldError = styled.div`
   ${font.medium}
   ${font.size(12.5)}
 `;
+
+export const ContactButtonWrapper = styled.div`
+  margin-bottom: 20px;
+`;

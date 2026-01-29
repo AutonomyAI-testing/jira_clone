@@ -5,8 +5,10 @@ import { get, mapValues } from 'lodash';
 
 import toast from 'shared/utils/toast';
 import { is, generateErrors } from 'shared/utils/validation';
+import Button from 'shared/components/Button';
 
 import Field from './Field';
+import { ContactButtonWrapper } from './Styles';
 
 const propTypes = {
   validate: PropTypes.func,
@@ -66,6 +68,14 @@ Form.handleAPIError = (error, form) => {
 };
 
 Form.is = is;
+
+Form.ContactButton = ({ onClick, ...props }) => (
+  <ContactButtonWrapper>
+    <Button variant="primary" onClick={onClick} {...props}>
+      Contact Us
+    </Button>
+  </ContactButtonWrapper>
+);
 
 Form.propTypes = propTypes;
 Form.defaultProps = defaultProps;
