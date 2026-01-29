@@ -13,7 +13,7 @@ const defaults = {
   }),
   error: {
     code: 'INTERNAL_ERROR',
-    message: 'Something went wrong. Please check your internet connection or contact our support.',
+    message: 'Something went wrong. Please try again.',
     status: 503,
     data: {},
   },
