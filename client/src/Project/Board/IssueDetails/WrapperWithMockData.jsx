@@ -33,8 +33,10 @@ const ProjectBoardIssueDetailsWrapper = ({ issueId, projectUsers }) => {
         status: 'inprogress',
         priority: '3',
         listPosition: 1,
-        description: 'This is a comprehensive task to improve the user experience on the issue details page. We need to add empty state messages, character counters, keyboard shortcuts, loading states, file type icons, and success notifications.',
-        descriptionText: 'This is a comprehensive task to improve the user experience on the issue details page.',
+        description:
+          'This is a comprehensive task to improve the user experience on the issue details page. We need to add empty state messages, character counters, keyboard shortcuts, loading states, file type icons, and success notifications.',
+        descriptionText:
+          'This is a comprehensive task to improve the user experience on the issue details page.',
         estimate: 8,
         timeSpent: 4,
         timeRemaining: 4,
@@ -53,12 +55,13 @@ const ProjectBoardIssueDetailsWrapper = ({ issueId, projectUsers }) => {
             user: {
               id: '2',
               name: 'Jane Smith',
-              avatarUrl: 'https://i.pravatar.cc/150?img=2'
-            }
+              avatarUrl: 'https://i.pravatar.cc/150?img=2',
+            },
           },
           {
             id: '2',
-            body: 'The keyboard shortcuts feature is amazing! @John it would be great if you could review this.',
+            body:
+              'The keyboard shortcuts feature is amazing! @John it would be great if you could review this.',
             userId: '3',
             issueId,
             createdAt: '2024-01-19T14:30:00.000Z',
@@ -66,25 +69,27 @@ const ProjectBoardIssueDetailsWrapper = ({ issueId, projectUsers }) => {
             user: {
               id: '3',
               name: 'Bob Johnson',
-              avatarUrl: 'https://i.pravatar.cc/150?img=3'
-            }
-          }
+              avatarUrl: 'https://i.pravatar.cc/150?img=3',
+            },
+          },
         ],
         attachments: [
           {
             id: '1',
             name: 'design-mockup.pdf',
             url: 'https://example.com/mockup.pdf',
+            size: 2457600,
             createdAt: '2024-01-16T10:00:00.000Z',
           },
           {
             id: '2',
             name: 'screenshot.png',
             url: 'https://example.com/screenshot.png',
+            size: 1048576,
             createdAt: '2024-01-17T11:00:00.000Z',
-          }
-        ]
-      }
+          },
+        ],
+      },
     };
 
     const interceptor = axios.interceptors.response.use(
@@ -92,7 +97,7 @@ const ProjectBoardIssueDetailsWrapper = ({ issueId, projectUsers }) => {
       error => {
         if (error.config && error.config.url) {
           const { url, method = '' } = error.config;
-          
+
           if (url.includes(`/issues/${issueId}`)) {
             return Promise.resolve({
               data: mockIssueData,
@@ -102,7 +107,7 @@ const ProjectBoardIssueDetailsWrapper = ({ issueId, projectUsers }) => {
               config: error.config,
             });
           }
-          
+
           if (url.includes('/issues/') && method === 'put') {
             return Promise.resolve({
               data: { success: true },
@@ -112,7 +117,7 @@ const ProjectBoardIssueDetailsWrapper = ({ issueId, projectUsers }) => {
               config: error.config,
             });
           }
-          
+
           if (url.includes('/comments')) {
             return Promise.resolve({
               data: { id: Date.now().toString(), success: true },
@@ -123,9 +128,9 @@ const ProjectBoardIssueDetailsWrapper = ({ issueId, projectUsers }) => {
             });
           }
         }
-        
+
         return Promise.reject(error);
-      }
+      },
     );
 
     setMockInstalled(true);
