@@ -7,6 +7,7 @@ import { formatDateTimeConversational } from 'shared/utils/dateTime';
 import { ConfirmModal } from 'shared/components';
 
 import BodyForm from '../BodyForm';
+import Reply from '../Reply';
 import {
   Comment,
   UserAvatar,
@@ -16,6 +17,16 @@ import {
   Body,
   EditLink,
   DeleteLink,
+  ReplyLink,
+  Replies,
+  ReplyItem,
+  ReplyUserAvatar,
+  ReplyContent,
+  ReplyUsername,
+  ReplyCreatedAt,
+  ReplyBody,
+  ReplyEditLink,
+  ReplyDeleteLink,
 } from './Styles';
 
 const propTypes = {
@@ -28,6 +39,9 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue, projectUsers }) 
   const [isFormOpen, setFormOpen] = useState(false);
   const [isUpdating, setUpdating] = useState(false);
   const [body, setBody] = useState(comment.body);
+  const [isReplyOpen, setReplyOpen] = useState(false);
+  const [editingReplyId, setEditingReplyId] = useState(null);
+  const [replyBodies, setReplyBodies] = useState({});
 
   const handleCommentDelete = async () => {
     try {
@@ -48,6 +62,32 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue, projectUsers }) 
     } catch (error) {
       toast.error(error);
     }
+  };
+
+  const handleReplyDelete = async (replyId) => {
+    try {
+      await api.delete(`/comments/${comment.id}/replies/${replyId}`);
+      await fetchIssue();
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  const handleReplyUpdate = async (replyId) => {
+    try {
+      setUpdating(true);
+      await api.put(`/comments/${comment.id}/replies/${replyId}`, { body: replyBodies[replyId] });
+      await fetchIssue();
+      setUpdating(false);
+      setEditingReplyId(null);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  const startEditingReply = (replyId, replyBody) => {
+    setEditingReplyId(replyId);
+    setReplyBodies({ ...replyBodies, [replyId]: replyBody });
   };
 
   return (
@@ -77,7 +117,56 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue, projectUsers }) 
               onConfirm={handleCommentDelete}
               renderLink={modal => <DeleteLink onClick={modal.open}>Delete</DeleteLink>}
             />
+            <ReplyLink onClick={() => setReplyOpen(!isReplyOpen)}>Reply</ReplyLink>
           </Fragment>
+        )}
+
+        {isReplyOpen && (
+          <Reply
+            commentId={comment.id}
+            fetchIssue={fetchIssue}
+            projectUsers={projectUsers}
+            onCancel={() => setReplyOpen(false)}
+          />
+        )}
+
+        {comment.replies && comment.replies.length > 0 && (
+          <Replies>
+            {comment.replies.map(reply => (
+              <ReplyItem key={reply.id}>
+                <ReplyUserAvatar name={reply.user.name} avatarUrl={reply.user.avatarUrl} />
+                <ReplyContent>
+                  <ReplyUsername>{reply.user.name}</ReplyUsername>
+                  <ReplyCreatedAt>{formatDateTimeConversational(reply.createdAt)}</ReplyCreatedAt>
+
+                  {editingReplyId === reply.id ? (
+                    <BodyForm
+                      value={replyBodies[reply.id]}
+                      onChange={(value) => setReplyBodies({ ...replyBodies, [reply.id]: value })}
+                      isWorking={isUpdating}
+                      onSubmit={() => handleReplyUpdate(reply.id)}
+                      onCancel={() => setEditingReplyId(null)}
+                      projectUsers={projectUsers}
+                    />
+                  ) : (
+                    <Fragment>
+                      <ReplyBody>{reply.body}</ReplyBody>
+                      <ReplyEditLink onClick={() => startEditingReply(reply.id, reply.body)}>
+                        Edit
+                      </ReplyEditLink>
+                      <ConfirmModal
+                        title="Are you sure you want to delete this reply?"
+                        message="Once you delete, it's gone for good."
+                        confirmText="Delete reply"
+                        onConfirm={() => handleReplyDelete(reply.id)}
+                        renderLink={modal => <ReplyDeleteLink onClick={modal.open}>Delete</ReplyDeleteLink>}
+                      />
+                    </Fragment>
+                  )}
+                </ReplyContent>
+              </ReplyItem>
+            ))}
+          </Replies>
         )}
       </Content>
     </Comment>

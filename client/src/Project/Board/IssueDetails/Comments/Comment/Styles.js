@@ -64,3 +64,74 @@ export const DeleteLink = styled.div`
     display: inline-block;
   }
 `;
+
+export const ReplyLink = styled.div`
+  ${actionLinkStyles}
+  &:before {
+    position: relative;
+    right: 6px;
+    content: '·';
+    display: inline-block;
+  }
+`;
+
+export const Replies = styled.div`
+  margin-top: 20px;
+`;
+
+export const ReplyItem = styled.div`
+  position: relative;
+  margin-top: 15px;
+  ${font.size(14)}
+`;
+
+export const ReplyUserAvatar = styled(Avatar)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 28px;
+`;
+
+export const ReplyContent = styled.div`
+  padding-left: 38px;
+`;
+
+export const ReplyUsername = styled.div`
+  display: inline-block;
+  padding-right: 10px;
+  padding-bottom: 8px;
+  color: ${color.textDark};
+  ${font.medium}
+  ${font.size(13)}
+`;
+
+export const ReplyCreatedAt = styled.div`
+  display: inline-block;
+  padding-bottom: 8px;
+  color: ${color.textMedium};
+  ${font.size(13)}
+`;
+
+export const ReplyBody = styled.p`
+  padding-bottom: 8px;
+  white-space: pre-wrap;
+  ${font.size(13)}
+`;
+
+export const ReplyEditLink = styled.div`
+  margin-right: 10px;
+  ${actionLinkStyles}
+  ${font.size(13)}
+`;
+
+export const ReplyDeleteLink = styled.div`
+  ${actionLinkStyles}
+  ${font.size(13)}
+  &:before {
+    position: relative;
+    right: 6px;
+    content: '·';
+    display: inline-block;
+  }
+`;
