@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { xor } from 'lodash';
 
+import { IssueType, IssueTypeCopy } from 'shared/constants/issues';
+import { IssueTypeIcon } from 'shared/components';
+
 import {
   Filters,
   SearchInput,
@@ -20,9 +23,9 @@ const propTypes = {
 };
 
 const ProjectBoardFilters = ({ projectUsers, defaultFilters, filters, mergeFilters }) => {
-  const { searchTerm, userIds, myOnly, recent } = filters;
+  const { searchTerm, userIds, myOnly, recent, issueTypes } = filters;
 
-  const areFiltersCleared = !searchTerm && userIds.length === 0 && !myOnly && !recent;
+  const areFiltersCleared = !searchTerm && userIds.length === 0 && !myOnly && !recent && issueTypes.length === 0;
 
   return (
     <Filters data-testid="board-filters">
@@ -56,6 +59,17 @@ const ProjectBoardFilters = ({ projectUsers, defaultFilters, filters, mergeFilte
       >
         Recently Updated
       </StyledButton>
+      {Object.values(IssueType).map(type => (
+        <StyledButton
+          key={type}
+          variant="empty"
+          isActive={issueTypes.includes(type)}
+          onClick={() => mergeFilters({ issueTypes: xor(issueTypes, [type]) })}
+        >
+          <IssueTypeIcon type={type} top={1} />
+          {IssueTypeCopy[type]}
+        </StyledButton>
+      ))}
       {!areFiltersCleared && (
         <ClearAll onClick={() => mergeFilters(defaultFilters)}>Clear all</ClearAll>
       )}

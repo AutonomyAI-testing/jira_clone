@@ -50,7 +50,7 @@ const ProjectBoardList = ({ status, project, filters, currentUserId }) => {
 };
 
 const filterIssues = (projectIssues, filters, currentUserId) => {
-  const { searchTerm, userIds, myOnly, recent } = filters;
+  const { searchTerm, userIds, myOnly, recent, issueTypes } = filters;
   let issues = projectIssues;
 
   if (searchTerm) {
@@ -64,6 +64,9 @@ const filterIssues = (projectIssues, filters, currentUserId) => {
   }
   if (recent) {
     issues = issues.filter(issue => moment(issue.updatedAt).isAfter(moment().subtract(3, 'days')));
+  }
+  if (issueTypes.length > 0) {
+    issues = issues.filter(issue => issueTypes.includes(issue.type));
   }
   return issues;
 };
