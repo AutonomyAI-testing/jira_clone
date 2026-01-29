@@ -30,7 +30,9 @@ const ProjectBoardIssueDetailsCommentsCreate = ({ issueId, fetchIssue, projectUs
       setFormOpen(false);
       setCreating(false);
       setBody('');
+      toast.success('Comment added successfully');
     } catch (error) {
+      setCreating(false);
       toast.error(error);
     }
   };

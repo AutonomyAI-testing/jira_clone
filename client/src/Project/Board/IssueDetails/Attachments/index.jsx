@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Button } from 'shared/components';
 
-import { Attachments, Title, AttachmentList, AttachmentItem, AttachmentInfo, AttachmentName, AttachmentSize, RemoveButton } from './Styles';
+import { Attachments, Title, AttachmentList, AttachmentItem, AttachmentInfo, AttachmentName, AttachmentSize, RemoveButton, FileIcon, EmptyState, EmptyHint } from './Styles';
 
 const propTypes = {
   issue: PropTypes.object.isRequired,
@@ -26,6 +26,35 @@ const ProjectBoardIssueDetailsAttachments = ({ issue, updateIssue }) => {
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return `${Math.round((bytes / k ** i) * 100) / 100} ${sizes[i]}`;
+  };
+
+  const getFileIcon = fileName => {
+    const ext = fileName.split('.').pop().toLowerCase();
+    const iconMap = {
+      pdf: '📄',
+      doc: '📄',
+      docx: '📄',
+      txt: '📄',
+      xls: '📊',
+      xlsx: '📊',
+      csv: '📊',
+      ppt: '📊',
+      pptx: '📊',
+      jpg: '🖼️',
+      jpeg: '🖼️',
+      png: '🖼️',
+      gif: '🖼️',
+      svg: '🖼️',
+      zip: '🗄️',
+      rar: '🗄️',
+      mp4: '🎥',
+      mov: '🎥',
+      avi: '🎥',
+      mp3: '🎵',
+      wav: '🎵',
+      default: '📁'
+    };
+    return iconMap[ext] || iconMap.default;
   };
 
   const handleFileChange = event => {
@@ -66,10 +95,17 @@ const ProjectBoardIssueDetailsAttachments = ({ issue, updateIssue }) => {
         Attach files
       </Button>
 
+      {attachments.length === 0 && (
+        <EmptyState>
+          <EmptyHint><span role="img" aria-label="paperclip">📎</span> No attachments yet. Click the button above to add files.</EmptyHint>
+        </EmptyState>
+      )}
+
       {attachments.length > 0 && (
         <AttachmentList>
           {attachments.map(attachment => (
             <AttachmentItem key={attachment.id}>
+              <FileIcon>{getFileIcon(attachment.name)}</FileIcon>
               <AttachmentInfo>
                 <AttachmentName>{attachment.name}</AttachmentName>
                 <AttachmentSize>{formatFileSize(attachment.size)}</AttachmentSize>

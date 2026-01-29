@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import MentionTextarea from '../MentionTextarea';
 
-import { Actions, FormButton } from './Styles';
+import { Actions, FormButton, CharacterCount } from './Styles';
 
 const propTypes = {
   value: PropTypes.string.isRequired,
@@ -30,6 +30,11 @@ const ProjectBoardIssueDetailsCommentsBodyForm = ({
     }
   };
 
+  const maxLength = 5000;
+  const charCount = value.length;
+  const isNearLimit = charCount > maxLength * 0.9;
+  const isOverLimit = charCount > maxLength;
+
   return (
     <Fragment>
       <MentionTextarea
@@ -41,12 +46,17 @@ const ProjectBoardIssueDetailsCommentsBodyForm = ({
         projectUsers={projectUsers}
       />
       <Actions>
-        <FormButton variant="primary" isWorking={isWorking} onClick={handleSubmit}>
-          Save
-        </FormButton>
-        <FormButton variant="empty" onClick={onCancel}>
-          Cancel
-        </FormButton>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <FormButton variant="primary" isWorking={isWorking} onClick={handleSubmit} disabled={isOverLimit}>
+            Save
+          </FormButton>
+          <FormButton variant="empty" onClick={onCancel}>
+            Cancel
+          </FormButton>
+        </div>
+        <CharacterCount isNearLimit={isNearLimit} isOverLimit={isOverLimit}>
+          {charCount} / {maxLength}
+        </CharacterCount>
       </Actions>
     </Fragment>
   );

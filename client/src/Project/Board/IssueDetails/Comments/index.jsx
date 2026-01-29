@@ -6,7 +6,7 @@ import { Select } from 'shared/components';
 
 import Create from './Create';
 import Comment from './Comment';
-import { Comments, Title, Header, Filters, FilterLabel, FilterSelect } from './Styles';
+import { Comments, Title, Header, Filters, FilterLabel, FilterSelect, EmptyState, EmptyIcon, EmptyMessage, EmptyHint } from './Styles';
 
 const propTypes = {
   issue: PropTypes.object.isRequired,
@@ -96,6 +96,22 @@ const ProjectBoardIssueDetailsComments = ({ issue, fetchIssue, projectUsers }) =
         </Filters>
       </Header>
       <Create issueId={issue.id} fetchIssue={fetchIssue} projectUsers={projectUsers} />
+
+      {filteredComments.length === 0 && issue.comments.length === 0 && (
+        <EmptyState>
+          <EmptyIcon><span role="img" aria-label="speech balloon">💬</span></EmptyIcon>
+          <EmptyMessage>No comments yet</EmptyMessage>
+          <EmptyHint>Be the first to share your thoughts!</EmptyHint>
+        </EmptyState>
+      )}
+
+      {filteredComments.length === 0 && issue.comments.length > 0 && (
+        <EmptyState>
+          <EmptyIcon><span role="img" aria-label="magnifying glass">🔍</span></EmptyIcon>
+          <EmptyMessage>No comments match your filters</EmptyMessage>
+          <EmptyHint>Try adjusting your filter criteria</EmptyHint>
+        </EmptyState>
+      )}
 
       {filteredComments.map(comment => (
         <Comment key={comment.id} comment={comment} fetchIssue={fetchIssue} projectUsers={projectUsers} />

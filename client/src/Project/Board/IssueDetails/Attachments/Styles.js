@@ -19,7 +19,7 @@ export const AttachmentList = styled.div`
 export const AttachmentItem = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 12px;
   padding: 10px 12px;
   margin-bottom: 8px;
   background: ${color.backgroundLightest};
@@ -30,6 +30,11 @@ export const AttachmentItem = styled.div`
     background: ${color.backgroundLight};
     border-color: ${color.borderLight};
   }
+`;
+
+export const FileIcon = styled.div`
+  font-size: 24px;
+  flex-shrink: 0;
 `;
 
 export const AttachmentInfo = styled.div`
@@ -62,4 +67,18 @@ export const RemoveButton = styled.button`
     color: ${color.danger};
     background: ${color.backgroundLight};
   }
+`;
+
+export const EmptyState = styled.div`
+  margin-top: 16px;
+  padding: 30px 20px;
+  text-align: center;
+  background: ${color.backgroundLight};
+  border: 1px dashed ${color.borderLight};
+  border-radius: 3px;
+`;
+
+export const EmptyHint = styled.div`
+  ${font.size(14)}
+  color: ${color.textMedium};
 `;

@@ -17,6 +17,7 @@ import AssigneesReporter from './AssigneesReporter';
 import Priority from './Priority';
 import EstimateTracking from './EstimateTracking';
 import Dates from './Dates';
+import KeyboardShortcuts from './KeyboardShortcuts';
 import { TopActions, TopActionsRight, Content, Left, Right } from './Styles';
 
 const propTypes = {
@@ -60,6 +61,7 @@ const ProjectBoardIssueDetails = ({
       <TopActions>
         <Type issue={issue} updateIssue={updateIssue} />
         <TopActionsRight>
+          <KeyboardShortcuts modalClose={modalClose} />
           <AboutTooltip
             renderLink={linkProps => (
               <Button icon="feedback" variant="empty" {...linkProps}>

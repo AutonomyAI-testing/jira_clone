@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import api from 'shared/utils/api';
 import toast from 'shared/utils/toast';
 import { formatDateTimeConversational } from 'shared/utils/dateTime';
-import { ConfirmModal } from 'shared/components';
+import { ConfirmModal, Spinner } from 'shared/components';
 
 import BodyForm from '../BodyForm';
 import Reply from '../Reply';
@@ -19,6 +19,7 @@ import {
   DeleteLink,
   ReplyLink,
   Replies,
+  LoadingOverlay,
   ReplyItem,
   ReplyUserAvatar,
   ReplyContent,
@@ -45,9 +46,13 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue, projectUsers }) 
 
   const handleCommentDelete = async () => {
     try {
+      setUpdating(true);
       await api.delete(`/comments/${comment.id}`);
       await fetchIssue();
+      setUpdating(false);
+      toast.success('Comment deleted successfully');
     } catch (error) {
+      setUpdating(false);
       toast.error(error);
     }
   };
@@ -59,16 +64,22 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue, projectUsers }) 
       await fetchIssue();
       setUpdating(false);
       setFormOpen(false);
+      toast.success('Comment updated successfully');
     } catch (error) {
+      setUpdating(false);
       toast.error(error);
     }
   };
 
   const handleReplyDelete = async (replyId) => {
     try {
+      setUpdating(true);
       await api.delete(`/comments/${comment.id}/replies/${replyId}`);
       await fetchIssue();
+      setUpdating(false);
+      toast.success('Reply deleted successfully');
     } catch (error) {
+      setUpdating(false);
       toast.error(error);
     }
   };
@@ -80,7 +91,9 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue, projectUsers }) 
       await fetchIssue();
       setUpdating(false);
       setEditingReplyId(null);
+      toast.success('Reply updated successfully');
     } catch (error) {
+      setUpdating(false);
       toast.error(error);
     }
   };
@@ -91,7 +104,7 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue, projectUsers }) 
   };
 
   return (
-    <Comment data-testid="issue-comment">
+    <Comment data-testid="issue-comment" style={{ position: 'relative' }}>
       <UserAvatar name={comment.user.name} avatarUrl={comment.user.avatarUrl} />
       <Content>
         <Username>{comment.user.name}</Username>
@@ -169,6 +182,11 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue, projectUsers }) 
           </Replies>
         )}
       </Content>
+      {isUpdating && (
+        <LoadingOverlay>
+          <Spinner size={32} />
+        </LoadingOverlay>
+      )}
     </Comment>
   );
 };

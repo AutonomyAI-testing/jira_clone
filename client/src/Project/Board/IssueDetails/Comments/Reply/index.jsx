@@ -29,7 +29,9 @@ const ProjectBoardIssueDetailsCommentsReply = ({ commentId, fetchIssue, projectU
       setCreating(false);
       setBody('');
       onCancel();
+      toast.success('Reply added successfully');
     } catch (error) {
+      setCreating(false);
       toast.error(error);
     }
   };
