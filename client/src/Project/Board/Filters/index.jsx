@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { xor } from 'lodash';
 
-import { IssueType, IssueTypeCopy } from 'shared/constants/issues';
-import { IssueTypeIcon } from 'shared/components';
+import { IssueType, IssueTypeCopy, IssuePriority, IssuePriorityCopy } from 'shared/constants/issues';
+import { IssueTypeIcon, IssuePriorityIcon } from 'shared/components';
 
 import {
   Filters,
@@ -23,9 +23,9 @@ const propTypes = {
 };
 
 const ProjectBoardFilters = ({ projectUsers, defaultFilters, filters, mergeFilters }) => {
-  const { searchTerm, userIds, myOnly, recent, issueTypes } = filters;
+  const { searchTerm, userIds, myOnly, recent, issueTypes, priorities } = filters;
 
-  const areFiltersCleared = !searchTerm && userIds.length === 0 && !myOnly && !recent && issueTypes.length === 0;
+  const areFiltersCleared = !searchTerm && userIds.length === 0 && !myOnly && !recent && issueTypes.length === 0 && priorities.length === 0;
 
   return (
     <Filters data-testid="board-filters">
@@ -68,6 +68,17 @@ const ProjectBoardFilters = ({ projectUsers, defaultFilters, filters, mergeFilte
         >
           <IssueTypeIcon type={type} top={1} />
           {IssueTypeCopy[type]}
+        </StyledButton>
+      ))}
+      {Object.values(IssuePriority).map(priority => (
+        <StyledButton
+          key={priority}
+          variant="empty"
+          isActive={priorities.includes(priority)}
+          onClick={() => mergeFilters({ priorities: xor(priorities, [priority]) })}
+        >
+          <IssuePriorityIcon priority={priority} top={1} />
+          {IssuePriorityCopy[priority]}
         </StyledButton>
       ))}
       {!areFiltersCleared && (

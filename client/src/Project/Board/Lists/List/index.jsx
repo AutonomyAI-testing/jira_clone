@@ -50,7 +50,7 @@ const ProjectBoardList = ({ status, project, filters, currentUserId }) => {
 };
 
 const filterIssues = (projectIssues, filters, currentUserId) => {
-  const { searchTerm, userIds, myOnly, recent, issueTypes } = filters;
+  const { searchTerm, userIds, myOnly, recent, issueTypes, priorities } = filters;
   let issues = projectIssues;
 
   if (searchTerm) {
@@ -67,6 +67,9 @@ const filterIssues = (projectIssues, filters, currentUserId) => {
   }
   if (issueTypes.length > 0) {
     issues = issues.filter(issue => issueTypes.includes(issue.type));
+  }
+  if (priorities.length > 0) {
+    issues = issues.filter(issue => priorities.includes(issue.priority));
   }
   return issues;
 };
