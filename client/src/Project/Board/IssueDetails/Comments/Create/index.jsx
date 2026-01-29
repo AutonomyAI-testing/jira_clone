@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import api from 'shared/utils/api';
 import useCurrentUser from 'shared/hooks/currentUser';
-import toast from 'shared/utils/toast';
 
 import BodyForm from '../BodyForm';
 import ProTip from './ProTip';
@@ -30,7 +29,7 @@ const ProjectBoardIssueDetailsCommentsCreate = ({ issueId, fetchIssue }) => {
       setCreating(false);
       setBody('');
     } catch (error) {
-      toast.error(error);
+      // Error silently handled
     }
   };
 

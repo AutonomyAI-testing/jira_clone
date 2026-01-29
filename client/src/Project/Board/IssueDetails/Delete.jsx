@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import api from 'shared/utils/api';
-import toast from 'shared/utils/toast';
 import { Button, ConfirmModal } from 'shared/components';
 
 const propTypes = {
@@ -18,7 +17,7 @@ const ProjectBoardIssueDetailsDelete = ({ issue, fetchProject, modalClose }) => 
       await fetchProject();
       modalClose();
     } catch (error) {
-      toast.error(error);
+      // Error silently handled
     }
   };
 

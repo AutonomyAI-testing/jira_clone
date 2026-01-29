@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import api from 'shared/utils/api';
 import useApi from 'shared/hooks/api';
-import { PageError, CopyLinkButton, Button, AboutTooltip } from 'shared/components';
+import { CopyLinkButton, Button, AboutTooltip } from 'shared/components';
 
 import Loader from './Loader';
 import Type from './Type';
@@ -33,10 +33,9 @@ const ProjectBoardIssueDetails = ({
   updateLocalProjectIssues,
   modalClose,
 }) => {
-  const [{ data, error, setLocalData }, fetchIssue] = useApi.get(`/issues/${issueId}`);
+  const [{ data, setLocalData }, fetchIssue] = useApi.get(`/issues/${issueId}`);
 
   if (!data) return <Loader />;
-  if (error) return <PageError />;
 
   const { issue } = data;
 
