@@ -2,7 +2,6 @@ import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import api from 'shared/utils/api';
-import toast from 'shared/utils/toast';
 import { formatDateTimeConversational } from 'shared/utils/dateTime';
 import { ConfirmModal } from 'shared/components';
 
@@ -33,7 +32,7 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
       await api.delete(`/comments/${comment.id}`);
       await fetchIssue();
     } catch (error) {
-      toast.error(error);
+      // Error silently ignored
     }
   };
 
@@ -45,7 +44,7 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
       setUpdating(false);
       setFormOpen(false);
     } catch (error) {
-      toast.error(error);
+      // Error silently ignored
     }
   };
 
