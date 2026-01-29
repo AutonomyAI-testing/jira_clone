@@ -12,9 +12,10 @@ import { Create, UserAvatar, Right, FakeTextarea } from './Styles';
 const propTypes = {
   issueId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   fetchIssue: PropTypes.func.isRequired,
+  projectUsers: PropTypes.array.isRequired,
 };
 
-const ProjectBoardIssueDetailsCommentsCreate = ({ issueId, fetchIssue }) => {
+const ProjectBoardIssueDetailsCommentsCreate = ({ issueId, fetchIssue, projectUsers }) => {
   const [isFormOpen, setFormOpen] = useState(false);
   const [isCreating, setCreating] = useState(false);
   const [body, setBody] = useState('');
@@ -45,6 +46,7 @@ const ProjectBoardIssueDetailsCommentsCreate = ({ issueId, fetchIssue }) => {
             isWorking={isCreating}
             onSubmit={handleCommentCreate}
             onCancel={() => setFormOpen(false)}
+            projectUsers={projectUsers}
           />
         ) : (
           <Fragment>

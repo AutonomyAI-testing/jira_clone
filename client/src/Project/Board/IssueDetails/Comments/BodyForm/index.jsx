@@ -1,7 +1,7 @@
 import React, { Fragment, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { Textarea } from 'shared/components';
+import MentionTextarea from '../MentionTextarea';
 
 import { Actions, FormButton } from './Styles';
 
@@ -11,6 +11,7 @@ const propTypes = {
   isWorking: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
+  projectUsers: PropTypes.array.isRequired,
 };
 
 const ProjectBoardIssueDetailsCommentsBodyForm = ({
@@ -19,6 +20,7 @@ const ProjectBoardIssueDetailsCommentsBodyForm = ({
   isWorking,
   onSubmit,
   onCancel,
+  projectUsers,
 }) => {
   const $textareaRef = useRef();
 
@@ -30,12 +32,13 @@ const ProjectBoardIssueDetailsCommentsBodyForm = ({
 
   return (
     <Fragment>
-      <Textarea
+      <MentionTextarea
         autoFocus
         placeholder="Add a comment..."
         value={value}
         onChange={onChange}
         ref={$textareaRef}
+        projectUsers={projectUsers}
       />
       <Actions>
         <FormButton variant="primary" isWorking={isWorking} onClick={handleSubmit}>

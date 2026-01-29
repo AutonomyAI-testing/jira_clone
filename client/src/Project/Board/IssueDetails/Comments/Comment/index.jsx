@@ -21,9 +21,10 @@ import {
 const propTypes = {
   comment: PropTypes.object.isRequired,
   fetchIssue: PropTypes.func.isRequired,
+  projectUsers: PropTypes.array.isRequired,
 };
 
-const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
+const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue, projectUsers }) => {
   const [isFormOpen, setFormOpen] = useState(false);
   const [isUpdating, setUpdating] = useState(false);
   const [body, setBody] = useState(comment.body);
@@ -63,6 +64,7 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
             isWorking={isUpdating}
             onSubmit={handleCommentUpdate}
             onCancel={() => setFormOpen(false)}
+            projectUsers={projectUsers}
           />
         ) : (
           <Fragment>

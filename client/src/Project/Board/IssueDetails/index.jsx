@@ -77,7 +77,7 @@ const ProjectBoardIssueDetails = ({
           <Title issue={issue} updateIssue={updateIssue} />
           <Description issue={issue} updateIssue={updateIssue} />
           <Attachments issue={issue} updateIssue={updateIssue} />
-          <Comments issue={issue} fetchIssue={fetchIssue} />
+          <Comments issue={issue} fetchIssue={fetchIssue} projectUsers={projectUsers} />
         </Left>
         <Right>
           <Status issue={issue} updateIssue={updateIssue} />
