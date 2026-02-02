@@ -12,3 +12,8 @@ export const BoardName = styled.div`
   ${font.size(24)}
   ${font.medium}
 `;
+
+export const ViewToggle = styled.div`
+  display: flex;
+  gap: 8px;
+`;
