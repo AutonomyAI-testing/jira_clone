@@ -19,6 +19,14 @@ class User extends BaseEntity {
   static validations = {
     name: [is.required(), is.maxLength(100)],
     email: [is.required(), is.email(), is.maxLength(200)],
+    avatarUrl: [
+      is.url(),
+      is.match(
+        (url: string) => !url || /\.(jpg|jpeg|png|gif|webp)(\?.*)?$/i.test(url),
+        'Must be a valid image URL (jpg, jpeg, png, gif, webp)',
+      ),
+      is.maxLength(2000),
+    ],
   };
 
   @PrimaryGeneratedColumn()

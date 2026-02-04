@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 
 import { Icon, AboutTooltip } from 'shared/components';
 
@@ -24,6 +25,11 @@ const ProjectNavbarLeft = ({ issueSearchModalOpen, issueCreateModalOpen }) => (
     <Item onClick={issueCreateModalOpen}>
       <Icon type="plus" size={27} />
       <ItemText>Create Issue</ItemText>
+    </Item>
+
+    <Item as={NavLink} to="/project/user-settings">
+      <Icon type="settings" size={22} />
+      <ItemText>User Settings</ItemText>
     </Item>
 
     <Bottom>
