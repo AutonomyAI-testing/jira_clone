@@ -6,7 +6,15 @@ import useApi from 'shared/hooks/api';
 import useCurrentUser from 'shared/hooks/currentUser';
 import { Form, Breadcrumbs, Avatar } from 'shared/components';
 
-import { FormCont, FormHeading, FormElement, ActionButton, AvatarSection, AvatarLabel } from './Styles';
+import {
+  FormCont,
+  FormHeading,
+  FormElement,
+  ActionButton,
+  AvatarSection,
+  AvatarLabel,
+  AvatarWrapper,
+} from './Styles';
 
 const propTypes = {
   fetchProject: PropTypes.func.isRequired,
@@ -49,7 +57,9 @@ const UserSettings = ({ fetchProject }) => {
 
           <AvatarSection>
             <AvatarLabel>Current Avatar</AvatarLabel>
-            <Avatar avatarUrl={currentUser.avatarUrl} name={currentUser.name} size={80} />
+            <AvatarWrapper>
+              <Avatar avatarUrl={currentUser.avatarUrl} name={currentUser.name} size={80} />
+            </AvatarWrapper>
           </AvatarSection>
 
           <Form.Field.Input

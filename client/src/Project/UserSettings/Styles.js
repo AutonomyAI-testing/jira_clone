@@ -33,3 +33,9 @@ export const AvatarLabel = styled.div`
   ${font.size(13)}
   ${font.medium}
 `;
+
+export const AvatarWrapper = styled.div`
+  display: inline-block;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px #e53935;
+`;
