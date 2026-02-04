@@ -30,7 +30,7 @@ const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
   const [filters, mergeFilters] = useMergeState(defaultFilters);
 
   return (
-    <div style={{ backgroundColor: 'red', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: 'blue', minHeight: '100vh' }}>
       <Breadcrumbs items={['Projects', project.name, 'Kanban Board']} />
       <Header />
       <Filters
