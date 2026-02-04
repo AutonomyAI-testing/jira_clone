@@ -82,3 +82,4 @@ const useQuery = (url, propsVariables = {}, options = {}) => {
 const cache = {};
 
 export default useQuery;
+export { cache };
