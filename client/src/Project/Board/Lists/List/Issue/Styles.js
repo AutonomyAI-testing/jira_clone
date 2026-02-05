@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import { color, font, mixin } from 'shared/utils/styles';
-import { Avatar } from 'shared/components';
+import { Avatar, Button } from 'shared/components';
 
 export const IssueLink = styled(Link)`
   display: block;
@@ -10,6 +10,7 @@ export const IssueLink = styled(Link)`
 `;
 
 export const Issue = styled.div`
+  position: relative;
   padding: 10px;
   border-radius: 3px;
   background: #fff;
@@ -53,4 +54,19 @@ export const Assignees = styled.div`
 export const AssigneeAvatar = styled(Avatar)`
   margin-left: -2px;
   box-shadow: 0 0 0 2px #fff;
+`;
+
+export const ShareButton = styled(Button)`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  padding: 4px;
+  min-height: 24px;
+  min-width: 24px;
+
+  ${Issue}:hover & {
+    opacity: 1;
+  }
 `;

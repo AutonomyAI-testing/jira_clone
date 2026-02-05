@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouteMatch } from 'react-router-dom';
 import { Draggable } from 'react-beautiful-dnd';
 
 import { IssueTypeIcon, IssuePriorityIcon } from 'shared/components';
+import { copyToClipboard } from 'shared/utils/browser';
 
-import { IssueLink, Issue, Title, Bottom, Assignees, AssigneeAvatar } from './Styles';
+import { IssueLink, Issue, Title, Bottom, Assignees, AssigneeAvatar, ShareButton } from './Styles';
 
 const propTypes = {
   projectUsers: PropTypes.array.isRequired,
@@ -15,8 +16,18 @@ const propTypes = {
 
 const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
   const match = useRouteMatch();
+  const [isLinkCopied, setLinkCopied] = useState(false);
 
   const assignees = issue.userIds.map(userId => projectUsers.find(user => user.id === userId));
+
+  const handleShareClick = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const issueUrl = `${window.location.origin}${match.url}/issues/${issue.id}`;
+    copyToClipboard(issueUrl);
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2000);
+  };
 
   return (
     <Draggable draggableId={issue.id.toString()} index={index}>
@@ -46,6 +57,13 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
                 ))}
               </Assignees>
             </Bottom>
+            <ShareButton
+              icon="link"
+              variant="empty"
+              iconSize={16}
+              onClick={handleShareClick}
+              title={isLinkCopied ? 'Link copied!' : 'Share issue'}
+            />
           </Issue>
         </IssueLink>
       )}
