@@ -4,9 +4,11 @@ import history from 'browserHistory';
 import toast from 'shared/utils/toast';
 import { objectToQueryString } from 'shared/utils/url';
 import { getStoredAuthToken, removeStoredAuthToken } from 'shared/utils/authToken';
+import getMockData from 'shared/utils/mockData';
+import { USE_MOCK_DATA, API_BASE_URL } from 'shared/utils/config';
 
 const defaults = {
-  baseURL: process.env.API_URL || 'http://localhost:3000',
+  baseURL: API_BASE_URL,
   headers: () => ({
     'Content-Type': 'application/json',
     Authorization: getStoredAuthToken() ? `Bearer ${getStoredAuthToken()}` : undefined,
@@ -21,6 +23,14 @@ const defaults = {
 
 const api = (method, url, variables) =>
   new Promise((resolve, reject) => {
+    // Simple flag: if USE_MOCK_DATA is true, use mock data
+    if (USE_MOCK_DATA) {
+      console.log(`[API] Using mock data for ${method.toUpperCase()} ${url}`);
+      getMockData(method, url, variables).then(resolve, reject);
+      return;
+    }
+
+    // Use real backend
     axios({
       url: `${defaults.baseURL}${url}`,
       method,
@@ -34,13 +44,17 @@ const api = (method, url, variables) =>
       },
       error => {
         if (error.response) {
-          if (error.response.data.error.code === 'INVALID_TOKEN') {
+          // Backend responded with an error (4xx, 5xx)
+          const errorData = error.response.data;
+
+          if (errorData && errorData.error && errorData.error.code === 'INVALID_TOKEN') {
             removeStoredAuthToken();
             history.push('/authenticate');
           } else {
-            reject(error.response.data.error);
+            reject(errorData && errorData.error ? errorData.error : defaults.error);
           }
         } else {
+          // Network error or connection refused
           reject(defaults.error);
         }
       },
