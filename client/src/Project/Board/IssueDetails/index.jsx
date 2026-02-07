@@ -24,6 +24,7 @@ const propTypes = {
   fetchProject: PropTypes.func.isRequired,
   updateLocalProjectIssues: PropTypes.func.isRequired,
   modalClose: PropTypes.func.isRequired,
+  issue: PropTypes.object,
 };
 
 const ProjectBoardIssueDetails = ({
@@ -32,13 +33,15 @@ const ProjectBoardIssueDetails = ({
   fetchProject,
   updateLocalProjectIssues,
   modalClose,
+  issue: issueFromProps,
 }) => {
-  const [{ data, error, setLocalData }, fetchIssue] = useApi.get(`/issues/${issueId}`);
+  const [{ data, error, setLocalData }, fetchIssue] = useApi.get(`/issues/${issueId}`, {}, { lazy: true });
 
-  if (!data) return <Loader />;
-  if (error) return <PageError />;
+  // Use prop issue if provided (for demo), otherwise use API data
+  const issue = issueFromProps || (data && data.issue);
 
-  const { issue } = data;
+  if (!issue && !error) return <Loader />;
+  if (error && !issueFromProps) return <PageError />;
 
   const updateLocalIssueDetails = fields =>
     setLocalData(currentData => ({ issue: { ...currentData.issue, ...fields } }));
@@ -82,7 +85,7 @@ const ProjectBoardIssueDetails = ({
           <AssigneesReporter issue={issue} updateIssue={updateIssue} projectUsers={projectUsers} />
           <Priority issue={issue} updateIssue={updateIssue} />
           <EstimateTracking issue={issue} updateIssue={updateIssue} />
-          <Dates issue={issue} />
+          <Dates issue={issue} updateIssue={updateIssue} />
         </Right>
       </Content>
     </Fragment>
@@ -90,5 +93,8 @@ const ProjectBoardIssueDetails = ({
 };
 
 ProjectBoardIssueDetails.propTypes = propTypes;
+ProjectBoardIssueDetails.defaultProps = {
+  issue: null,
+};
 
 export default ProjectBoardIssueDetails;

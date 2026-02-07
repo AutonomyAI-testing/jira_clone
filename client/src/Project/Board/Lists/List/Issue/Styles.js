@@ -54,3 +54,19 @@ export const AssigneeAvatar = styled(Avatar)`
   margin-left: -2px;
   box-shadow: 0 0 0 2px #fff;
 `;
+
+export const Dates = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid ${color.backgroundMedium};
+  ${font.size(12)}
+  color: ${color.textMedium};
+`;
+
+export const DateItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;

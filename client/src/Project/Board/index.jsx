@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Route, useRouteMatch, useHistory } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ import { Breadcrumbs, Modal } from 'shared/components';
 import Header from './Header';
 import Filters from './Filters';
 import Lists from './Lists';
+import Gantt from './Gantt';
 import IssueDetails from './IssueDetails';
 
 const propTypes = {
@@ -28,42 +29,52 @@ const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
   const history = useHistory();
 
   const [filters, mergeFilters] = useMergeState(defaultFilters);
+  const [view, setView] = useState('board');
 
   return (
     <Fragment>
       <Breadcrumbs items={['Projects', project.name, 'Kanban Board']} />
-      <Header />
+      <Header view={view} onViewChange={setView} />
       <Filters
         projectUsers={project.users}
         defaultFilters={defaultFilters}
         filters={filters}
         mergeFilters={mergeFilters}
       />
-      <Lists
-        project={project}
-        filters={filters}
-        updateLocalProjectIssues={updateLocalProjectIssues}
-      />
+      {view === 'board' ? (
+        <Lists
+          project={project}
+          filters={filters}
+          updateLocalProjectIssues={updateLocalProjectIssues}
+        />
+      ) : (
+        <Gantt project={project} filters={filters} />
+      )}
       <Route
-        path={`${match.path}/issues/:issueId`}
-        render={routeProps => (
-          <Modal
-            isOpen
-            testid="modal:issue-details"
-            width={1040}
-            withCloseIcon={false}
-            onClose={() => history.push(match.url)}
-            renderContent={modal => (
-              <IssueDetails
-                issueId={routeProps.match.params.issueId}
-                projectUsers={project.users}
-                fetchProject={fetchProject}
-                updateLocalProjectIssues={updateLocalProjectIssues}
-                modalClose={modal.close}
-              />
-            )}
-          />
-        )}
+        path={match.path === '/' ? '/issues/:issueId' : `${match.path}/issues/:issueId`}
+        render={routeProps => {
+          const issueId = parseInt(routeProps.match.params.issueId, 10);
+          const issue = project.issues.find(i => i.id === issueId);
+          return (
+            <Modal
+              isOpen
+              testid="modal:issue-details"
+              width={1040}
+              withCloseIcon={false}
+              onClose={() => history.push(match.url === '/' ? '/' : match.url)}
+              renderContent={modal => (
+                <IssueDetails
+                  issueId={routeProps.match.params.issueId}
+                  projectUsers={project.users}
+                  fetchProject={fetchProject}
+                  updateLocalProjectIssues={updateLocalProjectIssues}
+                  modalClose={modal.close}
+                  issue={issue}
+                />
+              )}
+            />
+          );
+        }}
       />
     </Fragment>
   );
