@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -39,8 +39,10 @@ const propTypes = {
 
 const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => {
   const [{ isCreating }, createIssue] = useApi.post('/issues');
+  const [, deleteIssue] = useApi.delete('/issues');
 
   const { currentUserId } = useCurrentUser();
+  const undoTimeoutRef = useRef(null);
 
   return (
     <Form
@@ -61,14 +63,37 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
       }}
       onSubmit={async (values, form) => {
         try {
-          await createIssue({
+          const response = await createIssue({
             ...values,
             status: IssueStatus.BACKLOG,
             projectId: project.id,
             users: values.userIds.map(id => ({ id })),
           });
           await fetchProject();
-          toast.success('Issue has been successfully created.');
+          
+          const issueId = response.issue.id;
+          const issueTitle = values.title;
+          
+          // Show toast with undo option
+          toast.show({
+            type: 'success',
+            title: 'Issue created successfully',
+            message: `"${issueTitle}" has been added to the backlog.`,
+            duration: 5,
+            onUndo: async () => {
+              if (undoTimeoutRef.current) {
+                clearTimeout(undoTimeoutRef.current);
+              }
+              try {
+                await deleteIssue(issueId);
+                await fetchProject();
+                toast.success('Issue creation undone.');
+              } catch (error) {
+                toast.error('Failed to undo issue creation.');
+              }
+            },
+          });
+          
           onCreate();
         } catch (error) {
           Form.handleAPIError(error, form);
