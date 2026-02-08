@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -15,10 +15,17 @@ import { Form, IssueTypeIcon, Icon, Avatar, IssuePriorityIcon } from 'shared/com
 
 import {
   FormHeading,
+  FormSubheading,
   FormElement,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ColumnLeft,
+  ColumnRight,
+  FieldGroup,
+  GroupTitle,
   SelectItem,
   SelectItemLabel,
-  Divider,
   Actions,
   ActionButton,
 } from './Styles';
@@ -32,8 +39,10 @@ const propTypes = {
 
 const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => {
   const [{ isCreating }, createIssue] = useApi.post('/issues');
+  const [, deleteIssue] = useApi.delete('/issues');
 
   const { currentUserId } = useCurrentUser();
+  const undoTimeoutRef = useRef(null);
 
   return (
     <Form
@@ -54,14 +63,37 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
       }}
       onSubmit={async (values, form) => {
         try {
-          await createIssue({
+          const response = await createIssue({
             ...values,
             status: IssueStatus.BACKLOG,
             projectId: project.id,
             users: values.userIds.map(id => ({ id })),
           });
           await fetchProject();
-          toast.success('Issue has been successfully created.');
+          
+          const issueId = response.issue.id;
+          const issueTitle = values.title;
+          
+          // Show toast with undo option
+          toast.show({
+            type: 'success',
+            title: 'Issue created successfully',
+            message: `"${issueTitle}" has been added to the backlog.`,
+            duration: 5,
+            onUndo: async () => {
+              if (undoTimeoutRef.current) {
+                clearTimeout(undoTimeoutRef.current);
+              }
+              try {
+                await deleteIssue(issueId);
+                await fetchProject();
+                toast.success('Issue creation undone.');
+              } catch (error) {
+                toast.error('Failed to undo issue creation.');
+              }
+            },
+          });
+          
           onCreate();
         } catch (error) {
           Form.handleAPIError(error, form);
@@ -69,58 +101,86 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
       }}
     >
       <FormElement>
-        <FormHeading>Create issue</FormHeading>
-        <Form.Field.Select
-          name="type"
-          label="Issue Type"
-          tip="Start typing to get a list of possible matches."
-          options={typeOptions}
-          renderOption={renderType}
-          renderValue={renderType}
-        />
-        <Divider />
-        <Form.Field.Input
-          name="title"
-          label="Short Summary"
-          tip="Concisely summarize the issue in one or two sentences."
-        />
-        <Form.Field.TextEditor
-          name="description"
-          label="Description"
-          tip="Describe the issue in as much detail as you'd like."
-        />
-        <Form.Field.Select
-          name="reporterId"
-          label="Reporter"
-          options={userOptions(project)}
-          renderOption={renderUser(project)}
-          renderValue={renderUser(project)}
-        />
-        <Form.Field.Select
-          isMulti
-          name="userIds"
-          label="Assignees"
-          tio="People who are responsible for dealing with this issue."
-          options={userOptions(project)}
-          renderOption={renderUser(project)}
-          renderValue={renderUser(project)}
-        />
-        <Form.Field.Select
-          name="priority"
-          label="Priority"
-          tip="Priority in relation to other issues."
-          options={priorityOptions}
-          renderOption={renderPriority}
-          renderValue={renderPriority}
-        />
-        <Actions>
-          <ActionButton type="submit" variant="primary" isWorking={isCreating}>
-            Create Issue
-          </ActionButton>
-          <ActionButton type="button" variant="empty" onClick={modalClose}>
-            Cancel
-          </ActionButton>
-        </Actions>
+        <ModalHeader>
+          <FormHeading>Create Issue</FormHeading>
+          <FormSubheading>Fill in the details below to create a new issue for your project.</FormSubheading>
+        </ModalHeader>
+
+        <ModalBody>
+          <ColumnLeft>
+            <FieldGroup>
+              <GroupTitle>Issue Details</GroupTitle>
+              <Form.Field.Select
+                name="type"
+                label="Issue Type"
+                tip="Start typing to get a list of possible matches."
+                options={typeOptions}
+                renderOption={renderType}
+                renderValue={renderType}
+              />
+              <Form.Field.Input
+                name="title"
+                label="Short Summary"
+                tip="Concisely summarize the issue in one or two sentences."
+              />
+            </FieldGroup>
+
+            <FieldGroup>
+              <GroupTitle>Description</GroupTitle>
+              <Form.Field.TextEditor
+                name="description"
+                label="Description"
+                tip="Describe the issue in as much detail as you'd like."
+              />
+            </FieldGroup>
+          </ColumnLeft>
+
+          <ColumnRight>
+            <FieldGroup>
+              <GroupTitle>People</GroupTitle>
+              <Form.Field.Select
+                name="reporterId"
+                label="Reporter"
+                options={userOptions(project)}
+                renderOption={renderUser(project)}
+                renderValue={renderUser(project)}
+              />
+              <Form.Field.Select
+                isMulti
+                name="userIds"
+                label="Assignees"
+                tip="People who are responsible for dealing with this issue."
+                options={userOptions(project)}
+                renderOption={renderUser(project)}
+                renderValue={renderUser(project)}
+              />
+            </FieldGroup>
+
+            <FieldGroup>
+              <GroupTitle>Priority</GroupTitle>
+              <Form.Field.Select
+                name="priority"
+                label="Priority"
+                tip="Priority in relation to other issues."
+                options={priorityOptions}
+                renderOption={renderPriority}
+                renderValue={renderPriority}
+              />
+            </FieldGroup>
+          </ColumnRight>
+        </ModalBody>
+
+        <ModalFooter>
+          <div />
+          <Actions>
+            <ActionButton type="button" variant="empty" onClick={modalClose}>
+              Cancel
+            </ActionButton>
+            <ActionButton type="submit" variant="primary" isWorking={isCreating}>
+              Create Issue
+            </ActionButton>
+          </Actions>
+        </ModalFooter>
       </FormElement>
     </Form>
   );

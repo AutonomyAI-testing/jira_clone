@@ -14,11 +14,10 @@ export const StyledToast = styled.div`
   position: relative;
   margin-bottom: 5px;
   width: 300px;
-  padding: 15px 20px;
+  padding: ${props => props.hasUndo ? '15px 20px 50px' : '15px 20px'};
   border-radius: 3px;
   color: #fff;
   background: ${props => color[props.type]};
-  cursor: pointer;
   transition: all 0.15s;
   ${mixin.clearfix}
   ${mixin.hardwareAccelerate}
@@ -56,4 +55,29 @@ export const Message = styled.div`
   white-space: pre-wrap;
   ${font.size(14)}
   ${font.medium}
+`;
+
+export const UndoButton = styled.button`
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 3px;
+  padding: 6px 16px;
+  cursor: pointer;
+  ${font.size(13)}
+  ${font.medium}
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-1px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
 `;
