@@ -14,13 +14,21 @@ import useCurrentUser from 'shared/hooks/currentUser';
 import { Form, IssueTypeIcon, Icon, Avatar, IssuePriorityIcon } from 'shared/components';
 
 import {
-  FormHeading,
-  FormElement,
+  Container,
+  GradientBackground,
+  ContentCard,
+  Header,
+  HeaderTitle,
+  HeaderSubtitle,
+  FormSection,
+  SectionLabel,
+  FieldGroup,
   SelectItem,
   SelectItemLabel,
-  Divider,
   Actions,
   ActionButton,
+  Divider,
+  IconWrapper,
 } from './Styles';
 
 const propTypes = {
@@ -36,93 +44,138 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
   const { currentUserId } = useCurrentUser();
 
   return (
-    <Form
-      enableReinitialize
-      initialValues={{
-        type: IssueType.TASK,
-        title: '',
-        description: '',
-        reporterId: currentUserId,
-        userIds: [],
-        priority: IssuePriority.MEDIUM,
-      }}
-      validations={{
-        type: Form.is.required(),
-        title: [Form.is.required(), Form.is.maxLength(200)],
-        reporterId: Form.is.required(),
-        priority: Form.is.required(),
-      }}
-      onSubmit={async (values, form) => {
-        try {
-          await createIssue({
-            ...values,
-            status: IssueStatus.BACKLOG,
-            projectId: project.id,
-            users: values.userIds.map(id => ({ id })),
-          });
-          await fetchProject();
-          toast.success('Issue has been successfully created.');
-          onCreate();
-        } catch (error) {
-          Form.handleAPIError(error, form);
-        }
-      }}
-    >
-      <FormElement>
-        <FormHeading>Create issue</FormHeading>
-        <Form.Field.Select
-          name="type"
-          label="Issue Type"
-          tip="Start typing to get a list of possible matches."
-          options={typeOptions}
-          renderOption={renderType}
-          renderValue={renderType}
-        />
-        <Divider />
-        <Form.Field.Input
-          name="title"
-          label="Short Summary"
-          tip="Concisely summarize the issue in one or two sentences."
-        />
-        <Form.Field.TextEditor
-          name="description"
-          label="Description"
-          tip="Describe the issue in as much detail as you'd like."
-        />
-        <Form.Field.Select
-          name="reporterId"
-          label="Reporter"
-          options={userOptions(project)}
-          renderOption={renderUser(project)}
-          renderValue={renderUser(project)}
-        />
-        <Form.Field.Select
-          isMulti
-          name="userIds"
-          label="Assignees"
-          tio="People who are responsible for dealing with this issue."
-          options={userOptions(project)}
-          renderOption={renderUser(project)}
-          renderValue={renderUser(project)}
-        />
-        <Form.Field.Select
-          name="priority"
-          label="Priority"
-          tip="Priority in relation to other issues."
-          options={priorityOptions}
-          renderOption={renderPriority}
-          renderValue={renderPriority}
-        />
-        <Actions>
-          <ActionButton type="submit" variant="primary" isWorking={isCreating}>
-            Create Issue
-          </ActionButton>
-          <ActionButton type="button" variant="empty" onClick={modalClose}>
-            Cancel
-          </ActionButton>
-        </Actions>
-      </FormElement>
-    </Form>
+    <Container>
+      <GradientBackground />
+      <Form
+        enableReinitialize
+        initialValues={{
+          type: IssueType.TASK,
+          title: '',
+          description: '',
+          reporterId: currentUserId,
+          userIds: [],
+          priority: IssuePriority.MEDIUM,
+        }}
+        validations={{
+          type: Form.is.required(),
+          title: [Form.is.required(), Form.is.maxLength(200)],
+          reporterId: Form.is.required(),
+          priority: Form.is.required(),
+        }}
+        onSubmit={async (values, form) => {
+          try {
+            await createIssue({
+              ...values,
+              status: IssueStatus.BACKLOG,
+              projectId: project.id,
+              users: values.userIds.map(id => ({ id })),
+            });
+            await fetchProject();
+            toast.success('Issue has been successfully created.');
+            onCreate();
+          } catch (error) {
+            Form.handleAPIError(error, form);
+          }
+        }}
+      >
+        <Form.Element>
+          <ContentCard>
+            <Header>
+              <HeaderTitle>Create New Issue</HeaderTitle>
+              <HeaderSubtitle>Fill in the details below to create a new issue for your project</HeaderSubtitle>
+            </Header>
+
+            <FormSection>
+              <SectionLabel>Issue Type</SectionLabel>
+              <FieldGroup>
+                <Form.Field.Select
+                  name="type"
+                  tip="Select the type of issue you want to create"
+                  options={typeOptions}
+                  renderOption={renderType}
+                  renderValue={renderType}
+                />
+              </FieldGroup>
+            </FormSection>
+
+            <Divider />
+
+            <FormSection>
+              <SectionLabel>Summary</SectionLabel>
+              <FieldGroup>
+                <Form.Field.Input
+                  name="title"
+                  placeholder="e.g., Fix login page responsiveness"
+                  tip="Concisely summarize the issue in one or two sentences"
+                />
+              </FieldGroup>
+            </FormSection>
+
+            <FormSection>
+              <SectionLabel>Description</SectionLabel>
+              <FieldGroup>
+                <Form.Field.TextEditor
+                  name="description"
+                  placeholder="Describe the issue in detail..."
+                  tip="Provide as much context and detail as needed"
+                />
+              </FieldGroup>
+            </FormSection>
+
+            <Divider />
+
+            <FormSection>
+              <SectionLabel>Reporter</SectionLabel>
+              <FieldGroup>
+                <Form.Field.Select
+                  name="reporterId"
+                  tip="The person reporting this issue"
+                  options={userOptions(project)}
+                  renderOption={renderUser(project)}
+                  renderValue={renderUser(project)}
+                />
+              </FieldGroup>
+            </FormSection>
+
+            <FormSection>
+              <SectionLabel>Assignees</SectionLabel>
+              <FieldGroup>
+                <Form.Field.Select
+                  isMulti
+                  name="userIds"
+                  tip="People responsible for working on this issue"
+                  options={userOptions(project)}
+                  renderOption={renderUser(project)}
+                  renderValue={renderUser(project)}
+                />
+              </FieldGroup>
+            </FormSection>
+
+            <FormSection>
+              <SectionLabel>Priority</SectionLabel>
+              <FieldGroup>
+                <Form.Field.Select
+                  name="priority"
+                  tip="Priority level relative to other issues"
+                  options={priorityOptions}
+                  renderOption={renderPriority}
+                  renderValue={renderPriority}
+                />
+              </FieldGroup>
+            </FormSection>
+
+            <Actions>
+              <ActionButton type="button" variant="empty" onClick={modalClose}>
+                Cancel
+              </ActionButton>
+              <ActionButton type="submit" variant="primary" isWorking={isCreating}>
+                Create Issue
+              </ActionButton>
+            </Actions>
+          </ContentCard>
+        </Form.Element>
+      </Form>
+    </Container>
   );
 };
 
@@ -140,14 +193,18 @@ const userOptions = project => project.users.map(user => ({ value: user.id, labe
 
 const renderType = ({ value: type }) => (
   <SelectItem>
-    <IssueTypeIcon type={type} top={1} />
+    <IconWrapper>
+      <IssueTypeIcon type={type} />
+    </IconWrapper>
     <SelectItemLabel>{IssueTypeCopy[type]}</SelectItemLabel>
   </SelectItem>
 );
 
 const renderPriority = ({ value: priority }) => (
   <SelectItem>
-    <IssuePriorityIcon priority={priority} top={1} />
+    <IconWrapper>
+      <IssuePriorityIcon priority={priority} />
+    </IconWrapper>
     <SelectItemLabel>{IssuePriorityCopy[priority]}</SelectItemLabel>
   </SelectItem>
 );
@@ -161,7 +218,7 @@ const renderUser = project => ({ value: userId, removeOptionValue }) => {
       withBottomMargin={!!removeOptionValue}
       onClick={() => removeOptionValue && removeOptionValue()}
     >
-      <Avatar size={20} avatarUrl={user.avatarUrl} name={user.name} />
+      <Avatar size={24} avatarUrl={user.avatarUrl} name={user.name} />
       <SelectItemLabel>{user.name}</SelectItemLabel>
       {removeOptionValue && <Icon type="close" top={2} />}
     </SelectItem>
