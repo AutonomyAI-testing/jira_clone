@@ -7,6 +7,22 @@ export const FormElement = styled(Form.Element)`
   padding: 25px 40px 35px;
 `;
 
+export const FormContent = styled.div`
+  display: flex;
+  gap: 40px;
+  margin-top: 20px;
+`;
+
+export const LeftColumn = styled.div`
+  flex: 1;
+  min-width: 0;
+`;
+
+export const RightColumn = styled.div`
+  width: 320px;
+  flex-shrink: 0;
+`;
+
 export const FormHeading = styled.div`
   padding-bottom: 15px;
   ${font.size(21)}
@@ -26,6 +42,14 @@ export const SelectItemLabel = styled.div`
 export const Divider = styled.div`
   margin-top: 22px;
   border-top: 1px solid ${color.borderLightest};
+`;
+
+export const SectionTitle = styled.div`
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  color: ${color.textMedium};
+  ${font.size(12.5)}
+  ${font.bold}
 `;
 
 export const Actions = styled.div`
