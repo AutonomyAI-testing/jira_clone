@@ -16,8 +16,12 @@ import { Form, IssueTypeIcon, Icon, Avatar, IssuePriorityIcon } from 'shared/com
 import {
   FormHeading,
   FormElement,
+  FormContent,
+  LeftColumn,
+  RightColumn,
   SelectItem,
   SelectItemLabel,
+  SectionTitle,
   Divider,
   Actions,
   ActionButton,
@@ -70,49 +74,58 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
     >
       <FormElement>
         <FormHeading>Create issue</FormHeading>
-        <Form.Field.Select
-          name="type"
-          label="Issue Type"
-          tip="Start typing to get a list of possible matches."
-          options={typeOptions}
-          renderOption={renderType}
-          renderValue={renderType}
-        />
-        <Divider />
-        <Form.Field.Input
-          name="title"
-          label="Short Summary"
-          tip="Concisely summarize the issue in one or two sentences."
-        />
-        <Form.Field.TextEditor
-          name="description"
-          label="Description"
-          tip="Describe the issue in as much detail as you'd like."
-        />
-        <Form.Field.Select
-          name="reporterId"
-          label="Reporter"
-          options={userOptions(project)}
-          renderOption={renderUser(project)}
-          renderValue={renderUser(project)}
-        />
-        <Form.Field.Select
-          isMulti
-          name="userIds"
-          label="Assignees"
-          tio="People who are responsible for dealing with this issue."
-          options={userOptions(project)}
-          renderOption={renderUser(project)}
-          renderValue={renderUser(project)}
-        />
-        <Form.Field.Select
-          name="priority"
-          label="Priority"
-          tip="Priority in relation to other issues."
-          options={priorityOptions}
-          renderOption={renderPriority}
-          renderValue={renderPriority}
-        />
+        <FormContent>
+          <LeftColumn>
+            <Form.Field.Input
+              name="title"
+              label="Short Summary"
+              tip="Concisely summarize the issue in one or two sentences."
+            />
+            <Form.Field.TextEditor
+              name="description"
+              label="Description"
+              tip="Describe the issue in as much detail as you'd like."
+            />
+          </LeftColumn>
+          <RightColumn>
+            <SectionTitle>Issue Type</SectionTitle>
+            <Form.Field.Select
+              name="type"
+              label=""
+              tip="Start typing to get a list of possible matches."
+              options={typeOptions}
+              renderOption={renderType}
+              renderValue={renderType}
+            />
+            <SectionTitle>Priority</SectionTitle>
+            <Form.Field.Select
+              name="priority"
+              label=""
+              tip="Priority in relation to other issues."
+              options={priorityOptions}
+              renderOption={renderPriority}
+              renderValue={renderPriority}
+            />
+            <SectionTitle>Reporter</SectionTitle>
+            <Form.Field.Select
+              name="reporterId"
+              label=""
+              options={userOptions(project)}
+              renderOption={renderUser(project)}
+              renderValue={renderUser(project)}
+            />
+            <SectionTitle>Assignees</SectionTitle>
+            <Form.Field.Select
+              isMulti
+              name="userIds"
+              label=""
+              tip="People who are responsible for dealing with this issue."
+              options={userOptions(project)}
+              renderOption={renderUser(project)}
+              renderValue={renderUser(project)}
+            />
+          </RightColumn>
+        </FormContent>
         <Actions>
           <ActionButton type="submit" variant="primary" isWorking={isCreating}>
             Create Issue
