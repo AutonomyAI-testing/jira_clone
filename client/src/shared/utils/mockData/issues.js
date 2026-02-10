@@ -133,6 +133,6 @@ export const issuesData = {
 
 // Individual issue details (for /issues/:id endpoint)
 export const getIssueById = (id) => {
-  const issue = issuesData.issues.find(issue => issue.id === parseInt(id));
+  const issue = issuesData.issues.find(item => item.id === parseInt(id));
   return issue || issuesData.issues[0]; // Fallback to first issue if not found
 };
