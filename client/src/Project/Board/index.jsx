@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Route, useRouteMatch, useHistory } from 'react-router-dom';
 
@@ -8,6 +8,9 @@ import { Breadcrumbs, Modal } from 'shared/components';
 import Header from './Header';
 import Filters from './Filters';
 import Lists from './Lists';
+import ListView from './ListView';
+import GanttView from './GanttView';
+import ViewSwitcher from './ViewSwitcher';
 import IssueDetails from './IssueDetails';
 
 const propTypes = {
@@ -28,22 +31,33 @@ const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
   const history = useHistory();
 
   const [filters, mergeFilters] = useMergeState(defaultFilters);
+  const [currentView, setCurrentView] = useState('kanban');
 
   return (
     <Fragment>
-      <Breadcrumbs items={['Projects', project.name, 'Kanban Board']} />
-      <Header />
+      <Breadcrumbs items={['Projects', project.name, 'Board']} />
+      <Header>
+        <ViewSwitcher currentView={currentView} onViewChange={setCurrentView} />
+      </Header>
       <Filters
         projectUsers={project.users}
         defaultFilters={defaultFilters}
         filters={filters}
         mergeFilters={mergeFilters}
       />
-      <Lists
-        project={project}
-        filters={filters}
-        updateLocalProjectIssues={updateLocalProjectIssues}
-      />
+      {currentView === 'kanban' && (
+        <Lists
+          project={project}
+          filters={filters}
+          updateLocalProjectIssues={updateLocalProjectIssues}
+        />
+      )}
+      {currentView === 'list' && (
+        <ListView project={project} filters={filters} currentUserId={project.users[0] && project.users[0].id} />
+      )}
+      {currentView === 'gantt' && (
+        <GanttView project={project} filters={filters} currentUserId={project.users[0] && project.users[0].id} />
+      )}
       <Route
         path={`${match.path}/issues/:issueId`}
         render={routeProps => (
