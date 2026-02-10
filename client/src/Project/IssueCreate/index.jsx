@@ -49,6 +49,9 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
         reporterId: currentUserId,
         userIds: [],
         priority: IssuePriority.MEDIUM,
+        startDate: undefined,
+        dueDate: undefined,
+        dependencies: [],
       }}
       validations={{
         type: Form.is.required(),
@@ -124,6 +127,29 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
               renderOption={renderUser(project)}
               renderValue={renderUser(project)}
             />
+            <Divider />
+            <SectionTitle>Start Date</SectionTitle>
+            <Form.Field.DatePicker
+              name="startDate"
+              label=""
+              withTime={false}
+            />
+            <SectionTitle>Due Date</SectionTitle>
+            <Form.Field.DatePicker
+              name="dueDate"
+              label=""
+              withTime={false}
+            />
+            <SectionTitle>Dependencies</SectionTitle>
+            <Form.Field.Select
+              isMulti
+              name="dependencies"
+              label=""
+              tip="Select issues that must be completed before this one."
+              options={issueOptions(project)}
+              renderOption={renderIssue(project)}
+              renderValue={renderIssue(project)}
+            />
           </RightColumn>
         </FormContent>
         <Actions>
@@ -151,6 +177,9 @@ const priorityOptions = Object.values(IssuePriority).map(priority => ({
 
 const userOptions = project => project.users.map(user => ({ value: user.id, label: user.name }));
 
+const issueOptions = project =>
+  project.issues.map(issue => ({ value: issue.id, label: `${issue.title} (${issue.type})` }));
+
 const renderType = ({ value: type }) => (
   <SelectItem>
     <IssueTypeIcon type={type} top={1} />
@@ -176,6 +205,22 @@ const renderUser = project => ({ value: userId, removeOptionValue }) => {
     >
       <Avatar size={20} avatarUrl={user.avatarUrl} name={user.name} />
       <SelectItemLabel>{user.name}</SelectItemLabel>
+      {removeOptionValue && <Icon type="close" top={2} />}
+    </SelectItem>
+  );
+};
+
+const renderIssue = project => ({ value: issueId, removeOptionValue }) => {
+  const issue = project.issues.find(({ id }) => id === issueId);
+
+  return (
+    <SelectItem
+      key={issue.id}
+      withBottomMargin={!!removeOptionValue}
+      onClick={() => removeOptionValue && removeOptionValue()}
+    >
+      <IssueTypeIcon type={issue.type} top={1} />
+      <SelectItemLabel>{issue.title}</SelectItemLabel>
       {removeOptionValue && <Icon type="close" top={2} />}
     </SelectItem>
   );

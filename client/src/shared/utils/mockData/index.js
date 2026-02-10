@@ -6,7 +6,7 @@ import { authenticationData } from './authentication';
 // Mock data router - matches URL patterns to mock data
 export const getMockData = (method, url, variables) => {
   // Simulate network delay
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const result = routeMockData(method, url, variables);
       resolve(result);

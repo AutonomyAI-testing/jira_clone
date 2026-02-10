@@ -4,7 +4,7 @@ import history from 'browserHistory';
 import toast from 'shared/utils/toast';
 import { objectToQueryString } from 'shared/utils/url';
 import { getStoredAuthToken, removeStoredAuthToken } from 'shared/utils/authToken';
-import getMockData from 'shared/utils/mockData';
+import mockData from 'shared/utils/mockData';
 import { USE_MOCK_DATA, API_BASE_URL } from 'shared/utils/config';
 
 const defaults = {
@@ -26,7 +26,7 @@ const api = (method, url, variables) =>
     // Simple flag: if USE_MOCK_DATA is true, use mock data
     if (USE_MOCK_DATA) {
       console.log(`[API] Using mock data for ${method.toUpperCase()} ${url}`);
-      getMockData(method, url, variables).then(resolve, reject);
+      mockData(method, url, variables).then(resolve, reject);
       return;
     }
 
