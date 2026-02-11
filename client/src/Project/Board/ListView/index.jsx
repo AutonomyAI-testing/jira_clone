@@ -34,7 +34,7 @@ const defaultProps = {
 const ListView = ({ project, filters, currentUserId }) => {
   const history = useHistory();
   const match = useRouteMatch();
-  
+
   const filteredIssues = filterIssues(project.issues, filters, currentUserId);
   const sortedIssues = filteredIssues.sort((a, b) => b.id - a.id);
 
