@@ -20,12 +20,19 @@ const propTypes = {
 };
 
 const ProjectBoardFilters = ({ projectUsers, defaultFilters, filters, mergeFilters }) => {
-  const { searchTerm, userIds, myOnly, recent } = filters;
+  const { searchTerm, userIds, myOnly, recent, allIssues } = filters;
 
-  const areFiltersCleared = !searchTerm && userIds.length === 0 && !myOnly && !recent;
+  const areFiltersCleared = !searchTerm && userIds.length === 0 && !myOnly && !recent && allIssues;
 
   return (
     <Filters data-testid="board-filters">
+      <StyledButton
+        variant="empty"
+        isActive={allIssues}
+        onClick={() => mergeFilters({ allIssues: !allIssues })}
+      >
+        All Issues
+      </StyledButton>
       <SearchInput
         icon="search"
         value={searchTerm}

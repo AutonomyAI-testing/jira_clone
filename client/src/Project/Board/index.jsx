@@ -24,6 +24,7 @@ const defaultFilters = {
   userIds: [],
   myOnly: false,
   recent: false,
+  allIssues: true,
 };
 
 const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {

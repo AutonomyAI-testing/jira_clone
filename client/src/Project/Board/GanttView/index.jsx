@@ -176,8 +176,12 @@ const GanttView = ({ project, filters, currentUserId }) => {
 };
 
 const filterIssues = (projectIssues, filters, currentUserId) => {
-  const { searchTerm, userIds, myOnly, recent } = filters;
+  const { searchTerm, userIds, myOnly, recent, allIssues } = filters;
   let issues = projectIssues;
+
+  if (allIssues) {
+    return issues;
+  }
 
   if (searchTerm) {
     issues = issues.filter(issue => issue.title.toLowerCase().includes(searchTerm.toLowerCase()));
