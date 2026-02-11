@@ -129,9 +129,17 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
             />
             <Divider />
             <SectionTitle>Start Date</SectionTitle>
-            <Form.Field.DatePicker name="startDate" label="" withTime={false} />
+            <Form.Field.DatePicker
+              name="startDate"
+              label=""
+              withTime={false}
+            />
             <SectionTitle>Due Date</SectionTitle>
-            <Form.Field.DatePicker name="dueDate" label="" withTime={false} />
+            <Form.Field.DatePicker
+              name="dueDate"
+              label=""
+              withTime={false}
+            />
             <SectionTitle>Dependencies</SectionTitle>
             <Form.Field.Select
               isMulti
