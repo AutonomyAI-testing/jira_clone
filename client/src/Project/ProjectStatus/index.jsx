@@ -58,6 +58,14 @@ const ProjectStatus = ({ project }) => {
     setIsAddingStatus(false);
   };
 
+  const handleEditStatus = (statusKey) => {
+    toast.info(`Edit functionality for ${IssueStatusCopy[IssueStatus[statusKey]]} coming soon!`);
+  };
+
+  const handleDeleteStatus = (statusKey) => {
+    toast.error(`Delete functionality for ${IssueStatusCopy[IssueStatus[statusKey]]} coming soon!`);
+  };
+
   return (
     <PageContainer>
       <Breadcrumbs items={['Projects', project.name, 'Status Management']} />
@@ -90,11 +98,24 @@ const ProjectStatus = ({ project }) => {
                   fontWeight: '500',
                   background: '#DFE1E6',
                   padding: '2px 8px',
-                  borderRadius: '3px'
+                  borderRadius: '3px',
+                  marginRight: '8px'
                 }}>
                   NEW
                 </span>
               )}
+              <Button
+                variant="empty"
+                icon="settings"
+                iconSize={16}
+                onClick={() => handleEditStatus(status.key)}
+              />
+              <Button
+                variant="empty"
+                icon="trash"
+                iconSize={16}
+                onClick={() => handleDeleteStatus(status.key)}
+              />
             </StatusActions>
           </StatusItem>
         ))}
