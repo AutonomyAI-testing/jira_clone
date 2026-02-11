@@ -24,7 +24,7 @@ export const TableBody = styled.tbody``;
 
 export const TableRow = styled.tr`
   border-bottom: 1px solid ${color.borderLightest};
-  
+
   ${props =>
     props.clickable &&
     `

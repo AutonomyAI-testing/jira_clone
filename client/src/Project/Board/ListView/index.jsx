@@ -34,7 +34,7 @@ const defaultProps = {
 const ListView = ({ project, filters, currentUserId }) => {
   const history = useHistory();
   const match = useRouteMatch();
-  
+
   const filteredIssues = filterIssues(project.issues, filters, currentUserId);
   const sortedIssues = filteredIssues.sort((a, b) => b.id - a.id);
 
@@ -105,8 +105,12 @@ const ListView = ({ project, filters, currentUserId }) => {
 };
 
 const filterIssues = (projectIssues, filters, currentUserId) => {
-  const { searchTerm, userIds, myOnly, recent } = filters;
+  const { searchTerm, userIds, myOnly, recent, allIssues } = filters;
   let issues = projectIssues;
+
+  if (allIssues) {
+    return issues;
+  }
 
   if (searchTerm) {
     issues = issues.filter(issue => issue.title.toLowerCase().includes(searchTerm.toLowerCase()));
