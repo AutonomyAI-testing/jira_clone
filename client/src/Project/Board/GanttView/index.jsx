@@ -52,7 +52,10 @@ const GanttView = ({ project, filters, currentUserId }) => {
       const today = moment();
       return {
         startDate: today.clone().startOf('month'),
-        endDate: today.clone().add(2, 'months').endOf('month'),
+        endDate: today
+          .clone()
+          .add(2, 'months')
+          .endOf('month'),
         dayWidth: 30,
         totalDays: 90,
       };
@@ -78,24 +81,21 @@ const GanttView = ({ project, filters, currentUserId }) => {
   const months = useMemo(() => {
     const monthsList = [];
     const current = startDate.clone();
-    
+
     while (current.isSameOrBefore(endDate, 'month')) {
       const monthStart = current.clone().startOf('month');
       const monthEnd = current.clone().endOf('month');
-      
-      const daysInView = monthEnd.diff(
-        moment.max(monthStart, startDate),
-        'days'
-      ) + 1;
-      
+
+      const daysInView = monthEnd.diff(moment.max(monthStart, startDate), 'days') + 1;
+
       monthsList.push({
         name: current.format('MMMM YYYY'),
         days: daysInView,
       });
-      
+
       current.add(1, 'month');
     }
-    
+
     return monthsList;
   }, [startDate, endDate]);
 
@@ -106,11 +106,11 @@ const GanttView = ({ project, filters, currentUserId }) => {
   const calculateTaskPosition = issue => {
     const taskStart = issue.startDate ? moment(issue.startDate) : moment();
     const taskEnd = issue.dueDate ? moment(issue.dueDate) : taskStart.clone().add(7, 'days');
-    
+
     const left = taskStart.diff(startDate, 'days') * dayWidth;
     const duration = taskEnd.diff(taskStart, 'days') + 1;
     const width = duration * dayWidth;
-    
+
     return { left, width };
   };
 
@@ -133,7 +133,7 @@ const GanttView = ({ project, filters, currentUserId }) => {
 
       {sortedIssues.map(issue => {
         const { left, width } = calculateTaskPosition(issue);
-        
+
         return (
           <TaskRow key={issue.id}>
             <TaskListContainer>

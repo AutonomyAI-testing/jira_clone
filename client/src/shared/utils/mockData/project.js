@@ -48,6 +48,7 @@ export const projectData = {
       timeRemaining: 8,
       reporterId: 1,
       projectId: 1,
+      productArea: 'Frontend',
       userIds: [1, 2],
       users: [
         {
@@ -81,6 +82,7 @@ export const projectData = {
       timeRemaining: 2,
       reporterId: 2,
       projectId: 1,
+      productArea: 'Authentication',
       userIds: [2],
       users: [
         {
@@ -109,6 +111,7 @@ export const projectData = {
       timeRemaining: 8,
       reporterId: 1,
       projectId: 1,
+      productArea: 'UI/UX',
       userIds: [1, 3],
       users: [
         {
@@ -142,6 +145,7 @@ export const projectData = {
       timeRemaining: 0,
       reporterId: 3,
       projectId: 1,
+      productArea: 'Documentation',
       userIds: [3],
       users: [
         {
