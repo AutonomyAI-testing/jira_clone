@@ -25,6 +25,7 @@ export const RightColumn = styled.div`
 
 export const FormHeading = styled.div`
   padding-bottom: 15px;
+  color: ${color.danger};
   ${font.size(21)}
 `;
 
