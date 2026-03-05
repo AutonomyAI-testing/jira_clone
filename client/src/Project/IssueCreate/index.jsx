@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 
 import {
   IssueType,
@@ -11,7 +12,7 @@ import {
 import toast from 'shared/utils/toast';
 import useApi from 'shared/hooks/api';
 import useCurrentUser from 'shared/hooks/currentUser';
-import { Form, IssueTypeIcon, Icon, Avatar, IssuePriorityIcon } from 'shared/components';
+import { Form, IssueTypeIcon, Icon, Avatar, IssuePriorityIcon, Breadcrumbs } from 'shared/components';
 
 import {
   FormHeading,
@@ -30,14 +31,21 @@ import {
 const propTypes = {
   project: PropTypes.object.isRequired,
   fetchProject: PropTypes.func.isRequired,
-  onCreate: PropTypes.func.isRequired,
-  modalClose: PropTypes.func.isRequired,
 };
 
-const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => {
+const ProjectIssueCreate = ({ project, fetchProject }) => {
+  const history = useHistory();
   const [{ isCreating }, createIssue] = useApi.post('/issues');
 
   const { currentUserId } = useCurrentUser();
+
+  const handleCancel = () => {
+    history.push('/project/board');
+  };
+
+  const handleCreated = () => {
+    history.push('/project/board');
+  };
 
   return (
     <Form
@@ -69,14 +77,15 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
           });
           await fetchProject();
           toast.success('Issue has been successfully created.');
-          onCreate();
+          handleCreated();
         } catch (error) {
           Form.handleAPIError(error, form);
         }
       }}
     >
       <FormElement>
-        <FormHeading>Create issue</FormHeading>
+        <Breadcrumbs items={['Projects', project.name, 'Create Issue']} />
+        <FormHeading>Create Issue</FormHeading>
         <FormContent>
           <LeftColumn>
             <Form.Field.Input
@@ -148,7 +157,7 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
           <ActionButton type="submit" variant="primary" isWorking={isCreating}>
             Create Issue
           </ActionButton>
-          <ActionButton type="button" variant="empty" onClick={modalClose}>
+          <ActionButton type="button" variant="empty" onClick={handleCancel}>
             Cancel
           </ActionButton>
         </Actions>

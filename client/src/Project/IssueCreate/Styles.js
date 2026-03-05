@@ -4,7 +4,8 @@ import { color, font } from 'shared/utils/styles';
 import { Button, Form } from 'shared/components';
 
 export const FormElement = styled(Form.Element)`
-  padding: 25px 40px 35px;
+  padding: 0 0 35px;
+  max-width: 1100px;
 `;
 
 export const FormContent = styled.div`
