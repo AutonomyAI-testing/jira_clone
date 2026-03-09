@@ -5,6 +5,7 @@ import useApi from 'shared/hooks/api';
 import { updateArrayItemById } from 'shared/utils/javascript';
 import { createQueryParamModalHelpers } from 'shared/utils/queryParamModal';
 import { PageLoader, PageError, Modal } from 'shared/components';
+import { getStoredAuthToken } from 'shared/utils/authToken';
 
 import NavbarLeft from './NavbarLeft';
 import Sidebar from './Sidebar';
@@ -17,6 +18,10 @@ import { ProjectPage } from './Styles';
 const Project = () => {
   const match = useRouteMatch();
   const history = useHistory();
+
+  if (!getStoredAuthToken()) {
+    return <Redirect to="/login" />;
+  }
 
   const issueSearchModalHelpers = createQueryParamModalHelpers('issue-search');
   const issueCreateModalHelpers = createQueryParamModalHelpers('issue-create');

@@ -37,6 +37,12 @@ const routeMockData = (method, url, variables) => {
     if (url === '/authentication/guest') {
       return authenticationData;
     }
+    if (url === '/authentication/login') {
+      return authenticationData;
+    }
+    if (url === '/authentication/register') {
+      return authenticationData;
+    }
     if (url === '/issues') {
       // Return a mock newly created issue
       const newIssue = {
