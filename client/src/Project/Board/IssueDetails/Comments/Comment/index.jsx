@@ -18,6 +18,8 @@ import {
   Body,
   EditLink,
   DeleteLink,
+  Actions,
+  RepliesContainer,
 } from './Styles';
 
 const propTypes = {
@@ -69,22 +71,24 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
         ) : (
           <Fragment>
             <Body>{comment.body}</Body>
-            <EditLink onClick={() => setFormOpen(true)}>Edit</EditLink>
-            <ConfirmModal
-              title="Are you sure you want to delete this comment?"
-              message="Once you delete, it's gone for good."
-              confirmText="Delete comment"
-              onConfirm={handleCommentDelete}
-              renderLink={modal => <DeleteLink onClick={modal.open}>Delete</DeleteLink>}
-            />
+            <Actions>
+              <EditLink onClick={() => setFormOpen(true)}>Edit</EditLink>
+              <ConfirmModal
+                title="Are you sure you want to delete this comment?"
+                message="Once you delete, it's gone for good."
+                confirmText="Delete comment"
+                onConfirm={handleCommentDelete}
+                renderLink={modal => <DeleteLink onClick={modal.open}>Delete</DeleteLink>}
+              />
+              <ReplyForm commentId={comment.id} fetchIssue={fetchIssue} />
+            </Actions>
             {comment.replies && comment.replies.length > 0 && (
-              <div>
+              <RepliesContainer>
                 {comment.replies.map(reply => (
                   <Reply key={reply.id} reply={reply} commentId={comment.id} fetchIssue={fetchIssue} />
                 ))}
-              </div>
+              </RepliesContainer>
             )}
-            <ReplyForm commentId={comment.id} fetchIssue={fetchIssue} />
           </Fragment>
         )}
       </Content>

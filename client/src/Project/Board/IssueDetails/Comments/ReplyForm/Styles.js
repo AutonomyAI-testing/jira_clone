@@ -4,7 +4,6 @@ import { color, font, mixin } from 'shared/utils/styles';
 
 export const ReplyLink = styled.div`
   display: inline-block;
-  margin-left: 12px;
   padding: 2px 0;
   color: ${color.textMedium};
   ${font.size(14.5)}
@@ -22,6 +21,7 @@ export const ReplyLink = styled.div`
 
 export const Actions = styled.div`
   display: flex;
+  flex-direction: column;
   gap: 8px;
   margin-top: 8px;
 `;

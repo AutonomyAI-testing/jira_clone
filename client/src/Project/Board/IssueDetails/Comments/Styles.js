@@ -4,6 +4,8 @@ import { font } from 'shared/utils/styles';
 
 export const Comments = styled.div`
   padding-top: 40px;
+  max-height: 700px;
+  overflow-y: auto;
 `;
 
 export const Title = styled.div`

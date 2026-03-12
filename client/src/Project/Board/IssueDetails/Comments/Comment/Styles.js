@@ -65,20 +65,14 @@ export const DeleteLink = styled.div`
   }
 `;
 
-export const ReplyLink = styled.div`
-  display: inline-block;
-  margin-left: 12px;
-  padding: 2px 0;
-  color: ${color.textMedium};
-  ${font.size(14.5)}
-  ${mixin.clickable}
-  &:hover {
-    text-decoration: underline;
-  }
-  &:before {
-    position: relative;
-    right: 6px;
-    content: '·';
-    display: inline-block;
-  }
+export const Actions = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-bottom: 15px;
+`;
+
+export const RepliesContainer = styled.div`
+  margin-top: 10px;
 `;
