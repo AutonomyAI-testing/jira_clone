@@ -3,9 +3,10 @@ import styled, { css } from 'styled-components';
 import { color, font, mixin } from 'shared/utils/styles';
 import { Avatar } from 'shared/components';
 
-export const Comment = styled.div`
+export const Reply = styled.div`
   position: relative;
-  margin-top: 25px;
+  margin-top: 15px;
+  margin-left: 20px;
   ${font.size(15)}
 `;
 
@@ -57,24 +58,6 @@ export const EditLink = styled.div`
 
 export const DeleteLink = styled.div`
   ${actionLinkStyles}
-  &:before {
-    position: relative;
-    right: 6px;
-    content: '·';
-    display: inline-block;
-  }
-`;
-
-export const ReplyLink = styled.div`
-  display: inline-block;
-  margin-left: 12px;
-  padding: 2px 0;
-  color: ${color.textMedium};
-  ${font.size(14.5)}
-  ${mixin.clickable}
-  &:hover {
-    text-decoration: underline;
-  }
   &:before {
     position: relative;
     right: 6px;

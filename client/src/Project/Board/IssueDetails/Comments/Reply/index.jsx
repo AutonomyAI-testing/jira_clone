@@ -7,10 +7,8 @@ import { formatDateTimeConversational } from 'shared/utils/dateTime';
 import { ConfirmModal } from 'shared/components';
 
 import BodyForm from '../BodyForm';
-import Reply from '../Reply';
-import ReplyForm from '../ReplyForm';
 import {
-  Comment,
+  Reply,
   UserAvatar,
   Content,
   Username,
@@ -21,28 +19,29 @@ import {
 } from './Styles';
 
 const propTypes = {
-  comment: PropTypes.object.isRequired,
+  reply: PropTypes.object.isRequired,
+  commentId: PropTypes.number.isRequired,
   fetchIssue: PropTypes.func.isRequired,
 };
 
-const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
+const ProjectBoardIssueDetailsCommentReply = ({ reply, commentId, fetchIssue }) => {
   const [isFormOpen, setFormOpen] = useState(false);
   const [isUpdating, setUpdating] = useState(false);
-  const [body, setBody] = useState(comment.body);
+  const [body, setBody] = useState(reply.body);
 
-  const handleCommentDelete = async () => {
+  const handleReplyDelete = async () => {
     try {
-      await api.delete(`/comments/${comment.id}`);
+      await api.delete(`/comments/${commentId}/replies/${reply.id}`);
       await fetchIssue();
     } catch (error) {
       toast.error(error);
     }
   };
 
-  const handleCommentUpdate = async () => {
+  const handleReplyUpdate = async () => {
     try {
       setUpdating(true);
-      await api.put(`/comments/${comment.id}`, { body });
+      await api.put(`/comments/${commentId}/replies/${reply.id}`, { body });
       await fetchIssue();
       setUpdating(false);
       setFormOpen(false);
@@ -52,46 +51,38 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
   };
 
   return (
-    <Comment data-testid="issue-comment">
-      <UserAvatar name={comment.user.name} avatarUrl={comment.user.avatarUrl} />
+    <Reply data-testid="issue-reply">
+      <UserAvatar name={reply.user.name} avatarUrl={reply.user.avatarUrl} />
       <Content>
-        <Username>{comment.user.name}</Username>
-        <CreatedAt>{formatDateTimeConversational(comment.createdAt)}</CreatedAt>
+        <Username>{reply.user.name}</Username>
+        <CreatedAt>{formatDateTimeConversational(reply.createdAt)}</CreatedAt>
 
         {isFormOpen ? (
           <BodyForm
             value={body}
             onChange={setBody}
             isWorking={isUpdating}
-            onSubmit={handleCommentUpdate}
+            onSubmit={handleReplyUpdate}
             onCancel={() => setFormOpen(false)}
           />
         ) : (
           <Fragment>
-            <Body>{comment.body}</Body>
+            <Body>{reply.body}</Body>
             <EditLink onClick={() => setFormOpen(true)}>Edit</EditLink>
             <ConfirmModal
-              title="Are you sure you want to delete this comment?"
+              title="Are you sure you want to delete this reply?"
               message="Once you delete, it's gone for good."
-              confirmText="Delete comment"
-              onConfirm={handleCommentDelete}
+              confirmText="Delete reply"
+              onConfirm={handleReplyDelete}
               renderLink={modal => <DeleteLink onClick={modal.open}>Delete</DeleteLink>}
             />
-            {comment.replies && comment.replies.length > 0 && (
-              <div>
-                {comment.replies.map(reply => (
-                  <Reply key={reply.id} reply={reply} commentId={comment.id} fetchIssue={fetchIssue} />
-                ))}
-              </div>
-            )}
-            <ReplyForm commentId={comment.id} fetchIssue={fetchIssue} />
           </Fragment>
         )}
       </Content>
-    </Comment>
+    </Reply>
   );
 };
 
-ProjectBoardIssueDetailsComment.propTypes = propTypes;
+ProjectBoardIssueDetailsCommentReply.propTypes = propTypes;
 
-export default ProjectBoardIssueDetailsComment;
+export default ProjectBoardIssueDetailsCommentReply;

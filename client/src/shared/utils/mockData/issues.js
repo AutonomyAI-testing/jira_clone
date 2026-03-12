@@ -106,6 +106,7 @@ export const issuesData = {
           },
           createdAt: '2020-06-05T00:00:00.000Z',
           updatedAt: '2020-06-05T00:00:00.000Z',
+          replies: [],
         },
       ],
       startDate: '2020-06-03T00:00:00.000Z',
