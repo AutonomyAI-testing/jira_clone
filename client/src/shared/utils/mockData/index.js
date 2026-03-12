@@ -61,6 +61,7 @@ const routeMockData = (method, url, variables) => {
     }
     // Handle POST /comments/:commentId/replies
     if (url.match(/^\/comments\/\d+\/replies$/)) {
+      const commentId = parseInt(url.split('/')[2]);
       const newReply = {
         id: Date.now(),
         ...variables,
@@ -68,6 +69,19 @@ const routeMockData = (method, url, variables) => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
+      
+      // Find the issue that contains this comment and update its replies
+      for (const issue of issuesData.issues) {
+        const comment = issue.comments.find(c => c.id === commentId);
+        if (comment) {
+          if (!comment.replies) {
+            comment.replies = [];
+          }
+          comment.replies.push(newReply);
+          break;
+        }
+      }
+      
       return { reply: newReply };
     }
   }
@@ -91,12 +105,26 @@ const routeMockData = (method, url, variables) => {
     }
     // Handle PUT /comments/:commentId/replies/:replyId
     if (url.match(/^\/comments\/\d+\/replies\/\d+$/)) {
-      const replyId = url.split('/')[4];
+      const commentId = parseInt(url.split('/')[2]);
+      const replyId = parseInt(url.split('/')[4]);
       const updatedReply = {
-        id: parseInt(replyId),
+        id: replyId,
         ...variables,
         updatedAt: new Date().toISOString(),
       };
+      
+      // Find the issue that contains this comment and update the reply
+      for (const issue of issuesData.issues) {
+        const comment = issue.comments.find(c => c.id === commentId);
+        if (comment && comment.replies) {
+          const replyIndex = comment.replies.findIndex(r => r.id === replyId);
+          if (replyIndex !== -1) {
+            comment.replies[replyIndex] = { ...comment.replies[replyIndex], ...updatedReply };
+            break;
+          }
+        }
+      }
+      
       return { reply: updatedReply };
     }
   }
@@ -119,6 +147,21 @@ const routeMockData = (method, url, variables) => {
     }
     // Handle DELETE /comments/:commentId/replies/:replyId
     if (url.match(/^\/comments\/\d+\/replies\/\d+$/)) {
+      const commentId = parseInt(url.split('/')[2]);
+      const replyId = parseInt(url.split('/')[4]);
+      
+      // Find the issue that contains this comment and delete the reply
+      for (const issue of issuesData.issues) {
+        const comment = issue.comments.find(c => c.id === commentId);
+        if (comment && comment.replies) {
+          const replyIndex = comment.replies.findIndex(r => r.id === replyId);
+          if (replyIndex !== -1) {
+            comment.replies.splice(replyIndex, 1);
+            break;
+          }
+        }
+      }
+      
       return { success: true, message: 'Reply deleted successfully' };
     }
   }
