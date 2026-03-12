@@ -16,6 +16,7 @@ export const FilterContainer = styled.div`
   margin-bottom: 16px;
   display: flex;
   align-items: center;
+  position: relative;
 `;
 
 export const NoComments = styled.div`
