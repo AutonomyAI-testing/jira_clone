@@ -5,6 +5,7 @@ import { sortByNewest } from 'shared/utils/javascript';
 
 import Create from './Create';
 import Comment from './Comment';
+import Attachments from '../Attachments';
 import { Comments, Title } from './Styles';
 
 const propTypes = {
@@ -15,6 +16,7 @@ const propTypes = {
 const ProjectBoardIssueDetailsComments = ({ issue, fetchIssue }) => (
   <Comments>
     <Title>Comments</Title>
+    <Attachments />
     <Create issueId={issue.id} fetchIssue={fetchIssue} />
 
     {sortByNewest(issue.comments, 'createdAt').map(comment => (
