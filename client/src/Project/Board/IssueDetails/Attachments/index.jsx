@@ -4,6 +4,8 @@ import { Button } from 'shared/components';
 
 import { AttachmentsContainer, AttachmentButton } from './Styles';
 
+const propTypes = {};
+
 const ProjectBoardIssueDetailsAttachments = () => {
   const fileInputRef = useRef();
 
@@ -46,6 +48,8 @@ const ProjectBoardIssueDetailsAttachments = () => {
     </AttachmentsContainer>
   );
 };
+
+ProjectBoardIssueDetailsAttachments.propTypes = propTypes;
 
 export default ProjectBoardIssueDetailsAttachments;
 

@@ -13,17 +13,22 @@ const propTypes = {
   fetchIssue: PropTypes.func.isRequired,
 };
 
-const ProjectBoardIssueDetailsComments = ({ issue, fetchIssue }) => (
-  <Comments>
-    <Title>Comments</Title>
-    <Attachments />
-    <Create issueId={issue.id} fetchIssue={fetchIssue} />
+const ProjectBoardIssueDetailsComments = ({ issue, fetchIssue }) => {
+  // Ensure issueId is a number for the Create component
+  const issueId = typeof issue.id === 'string' ? parseInt(issue.id) : issue.id;
 
-    {sortByNewest(issue.comments, 'createdAt').map(comment => (
-      <Comment key={comment.id} comment={comment} fetchIssue={fetchIssue} />
-    ))}
-  </Comments>
-);
+  return (
+    <Comments>
+      <Title>Comments</Title>
+      <Attachments />
+      <Create issueId={issueId} fetchIssue={fetchIssue} />
+
+      {sortByNewest(issue.comments, 'createdAt').map(comment => (
+        <Comment key={comment.id} comment={comment} fetchIssue={fetchIssue} />
+      ))}
+    </Comments>
+  );
+};
 
 ProjectBoardIssueDetailsComments.propTypes = propTypes;
 
