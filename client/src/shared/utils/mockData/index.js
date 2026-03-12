@@ -55,8 +55,20 @@ const routeMockData = (method, url, variables) => {
         user: currentUserData,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
+        replies: [],
       };
       return { comment: newComment };
+    }
+    // Handle POST /comments/:commentId/replies
+    if (url.match(/^\/comments\/\d+\/replies$/)) {
+      const newReply = {
+        id: Date.now(),
+        ...variables,
+        user: currentUserData,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      return { reply: newReply };
     }
   }
 
@@ -77,6 +89,16 @@ const routeMockData = (method, url, variables) => {
       };
       return { comment: updatedComment };
     }
+    // Handle PUT /comments/:commentId/replies/:replyId
+    if (url.match(/^\/comments\/\d+\/replies\/\d+$/)) {
+      const replyId = url.split('/')[4];
+      const updatedReply = {
+        id: parseInt(replyId),
+        ...variables,
+        updatedAt: new Date().toISOString(),
+      };
+      return { reply: updatedReply };
+    }
   }
 
   // PATCH requests (similar to PUT)
@@ -94,6 +116,10 @@ const routeMockData = (method, url, variables) => {
     }
     if (url.match(/^\/comments\/\d+$/)) {
       return { success: true, message: 'Comment deleted successfully' };
+    }
+    // Handle DELETE /comments/:commentId/replies/:replyId
+    if (url.match(/^\/comments\/\d+\/replies\/\d+$/)) {
+      return { success: true, message: 'Reply deleted successfully' };
     }
   }
 
