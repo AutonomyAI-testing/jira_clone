@@ -16,6 +16,7 @@ export const ReplyLink = styled.div`
     right: 6px;
     content: '·';
     display: inline-block;
+    margin-right: 6px;
   }
 `;
 

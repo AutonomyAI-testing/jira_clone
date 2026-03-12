@@ -80,7 +80,6 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
                 onConfirm={handleCommentDelete}
                 renderLink={modal => <DeleteLink onClick={modal.open}>Delete</DeleteLink>}
               />
-              <ReplyForm commentId={comment.id} fetchIssue={fetchIssue} />
             </Actions>
             {comment.replies && comment.replies.length > 0 && (
               <RepliesContainer>
@@ -89,6 +88,7 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
                 ))}
               </RepliesContainer>
             )}
+            <ReplyForm commentId={comment.id} fetchIssue={fetchIssue} />
           </Fragment>
         )}
       </Content>
