@@ -6,37 +6,61 @@ import Select from 'shared/components/Select';
 
 import Create from './Create';
 import Comment from './Comment';
-import { Comments, Title, FilterContainer, NoComments } from './Styles';
+import { Comments, Title, FilterContainer, NoComments, FilterSelect } from './Styles';
 
 const propTypes = {
   issue: PropTypes.object.isRequired,
   fetchIssue: PropTypes.func.isRequired,
 };
 
-const FILTER_OPTIONS = [
-  { value: 'all', label: 'All Comments' },
+const SORT_OPTIONS = [
   { value: 'recent', label: 'Most Recent' },
   { value: 'oldest', label: 'Oldest First' },
 ];
 
 const ProjectBoardIssueDetailsComments = ({ issue, fetchIssue }) => {
-  const [filterBy, setFilterBy] = useState('all');
+  const [sortBy, setSortBy] = useState('recent');
+  const [filterByUser, setFilterByUser] = useState('all');
   const allComments = sortByNewest(issue.comments, 'createdAt');
   
-  const getFilteredComments = () => {
-    if (filterBy === 'all') {
-      return allComments;
+  // Get unique users who have commented
+  const getCommentUsers = () => {
+    const uniqueUsers = {};
+    issue.comments.forEach(comment => {
+      if (comment.user && !uniqueUsers[comment.user.id]) {
+        uniqueUsers[comment.user.id] = comment.user;
+      }
+    });
+    return Object.values(uniqueUsers);
+  };
+  
+  const commentUsers = getCommentUsers();
+  
+  // Build filter options
+  const filterOptions = [{ value: 'all', label: 'All Comments' }];
+  commentUsers.forEach(user => {
+    filterOptions.push({
+      value: `user-${user.id}`,
+      label: `${user.name}'s Comments`,
+    });
+  });
+  
+  const getFilteredAndSortedComments = () => {
+    // First filter by user
+    let filtered = allComments;
+    if (filterByUser !== 'all') {
+      const userId = parseInt(filterByUser.split('-')[1]);
+      filtered = allComments.filter(comment => comment.user && comment.user.id === userId);
     }
-    if (filterBy === 'recent') {
-      return allComments;
+    
+    // Then sort
+    if (sortBy === 'oldest') {
+      return filtered.reverse();
     }
-    if (filterBy === 'oldest') {
-      return allComments.reverse();
-    }
-    return allComments;
+    return filtered;
   };
 
-  const filteredComments = getFilteredComments();
+  const filteredComments = getFilteredAndSortedComments();
   const showFilters = issue.comments.length > 0;
 
   return (
@@ -46,13 +70,26 @@ const ProjectBoardIssueDetailsComments = ({ issue, fetchIssue }) => {
 
       {showFilters && (
         <FilterContainer>
-          <Select
-            name="comment-filter"
-            options={FILTER_OPTIONS}
-            value={filterBy}
-            onChange={setFilterBy}
-            variant="normal"
-          />
+          <FilterSelect>
+            <Select
+              name="comment-filter"
+              options={filterOptions}
+              value={filterByUser}
+              onChange={setFilterByUser}
+              variant="normal"
+              placeholder="Filter by user"
+            />
+          </FilterSelect>
+          <FilterSelect>
+            <Select
+              name="comment-sort"
+              options={SORT_OPTIONS}
+              value={sortBy}
+              onChange={setSortBy}
+              variant="normal"
+              placeholder="Sort order"
+            />
+          </FilterSelect>
         </FilterContainer>
       )}
 

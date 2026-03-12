@@ -17,11 +17,15 @@ export const FilterContainer = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-  width: 250px;
+  gap: 12px;
+  flex-wrap: wrap;
 `;
 
 export const FilterSelect = styled.div`
-  width: 100%;
+  flex: 0 1 auto;
+  min-width: 150px;
+  max-width: 300px;
+  width: auto;
 `;
 
 export const NoComments = styled.div`
