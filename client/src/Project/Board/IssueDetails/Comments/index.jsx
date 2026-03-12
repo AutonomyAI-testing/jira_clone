@@ -51,7 +51,7 @@ const ProjectBoardIssueDetailsComments = ({ issue, fetchIssue }) => {
             options={FILTER_OPTIONS}
             value={filterBy}
             onChange={setFilterBy}
-            variant="empty"
+            variant="normal"
           />
         </FilterContainer>
       )}

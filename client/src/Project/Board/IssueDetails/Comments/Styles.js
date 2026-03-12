@@ -17,6 +17,11 @@ export const FilterContainer = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+  width: 250px;
+`;
+
+export const FilterSelect = styled.div`
+  width: 100%;
 `;
 
 export const NoComments = styled.div`
