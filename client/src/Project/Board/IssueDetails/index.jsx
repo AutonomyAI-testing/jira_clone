@@ -16,6 +16,8 @@ import AssigneesReporter from './AssigneesReporter';
 import Priority from './Priority';
 import EstimateTracking from './EstimateTracking';
 import Dates from './Dates';
+import Labels from './Labels';
+import ActivityLog from './ActivityLog';
 import { TopActions, TopActionsRight, Content, Left, Right } from './Styles';
 
 const propTypes = {
@@ -75,14 +77,16 @@ const ProjectBoardIssueDetails = ({
         <Left>
           <Title issue={issue} updateIssue={updateIssue} />
           <Description issue={issue} updateIssue={updateIssue} />
+          <ActivityLog issue={issue} />
           <Comments issue={issue} fetchIssue={fetchIssue} />
         </Left>
         <Right>
           <Status issue={issue} updateIssue={updateIssue} />
           <AssigneesReporter issue={issue} updateIssue={updateIssue} projectUsers={projectUsers} />
           <Priority issue={issue} updateIssue={updateIssue} />
+          <Labels issue={issue} updateIssue={updateIssue} />
+          <Dates issue={issue} updateIssue={updateIssue} />
           <EstimateTracking issue={issue} updateIssue={updateIssue} />
-          <Dates issue={issue} />
         </Right>
       </Content>
     </Fragment>
