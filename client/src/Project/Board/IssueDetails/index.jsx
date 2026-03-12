@@ -11,11 +11,13 @@ import Delete from './Delete';
 import Title from './Title';
 import Description from './Description';
 import Comments from './Comments';
+import ActivityLog from './ActivityLog';
 import Status from './Status';
 import AssigneesReporter from './AssigneesReporter';
 import Priority from './Priority';
 import EstimateTracking from './EstimateTracking';
 import Dates from './Dates';
+import Labels from './Labels';
 import { TopActions, TopActionsRight, Content, Left, Right } from './Styles';
 
 const propTypes = {
@@ -76,13 +78,15 @@ const ProjectBoardIssueDetails = ({
           <Title issue={issue} updateIssue={updateIssue} />
           <Description issue={issue} updateIssue={updateIssue} />
           <Comments issue={issue} fetchIssue={fetchIssue} />
+          <ActivityLog issue={issue} />
         </Left>
         <Right>
           <Status issue={issue} updateIssue={updateIssue} />
           <AssigneesReporter issue={issue} updateIssue={updateIssue} projectUsers={projectUsers} />
           <Priority issue={issue} updateIssue={updateIssue} />
+          <Labels issue={issue} updateIssue={updateIssue} />
           <EstimateTracking issue={issue} updateIssue={updateIssue} />
-          <Dates issue={issue} />
+          <Dates issue={issue} updateIssue={updateIssue} />
         </Right>
       </Content>
     </Fragment>
