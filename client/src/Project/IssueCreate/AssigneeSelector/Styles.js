@@ -138,15 +138,3 @@ export const WorkloadBadge = styled.div`
   text-transform: uppercase;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 `;
-
-export const TooltipContent = styled.div`
-  padding: 12px;
-  ${font.size(13)}
-  color: ${color.textDarkest};
-  line-height: 1.5;
-  
-  strong {
-    ${font.bold}
-    color: ${color.textDarkest};
-  }
-`;

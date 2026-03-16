@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Tooltip } from 'shared/components';
-
 import {
   Container,
   SectionLabel,
@@ -13,7 +11,6 @@ import {
   StyledAvatar,
   UserName,
   WorkloadBadge,
-  TooltipContent,
 } from './Styles';
 
 const propTypes = {
@@ -70,6 +67,7 @@ const AssigneeSelector = ({ projectUsers, selectedUserIds, onSelect, getUserWork
               isSelected={isSelected}
               workloadStatus={workloadStatus}
               onClick={() => toggleUser(user.id)}
+              title={`${user.name}${workload.activeCount === 0 ? ' - No active tasks' : ` - ${workload.activeCount} ${workload.activeCount === 1 ? 'task' : 'tasks'}${workload.totalEstimate > 0 ? ` · ${workload.totalEstimate}h remaining` : ''}`}${isBusy ? ' ⚠️ Consider choosing someone with less workload' : ''}`}
             >
               <CircularProgress workloadPercentage={workloadPercentage} workloadStatus={workloadStatus}>
                 <Circle />
@@ -80,37 +78,8 @@ const AssigneeSelector = ({ projectUsers, selectedUserIds, onSelect, getUserWork
             </AvatarWrapper>
           );
 
-          // Wrap all users with a tooltip showing their tasks
-          return (
-            <Tooltip
-              key={user.id}
-              width={250}
-              placement="top"
-              renderLink={linkProps => (
-                <div {...linkProps}>
-                  {avatarElement}
-                </div>
-              )}
-              renderContent={() => (
-                <TooltipContent>
-                  <strong>{user.name}</strong>
-                  {workload.activeCount === 0 ? (
-                    <div>No active tasks</div>
-                  ) : (
-                    <div>
-                      {workload.activeCount} {workload.activeCount === 1 ? 'task' : 'tasks'}
-                      {workload.totalEstimate > 0 && ` · ${workload.totalEstimate}h remaining`}
-                    </div>
-                  )}
-                  {isBusy && (
-                    <div style={{ marginTop: '8px', fontSize: '11px', opacity: 0.8 }}>
-                      ⚠️ Consider choosing someone with less workload
-                    </div>
-                  )}
-                </TooltipContent>
-              )}
-            />
-          );
+          // Return the avatar element directly - tooltip on hover is handled by title attribute
+          return avatarElement;
         })}
       </AvatarsContainer>
     </Container>
