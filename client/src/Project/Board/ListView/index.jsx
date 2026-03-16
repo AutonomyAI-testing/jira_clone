@@ -57,15 +57,16 @@ const ListView = ({ project, filters, currentUserId }) => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHeaderCell width="8%">Key</TableHeaderCell>
-            <TableHeaderCell width="25%">Summary</TableHeaderCell>
+            <TableHeaderCell width="7%">Key</TableHeaderCell>
+            <TableHeaderCell width="20%">Summary</TableHeaderCell>
+            <TableHeaderCell width="10%">Product Area</TableHeaderCell>
             <TableHeaderCell width="8%">Type</TableHeaderCell>
             <TableHeaderCell width="8%">Priority</TableHeaderCell>
             <TableHeaderCell width="10%">Status</TableHeaderCell>
             <TableHeaderCell width="12%">Assignees</TableHeaderCell>
-            <TableHeaderCell width="10%">Start Date</TableHeaderCell>
-            <TableHeaderCell width="10%">Due Date</TableHeaderCell>
-            <TableHeaderCell width="9%">Dependencies</TableHeaderCell>
+            <TableHeaderCell width="9%">Start Date</TableHeaderCell>
+            <TableHeaderCell width="9%">Due Date</TableHeaderCell>
+            <TableHeaderCell width="7%">Dependencies</TableHeaderCell>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -77,6 +78,7 @@ const ListView = ({ project, filters, currentUserId }) => {
               <TableCell>
                 <IssueTitle>{issue.title}</IssueTitle>
               </TableCell>
+              <TableCell>{issue.productArea || '-'}</TableCell>
               <TableCell>
                 <IssueTypeIcon type={issue.type} size={16} />
                 <span style={{ marginLeft: 6 }}>{IssueTypeCopy[issue.type]}</span>
