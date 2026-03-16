@@ -1,17 +1,24 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import NormalizeStyles from 'App/NormalizeStyles';
+import BaseStyles from 'App/BaseStyles';
+import 'App/fontStyles.css';
 import ProjectIssueCreate from './index';
 
 export default {
   title: 'Project/IssueCreate',
   component: ProjectIssueCreate,
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
   },
   decorators: [
     (Story) => (
-      <div style={{ width: '900px', padding: '20px', background: '#fff' }}>
-        <Story />
-      </div>
+      <Fragment>
+        <NormalizeStyles />
+        <BaseStyles />
+        <div style={{ width: '100%', maxWidth: '900px', padding: '20px', background: '#fff', minHeight: '100vh' }}>
+          <Story />
+        </div>
+      </Fragment>
     ),
   ],
 };

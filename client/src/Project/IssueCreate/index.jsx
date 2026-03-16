@@ -11,9 +11,10 @@ import {
 import toast from 'shared/utils/toast';
 import useApi from 'shared/hooks/api';
 import useCurrentUser from 'shared/hooks/currentUser';
-import { Form, IssueTypeIcon, Icon, Avatar, IssuePriorityIcon } from 'shared/components';
+import { Form, IssueTypeIcon, Icon, Avatar, IssuePriorityIcon, Breadcrumbs } from 'shared/components';
 
 import {
+  FormCont,
   FormHeading,
   FormElement,
   FormContent,
@@ -75,8 +76,10 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
         }
       }}
     >
-      <FormElement>
-        <FormHeading>Create issue</FormHeading>
+      <FormCont>
+        <FormElement>
+          <Breadcrumbs items={['Projects', project.name, 'Create Issue']} />
+          <FormHeading>Create issue</FormHeading>
         <FormContent>
           <LeftColumn>
             <Form.Field.Input
@@ -152,7 +155,8 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
             Cancel
           </ActionButton>
         </Actions>
-      </FormElement>
+        </FormElement>
+      </FormCont>
     </Form>
   );
 };

@@ -13,6 +13,9 @@ const config = {
     name: "@storybook/react-webpack5",
     options: {},
   },
+  features: {
+    storyStoreV7: true,
+  },
   webpackFinal: async (config) => {
     config.resolve.modules = [
       ...(config.resolve.modules || []),
