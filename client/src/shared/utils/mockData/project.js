@@ -61,6 +61,7 @@ export const projectData = {
           avatarUrl: 'https://i.ibb.co/7JM1P0V/pickle-rick.png',
         },
       ],
+      productArea: 'Frontend',
       startDate: '2020-06-01T00:00:00.000Z',
       dueDate: '2020-06-10T00:00:00.000Z',
       dependencies: [],
@@ -89,6 +90,7 @@ export const projectData = {
           avatarUrl: 'https://i.ibb.co/7JM1P0V/pickle-rick.png',
         },
       ],
+      productArea: 'Authentication',
       startDate: '2020-06-02T00:00:00.000Z',
       dueDate: '2020-06-05T00:00:00.000Z',
       dependencies: [101],
@@ -122,6 +124,7 @@ export const projectData = {
           avatarUrl: 'https://i.ibb.co/6PrN4M5/baby-yoda.jpg',
         },
       ],
+      productArea: 'UI/UX',
       startDate: '2020-06-03T00:00:00.000Z',
       dueDate: '2020-06-20T00:00:00.000Z',
       dependencies: [],
@@ -150,6 +153,7 @@ export const projectData = {
           avatarUrl: 'https://i.ibb.co/6PrN4M5/baby-yoda.jpg',
         },
       ],
+      productArea: 'Backend',
       startDate: '2020-06-04T00:00:00.000Z',
       dueDate: '2020-06-06T00:00:00.000Z',
       dependencies: [],
@@ -158,3 +162,5 @@ export const projectData = {
     },
   ],
 };
+
+export default projectData;

@@ -53,10 +53,18 @@ const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
         />
       )}
       {currentView === 'list' && (
-        <ListView project={project} filters={filters} currentUserId={project.users[0] && project.users[0].id} />
+        <ListView
+          project={project}
+          filters={filters}
+          currentUserId={project.users[0] && project.users[0].id}
+        />
       )}
       {currentView === 'gantt' && (
-        <GanttView project={project} filters={filters} currentUserId={project.users[0] && project.users[0].id} />
+        <GanttView
+          project={project}
+          filters={filters}
+          currentUserId={project.users[0] && project.users[0].id}
+        />
       )}
       <Route
         path={`${match.path}/issues/:issueId`}
