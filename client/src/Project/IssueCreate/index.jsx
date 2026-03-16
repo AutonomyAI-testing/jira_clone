@@ -13,6 +13,8 @@ import useApi from 'shared/hooks/api';
 import useCurrentUser from 'shared/hooks/currentUser';
 import { Form, IssueTypeIcon, Icon, Avatar, IssuePriorityIcon, Breadcrumbs } from 'shared/components';
 
+import AssigneeSelector from './AssigneeSelector';
+
 import {
   FormCont,
   FormHeading,
@@ -76,87 +78,85 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
         }
       }}
     >
-      <FormCont>
-        <FormElement>
-          <Breadcrumbs items={['Projects', project.name, 'Create Issue']} />
-          <FormHeading>Create issue</FormHeading>
-        <FormContent>
-          <LeftColumn>
-            <Form.Field.Input
-              name="title"
-              label="Short Summary"
-              tip="Concisely summarize the issue in one or two sentences."
-            />
-            <Form.Field.TextEditor
-              name="description"
-              label="Description"
-              tip="Describe the issue in as much detail as you'd like."
-            />
-          </LeftColumn>
-          <RightColumn>
-            <SectionTitle style={{ marginTop: 0 }}>Issue Type</SectionTitle>
-            <Form.Field.Select
-              name="type"
-              label=""
-              tip="Start typing to get a list of possible matches."
-              options={typeOptions}
-              renderOption={renderType}
-              renderValue={renderType}
-            />
-            <SectionTitle>Priority</SectionTitle>
-            <Form.Field.Select
-              name="priority"
-              label=""
-              tip="Priority in relation to other issues."
-              options={priorityOptions}
-              renderOption={renderPriority}
-              renderValue={renderPriority}
-            />
-            <SectionTitle>Reporter</SectionTitle>
-            <Form.Field.Select
-              name="reporterId"
-              label=""
-              options={userOptions(project)}
-              renderOption={renderUser(project)}
-              renderValue={renderUser(project)}
-            />
-            <SectionTitle>Assignees</SectionTitle>
-            <Form.Field.Select
-              isMulti
-              name="userIds"
-              label=""
-              tip="People who are responsible for dealing with this issue."
-              options={userOptions(project)}
-              renderOption={renderUser(project)}
-              renderValue={renderUser(project)}
-            />
-            <Divider />
-            <SectionTitle>Start Date</SectionTitle>
-            <Form.Field.DatePicker name="startDate" label="" withTime={false} />
-            <SectionTitle>Due Date</SectionTitle>
-            <Form.Field.DatePicker name="dueDate" label="" withTime={false} />
-            <SectionTitle>Dependencies</SectionTitle>
-            <Form.Field.Select
-              isMulti
-              name="dependencies"
-              label=""
-              tip="Select issues that must be completed before this one."
-              options={issueOptions(project)}
-              renderOption={renderIssue(project)}
-              renderValue={renderIssue(project)}
-            />
-          </RightColumn>
-        </FormContent>
-        <Actions>
-          <ActionButton type="submit" variant="primary" isWorking={isCreating}>
-            Create Issue
-          </ActionButton>
-          <ActionButton type="button" variant="empty" onClick={modalClose}>
-            Cancel
-          </ActionButton>
-        </Actions>
-        </FormElement>
-      </FormCont>
+      {formikProps => (
+        <FormCont>
+          <FormElement>
+            <Breadcrumbs items={['Projects', project.name, 'Create Issue']} />
+            <FormHeading>Create issue</FormHeading>
+          <FormContent>
+            <LeftColumn>
+              <Form.Field.Input
+                name="title"
+                label="Short Summary"
+                tip="Concisely summarize the issue in one or two sentences."
+              />
+              <Form.Field.TextEditor
+                name="description"
+                label="Description"
+                tip="Describe the issue in as much detail as you'd like."
+              />
+              <AssigneeSelector
+                projectUsers={project.users}
+                selectedUserIds={formikProps.values.userIds}
+                onSelect={userIds => formikProps.setFieldValue('userIds', userIds)}
+                getUserWorkload={userId => getUserWorkload(userId, project.issues)}
+              />
+            </LeftColumn>
+            <RightColumn>
+              <SectionTitle style={{ marginTop: 0 }}>Issue Type</SectionTitle>
+              <Form.Field.Select
+                name="type"
+                label=""
+                tip="Start typing to get a list of possible matches."
+                options={typeOptions}
+                renderOption={renderType}
+                renderValue={renderType}
+              />
+              <SectionTitle>Priority</SectionTitle>
+              <Form.Field.Select
+                name="priority"
+                label=""
+                tip="Priority in relation to other issues."
+                options={priorityOptions}
+                renderOption={renderPriority}
+                renderValue={renderPriority}
+              />
+              <SectionTitle>Reporter</SectionTitle>
+              <Form.Field.Select
+                name="reporterId"
+                label=""
+                options={userOptions(project)}
+                renderOption={renderUser(project)}
+                renderValue={renderUser(project)}
+              />
+              <Divider />
+              <SectionTitle>Start Date</SectionTitle>
+              <Form.Field.DatePicker name="startDate" label="" withTime={false} />
+              <SectionTitle>Due Date</SectionTitle>
+              <Form.Field.DatePicker name="dueDate" label="" withTime={false} />
+              <SectionTitle>Dependencies</SectionTitle>
+              <Form.Field.Select
+                isMulti
+                name="dependencies"
+                label=""
+                tip="Select issues that must be completed before this one."
+                options={issueOptions(project)}
+                renderOption={renderIssue(project)}
+                renderValue={renderIssue(project)}
+              />
+            </RightColumn>
+          </FormContent>
+          <Actions>
+            <ActionButton type="submit" variant="primary" isWorking={isCreating}>
+              Create Issue
+            </ActionButton>
+            <ActionButton type="button" variant="empty" onClick={modalClose}>
+              Cancel
+            </ActionButton>
+          </Actions>
+          </FormElement>
+        </FormCont>
+      )}
     </Form>
   );
 };
