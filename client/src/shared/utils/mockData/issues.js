@@ -14,7 +14,6 @@ export const issuesData = {
       timeRemaining: 8,
       reporterId: 1,
       projectId: 1,
-      productArea: 'Frontend',
       userIds: [1, 2],
       users: [
         {
@@ -49,7 +48,6 @@ export const issuesData = {
       timeRemaining: 2,
       reporterId: 2,
       projectId: 1,
-      productArea: 'Authentication',
       userIds: [2],
       users: [
         {
@@ -79,7 +77,6 @@ export const issuesData = {
       timeRemaining: 8,
       reporterId: 1,
       projectId: 1,
-      productArea: 'Design System',
       userIds: [1, 3],
       users: [
         {
@@ -128,7 +125,6 @@ export const issuesData = {
       timeRemaining: 0,
       reporterId: 3,
       projectId: 1,
-      productArea: 'Backend',
       userIds: [3],
       users: [
         {
@@ -148,7 +144,7 @@ export const issuesData = {
 };
 
 // Individual issue details (for /issues/:id endpoint)
-export const getIssueById = id => {
+export const getIssueById = (id) => {
   const issue = issuesData.issues.find(item => item.id === parseInt(id));
   return issue || issuesData.issues[0]; // Fallback to first issue if not found
 };

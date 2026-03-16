@@ -20,7 +20,7 @@ export const TaskRow = styled.div`
   display: flex;
   border-bottom: 1px solid ${color.borderLightest};
   min-height: 56px;
-
+  
   &:hover {
     background: ${color.backgroundLightest};
   }
@@ -42,7 +42,7 @@ export const TaskInfo = styled.div`
   align-items: center;
   gap: 8px;
   cursor: pointer;
-
+  
   &:hover {
     color: ${color.primary};
   }
@@ -128,7 +128,7 @@ export const TaskBar = styled.div`
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.1s;
-
+  
   &:hover {
     opacity: 0.85;
     transform: translateY(-1px);
