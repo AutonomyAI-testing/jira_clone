@@ -59,7 +59,6 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
       validations={{
         type: Form.is.required(),
         title: [Form.is.required(), Form.is.maxLength(200)],
-        reporterId: Form.is.required(),
         priority: Form.is.required(),
       }}
       onSubmit={async (values, form) => {
@@ -120,14 +119,6 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
                 options={priorityOptions}
                 renderOption={renderPriority}
                 renderValue={renderPriority}
-              />
-              <SectionTitle>Reporter</SectionTitle>
-              <Form.Field.Select
-                name="reporterId"
-                label=""
-                options={userOptions(project)}
-                renderOption={renderUser(project)}
-                renderValue={renderUser(project)}
               />
               <Divider />
               <SectionTitle>Start Date</SectionTitle>

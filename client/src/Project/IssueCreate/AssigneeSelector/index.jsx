@@ -80,31 +80,37 @@ const AssigneeSelector = ({ projectUsers, selectedUserIds, onSelect, getUserWork
             </AvatarWrapper>
           );
 
-          // Wrap busy users with a tooltip warning
-          if (isBusy) {
-            return (
-              <Tooltip
-                key={user.id}
-                width={200}
-                placement="top"
-                renderLink={linkProps => (
-                  <div {...linkProps}>
-                    {avatarElement}
-                  </div>
-                )}
-                renderContent={() => (
-                  <TooltipContent>
-                    <strong>{user.name}</strong> is currently busy with {workload.activeCount}{' '}
-                    {workload.activeCount === 1 ? 'task' : 'tasks'}
-                    {workload.totalEstimate > 0 && ` (${workload.totalEstimate}h remaining)`}.
-                    Consider choosing someone with less workload.
-                  </TooltipContent>
-                )}
-              />
-            );
-          }
-
-          return avatarElement;
+          // Wrap all users with a tooltip showing their tasks
+          return (
+            <Tooltip
+              key={user.id}
+              width={250}
+              placement="top"
+              renderLink={linkProps => (
+                <div {...linkProps}>
+                  {avatarElement}
+                </div>
+              )}
+              renderContent={() => (
+                <TooltipContent>
+                  <strong>{user.name}</strong>
+                  {workload.activeCount === 0 ? (
+                    <div>No active tasks</div>
+                  ) : (
+                    <div>
+                      {workload.activeCount} {workload.activeCount === 1 ? 'task' : 'tasks'}
+                      {workload.totalEstimate > 0 && ` · ${workload.totalEstimate}h remaining`}
+                    </div>
+                  )}
+                  {isBusy && (
+                    <div style={{ marginTop: '8px', fontSize: '11px', opacity: 0.8 }}>
+                      ⚠️ Consider choosing someone with less workload
+                    </div>
+                  )}
+                </TooltipContent>
+              )}
+            />
+          );
         })}
       </AvatarsContainer>
     </Container>
