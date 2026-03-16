@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { Fragment, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import NormalizeStyles from 'App/NormalizeStyles';
+import BaseStyles from 'App/BaseStyles';
+import 'App/fontStyles.css';
 
 import {
   IssueType,
@@ -8,9 +11,6 @@ import {
   IssueTypeCopy,
   IssuePriorityCopy,
 } from 'shared/constants/issues';
-import toast from 'shared/utils/toast';
-import useApi from 'shared/hooks/api';
-import useCurrentUser from 'shared/hooks/currentUser';
 import { Form, IssueTypeIcon, Icon, Avatar, IssuePriorityIcon, Breadcrumbs } from 'shared/components';
 
 import {
@@ -28,17 +28,27 @@ import {
   ActionButton,
 } from './Styles';
 
-const propTypes = {
-  project: PropTypes.object.isRequired,
-  fetchProject: PropTypes.func.isRequired,
-  onCreate: PropTypes.func.isRequired,
-  modalClose: PropTypes.func.isRequired,
-};
+// Inline component that doesn't use the hooks (avoids API calls)
+const ProjectIssueCreateStory = ({ project, fetchProject, onCreate, modalClose }) => {
+  const [isCreating, setIsCreating] = useState(false);
 
-const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => {
-  const [{ isCreating }, createIssue] = useApi.post('/issues');
+  // Use first user as current user
+  const currentUserId = project.users[0]?.id;
 
-  const { currentUserId } = useCurrentUser();
+  const handleSubmit = useCallback(async (values, form) => {
+    setIsCreating(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 500));
+      console.log('Created issue:', values);
+      await fetchProject();
+      onCreate();
+    } catch (error) {
+      Form.handleAPIError(error, form);
+    } finally {
+      setIsCreating(false);
+    }
+  }, [fetchProject, onCreate]);
 
   return (
     <Form
@@ -60,21 +70,7 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
         reporterId: Form.is.required(),
         priority: Form.is.required(),
       }}
-      onSubmit={async (values, form) => {
-        try {
-          await createIssue({
-            ...values,
-            status: IssueStatus.BACKLOG,
-            projectId: project.id,
-            users: values.userIds.map(id => ({ id })),
-          });
-          await fetchProject();
-          toast.success('Issue has been successfully created.');
-          onCreate();
-        } catch (error) {
-          Form.handleAPIError(error, form);
-        }
-      }}
+      onSubmit={handleSubmit}
     >
       <FormCont>
         <FormElement>
@@ -222,6 +218,50 @@ const renderIssue = project => ({ value: issueId, removeOptionValue }) => {
   );
 };
 
-ProjectIssueCreate.propTypes = propTypes;
+ProjectIssueCreateStory.propTypes = {
+  project: PropTypes.object.isRequired,
+  fetchProject: PropTypes.func.isRequired,
+  onCreate: PropTypes.func.isRequired,
+  modalClose: PropTypes.func.isRequired,
+};
 
-export default ProjectIssueCreate;
+export default {
+  title: 'Project/IssueCreate',
+  component: ProjectIssueCreateStory,
+  decorators: [
+    (Story) => (
+      <Fragment>
+        <NormalizeStyles />
+        <BaseStyles />
+        <div style={{ width: '100%', maxWidth: '900px', padding: '20px', background: '#fff', minHeight: '100vh' }}>
+          <Story />
+        </div>
+      </Fragment>
+    ),
+  ],
+};
+
+// Mock project data with users and issues
+const mockProject = {
+  id: 1,
+  name: 'Project Alpha',
+  users: [
+    { id: 1, name: 'John Doe', avatarUrl: '' },
+    { id: 2, name: 'Jane Smith', avatarUrl: '' },
+    { id: 3, name: 'Bob Wilson', avatarUrl: '' },
+  ],
+  issues: [
+    { id: 101, title: 'Setup authentication flow', type: 'task' },
+    { id: 102, title: 'Design user dashboard', type: 'story' },
+    { id: 103, title: 'Fix login bug', type: 'bug' },
+  ],
+};
+
+export const Default = {
+  args: {
+    project: mockProject,
+    fetchProject: () => Promise.resolve(),
+    onCreate: () => {},
+    modalClose: () => {},
+  },
+};

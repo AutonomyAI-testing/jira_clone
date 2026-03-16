@@ -52,7 +52,7 @@ export const Divider = styled.div`
 `;
 
 export const SectionTitle = styled.div`
-  margin-bottom: 12px;
+  margin: 24px 0 5px;
   text-transform: uppercase;
   color: ${color.textMedium};
   ${font.size(12.5)}
