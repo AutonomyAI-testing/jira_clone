@@ -171,6 +171,28 @@ const priorityOptions = Object.values(IssuePriority).map(priority => ({
   label: IssuePriorityCopy[priority],
 }));
 
+const getUserWorkload = (userId, projectIssues) => {
+  const userIssues = projectIssues.filter(
+    issue => issue.userIds.includes(userId) && issue.status !== IssueStatus.DONE,
+  );
+  
+  const activeIssues = userIssues.filter(
+    issue => issue.status === IssueStatus.SELECTED || issue.status === IssueStatus.INPROGRESS,
+  );
+  
+  const totalEstimate = userIssues.reduce((sum, issue) => {
+    const estimate = issue.estimate || 0;
+    const timeSpent = issue.timeSpent || 0;
+    const remaining = estimate - timeSpent;
+    return sum + (remaining > 0 ? remaining : 0);
+  }, 0);
+  
+  return {
+    activeCount: activeIssues.length,
+    totalEstimate,
+  };
+};
+
 const userOptions = project => project.users.map(user => ({ value: user.id, label: user.name }));
 
 const issueOptions = project =>
@@ -192,6 +214,7 @@ const renderPriority = ({ value: priority }) => (
 
 const renderUser = project => ({ value: userId, removeOptionValue }) => {
   const user = project.users.find(({ id }) => id === userId);
+  const workload = getUserWorkload(userId, project.issues);
 
   return (
     <SelectItem
@@ -200,7 +223,17 @@ const renderUser = project => ({ value: userId, removeOptionValue }) => {
       onClick={() => removeOptionValue && removeOptionValue()}
     >
       <Avatar size={20} avatarUrl={user.avatarUrl} name={user.name} />
-      <SelectItemLabel>{user.name}</SelectItemLabel>
+      <SelectItemLabel>
+        {user.name}
+        {!removeOptionValue && workload.activeCount > 0 && (
+          <UserWorkload>
+            {workload.activeCount} {workload.activeCount === 1 ? 'task' : 'tasks'}
+            {workload.totalEstimate > 0 && (
+              <span> · {workload.totalEstimate}h remaining</span>
+            )}
+          </UserWorkload>
+        )}
+      </SelectItemLabel>
       {removeOptionValue && <Icon type="close" top={2} />}
     </SelectItem>
   );

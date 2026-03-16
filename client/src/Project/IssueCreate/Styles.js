@@ -44,6 +44,15 @@ export const SelectItem = styled.div`
 
 export const SelectItemLabel = styled.div`
   padding: 0 3px 0 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+export const UserWorkload = styled.div`
+  ${font.size(11)}
+  color: ${color.textMedium};
+  ${font.regular}
 `;
 
 export const Divider = styled.div`
