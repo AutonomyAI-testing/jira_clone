@@ -59,7 +59,8 @@ const SignUp = () => {
             <Form.Field.ImageUpload
               name="profileImage"
               label="Profile Picture"
-              tip="Optional - Upload a profile picture"
+              tip="Optional - Upload a profile picture (PNG only)"
+              accept="image/png"
             />
             <Form.Field.Input
               name="name"

@@ -18,6 +18,7 @@ const propTypes = {
   invalid: PropTypes.bool,
   onChange: PropTypes.func,
   name: PropTypes.string,
+  accept: PropTypes.string,
 };
 
 const defaultProps = {
@@ -26,9 +27,10 @@ const defaultProps = {
   invalid: false,
   onChange: () => {},
   name: undefined,
+  accept: 'image/*',
 };
 
-const ImageUpload = ({ className, value, invalid, onChange, name, ...otherProps }) => {
+const ImageUpload = ({ className, value, invalid, onChange, name, accept, ...otherProps }) => {
   const [preview, setPreview] = useState(value || '');
   const fileInputRef = useRef(null);
 
@@ -86,7 +88,7 @@ const ImageUpload = ({ className, value, invalid, onChange, name, ...otherProps 
       <HiddenFileInput
         ref={fileInputRef}
         type="file"
-        accept="image/*"
+        accept={accept}
         onChange={handleFileChange}
         name={name}
         {...otherProps}
