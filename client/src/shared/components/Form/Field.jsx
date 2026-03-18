@@ -7,6 +7,7 @@ import Select from 'shared/components/Select';
 import Textarea from 'shared/components/Textarea';
 import TextEditor from 'shared/components/TextEditor';
 import DatePicker from 'shared/components/DatePicker';
+import ImageUpload from 'shared/components/ImageUpload';
 
 import { StyledField, FieldLabel, FieldTip, FieldError } from './Styles';
 
@@ -56,4 +57,5 @@ export default {
   Textarea: generateField(Textarea),
   TextEditor: generateField(TextEditor),
   DatePicker: generateField(DatePicker),
+  ImageUpload: generateField(ImageUpload),
 };

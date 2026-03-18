@@ -46,7 +46,7 @@ const SignUp = () => {
         <FormHeading>Create your account</FormHeading>
 
         <Form
-          initialValues={{ name: '', username: '', email: '', password: '' }}
+          initialValues={{ name: '', username: '', email: '', password: '', profileImage: '' }}
           validations={{
             name: Form.is.required(),
             username: Form.is.required(),
@@ -56,6 +56,11 @@ const SignUp = () => {
           onSubmit={handleSubmit}
         >
           <FormElement>
+            <Form.Field.ImageUpload
+              name="profileImage"
+              label="Profile Picture"
+              tip="Optional - Upload a profile picture"
+            />
             <Form.Field.Input
               name="name"
               label="Full Name"
