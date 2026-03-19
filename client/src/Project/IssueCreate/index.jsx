@@ -68,7 +68,7 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
             users: values.userIds.map(id => ({ id })),
           });
           await fetchProject();
-          toast.success('Issue has been successfully created.');
+          toast.success('Task has been successfully created.');
           onCreate();
         } catch (error) {
           Form.handleAPIError(error, form);
@@ -76,7 +76,7 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
       }}
     >
       <FormElement>
-        <FormHeading>Create issue</FormHeading>
+        <FormHeading>Create task</FormHeading>
         <FormContent>
           <LeftColumn>
             <Form.Field.Input
@@ -146,7 +146,7 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
         </FormContent>
         <Actions>
           <ActionButton type="submit" variant="primary" isWorking={isCreating}>
-            Create Issue
+            Create Task
           </ActionButton>
           <ActionButton type="button" variant="empty" onClick={modalClose}>
             Cancel
