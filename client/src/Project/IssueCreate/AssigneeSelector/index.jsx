@@ -127,14 +127,6 @@ const AssigneeSelector = ({ users, selectedUserIds, onUserSelect, projectIssues 
                   </AvatarWrapper>
                   <UserName>{user.name}</UserName>
                   <CapacityLabel>{capacity} {capacity === 1 ? 'task' : 'tasks'}</CapacityLabel>
-                  {timeData.totalEstimate > 0 && (
-                    <TimeEstimate>
-                      <TimeBar>
-                        <TimeBarProgress progress={progressPercentage} />
-                      </TimeBar>
-                      <TimeInfo>{timeData.totalEstimate}h</TimeInfo>
-                    </TimeEstimate>
-                  )}
                 </UserItem>
               )}
               renderContent={() => (
@@ -143,6 +135,15 @@ const AssigneeSelector = ({ users, selectedUserIds, onUserSelect, projectIssues 
                     <NoTasksMessage>No tasks assigned</NoTasksMessage>
                   ) : (
                     <div>
+                      <TooltipTitle>{user.name}</TooltipTitle>
+                      {timeData.totalEstimate > 0 && (
+                        <TimeEstimate>
+                          <TimeBar>
+                            <TimeBarProgress progress={progressPercentage} />
+                          </TimeBar>
+                          <TimeInfo>{timeData.totalEstimate}h</TimeInfo>
+                        </TimeEstimate>
+                      )}
                       <TooltipTitle>Current tasks:</TooltipTitle>
                       <TaskList>
                         {assignedIssues.map((issue, taskIndex) => (

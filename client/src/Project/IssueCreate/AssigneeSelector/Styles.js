@@ -159,8 +159,9 @@ const slideUp = keyframes`
 export const TimeEstimate = styled.div`
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 6px;
+  gap: 8px;
+  margin-top: 8px;
+  margin-bottom: 16px;
   width: 100%;
   animation: ${slideUp} 0.3s ease-out;
 `;
