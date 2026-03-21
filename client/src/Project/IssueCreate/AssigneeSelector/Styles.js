@@ -97,3 +97,36 @@ export const CapacityLabel = styled.div`
   color: ${color.textLight};
   text-align: center;
 `;
+
+export const TooltipContent = styled.div`
+  padding: 16px;
+  ${font.size(13)}
+  color: ${color.textDark};
+`;
+
+export const TooltipTitle = styled.div`
+  ${font.medium}
+  color: ${color.textDarkest};
+  margin-bottom: 8px;
+`;
+
+export const TaskList = styled.ul`
+  margin: 0;
+  padding-left: 20px;
+  list-style: disc;
+`;
+
+export const TaskItem = styled.li`
+  color: ${color.textMedium};
+  margin-bottom: 4px;
+  line-height: 1.4;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+export const NoTasksMessage = styled.div`
+  color: ${color.textLight};
+  font-style: italic;
+`;

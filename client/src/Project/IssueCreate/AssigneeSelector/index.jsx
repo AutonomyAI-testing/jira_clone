@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Avatar } from 'shared/components';
+import { Avatar, Tooltip } from 'shared/components';
 
 import {
   Container,
@@ -11,6 +11,11 @@ import {
   UserName,
   CapacityLabel,
   SectionHeading,
+  TooltipContent,
+  TooltipTitle,
+  TaskList,
+  TaskItem,
+  NoTasksMessage,
 } from './Styles';
 
 const propTypes = {
@@ -37,6 +42,13 @@ const AssigneeSelector = ({ users, selectedUserIds, onUserSelect, projectIssues 
     }
     const assignedIssues = projectIssues.filter(issue => issue.userIds && issue.userIds.includes(userId));
     return assignedIssues.length;
+  };
+
+  const getUserAssignedIssues = userId => {
+    if (!projectIssues || projectIssues.length === 0) {
+      return [];
+    }
+    return projectIssues.filter(issue => issue.userIds && issue.userIds.includes(userId));
   };
 
   const sortedUsers = [...users].sort((a, b) => {
@@ -71,16 +83,48 @@ const AssigneeSelector = ({ users, selectedUserIds, onUserSelect, projectIssues 
           const capacity = getUserCapacity(user.id);
           const capacityPercentage = getCapacityPercentage(user.id);
 
+          const assignedIssues = getUserAssignedIssues(user.id);
+
           return (
-            <UserItem key={user.id} onClick={() => handleUserClick(user.id)} isSelected={isSelected}>
-              <AvatarWrapper>
-                <CapacityRing capacityPercentage={capacityPercentage} isSelected={isSelected}>
-                  <Avatar avatarUrl={user.avatarUrl} name={user.name} size={56} />
-                </CapacityRing>
-              </AvatarWrapper>
-              <UserName>{user.name}</UserName>
-              <CapacityLabel>{capacity} {capacity === 1 ? 'task' : 'tasks'}</CapacityLabel>
-            </UserItem>
+            <Tooltip
+              key={user.id}
+              placement="top"
+              width={300}
+              renderLink={({ ref, onClick }) => (
+                <UserItem 
+                  ref={ref} 
+                  onClick={(e) => {
+                    onClick(e);
+                    handleUserClick(user.id);
+                  }} 
+                  isSelected={isSelected}
+                >
+                  <AvatarWrapper>
+                    <CapacityRing capacityPercentage={capacityPercentage} isSelected={isSelected}>
+                      <Avatar avatarUrl={user.avatarUrl} name={user.name} size={56} />
+                    </CapacityRing>
+                  </AvatarWrapper>
+                  <UserName>{user.name}</UserName>
+                  <CapacityLabel>{capacity} {capacity === 1 ? 'task' : 'tasks'}</CapacityLabel>
+                </UserItem>
+              )}
+              renderContent={() => (
+                <TooltipContent>
+                  {assignedIssues.length === 0 ? (
+                    <NoTasksMessage>No tasks assigned</NoTasksMessage>
+                  ) : (
+                    <div>
+                      <TooltipTitle>Current tasks:</TooltipTitle>
+                      <TaskList>
+                        {assignedIssues.map(issue => (
+                          <TaskItem key={issue.id}>{issue.title}</TaskItem>
+                        ))}
+                      </TaskList>
+                    </div>
+                  )}
+                </TooltipContent>
+              )}
+            />
           );
         })}
       </Container>
