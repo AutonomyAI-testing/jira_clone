@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Field as FormikField } from 'formik';
 
 import {
   IssueType,
@@ -26,6 +27,7 @@ import {
   Actions,
   ActionButton,
 } from './Styles';
+import AssigneeSelector from './AssigneeSelector';
 
 const propTypes = {
   project: PropTypes.object.isRequired,
@@ -89,6 +91,16 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
               label="Description"
               tip="Describe the issue in as much detail as you'd like."
             />
+            <FormikField name="userIds">
+              {({ field, form }) => (
+                <AssigneeSelector
+                  users={project.users}
+                  selectedUserIds={field.value}
+                  onUserSelect={value => form.setFieldValue('userIds', value)}
+                  projectIssues={project.issues}
+                />
+              )}
+            </FormikField>
           </LeftColumn>
           <RightColumn>
             <SectionTitle>Issue Type</SectionTitle>
@@ -113,16 +125,6 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
             <Form.Field.Select
               name="reporterId"
               label=""
-              options={userOptions(project)}
-              renderOption={renderUser(project)}
-              renderValue={renderUser(project)}
-            />
-            <SectionTitle>Assignees</SectionTitle>
-            <Form.Field.Select
-              isMulti
-              name="userIds"
-              label=""
-              tip="People who are responsible for dealing with this issue."
               options={userOptions(project)}
               renderOption={renderUser(project)}
               renderValue={renderUser(project)}
