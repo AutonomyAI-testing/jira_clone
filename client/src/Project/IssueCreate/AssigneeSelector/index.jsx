@@ -16,6 +16,10 @@ import {
   TaskList,
   TaskItem,
   NoTasksMessage,
+  TimeEstimate,
+  TimeBar,
+  TimeBarProgress,
+  TimeInfo,
 } from './Styles';
 
 const propTypes = {
@@ -42,6 +46,17 @@ const AssigneeSelector = ({ users, selectedUserIds, onUserSelect, projectIssues 
     }
     const assignedIssues = projectIssues.filter(issue => issue.userIds && issue.userIds.includes(userId));
     return assignedIssues.length;
+  };
+
+  const getUserTimeEstimate = userId => {
+    if (!projectIssues || projectIssues.length === 0) {
+      return { totalEstimate: 0, timeSpent: 0, timeRemaining: 0 };
+    }
+    const assignedIssues = projectIssues.filter(issue => issue.userIds && issue.userIds.includes(userId));
+    const totalEstimate = assignedIssues.reduce((sum, issue) => sum + (issue.estimate || 0), 0);
+    const timeSpent = assignedIssues.reduce((sum, issue) => sum + (issue.timeSpent || 0), 0);
+    const timeRemaining = assignedIssues.reduce((sum, issue) => sum + (issue.timeRemaining || issue.estimate || 0), 0);
+    return { totalEstimate, timeSpent, timeRemaining };
   };
 
   const getUserAssignedIssues = userId => {
@@ -78,12 +93,17 @@ const AssigneeSelector = ({ users, selectedUserIds, onUserSelect, projectIssues 
     <div>
       <SectionHeading>Assignees</SectionHeading>
       <Container>
-        {sortedUsers.map(user => {
+        {sortedUsers.map((user, index) => {
           const isSelected = selectedUserIds.includes(user.id);
           const capacity = getUserCapacity(user.id);
           const capacityPercentage = getCapacityPercentage(user.id);
 
           const assignedIssues = getUserAssignedIssues(user.id);
+
+          const timeData = getUserTimeEstimate(user.id);
+          const progressPercentage = timeData.totalEstimate > 0 
+            ? Math.min((timeData.timeSpent / timeData.totalEstimate) * 100, 100) 
+            : 0;
 
           return (
             <Tooltip
@@ -98,6 +118,7 @@ const AssigneeSelector = ({ users, selectedUserIds, onUserSelect, projectIssues 
                     handleUserClick(user.id);
                   }} 
                   isSelected={isSelected}
+                  index={index}
                 >
                   <AvatarWrapper>
                     <CapacityRing capacityPercentage={capacityPercentage} isSelected={isSelected}>
@@ -106,6 +127,14 @@ const AssigneeSelector = ({ users, selectedUserIds, onUserSelect, projectIssues 
                   </AvatarWrapper>
                   <UserName>{user.name}</UserName>
                   <CapacityLabel>{capacity} {capacity === 1 ? 'task' : 'tasks'}</CapacityLabel>
+                  {timeData.totalEstimate > 0 && (
+                    <TimeEstimate>
+                      <TimeBar>
+                        <TimeBarProgress progress={progressPercentage} />
+                      </TimeBar>
+                      <TimeInfo>{timeData.totalEstimate}h</TimeInfo>
+                    </TimeEstimate>
+                  )}
                 </UserItem>
               )}
               renderContent={() => (
@@ -116,8 +145,8 @@ const AssigneeSelector = ({ users, selectedUserIds, onUserSelect, projectIssues 
                     <div>
                       <TooltipTitle>Current tasks:</TooltipTitle>
                       <TaskList>
-                        {assignedIssues.map(issue => (
-                          <TaskItem key={issue.id}>{issue.title}</TaskItem>
+                        {assignedIssues.map((issue, taskIndex) => (
+                          <TaskItem key={issue.id} index={taskIndex}>{issue.title}</TaskItem>
                         ))}
                       </TaskList>
                     </div>

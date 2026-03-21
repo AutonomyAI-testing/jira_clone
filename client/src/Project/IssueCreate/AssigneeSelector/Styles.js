@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 import { color, font, mixin } from 'shared/utils/styles';
 
@@ -26,6 +26,8 @@ export const UserItem = styled.div`
   cursor: pointer;
   ${mixin.clickable}
   transition: transform 0.2s ease;
+  animation: ${slideUp} 0.4s ease-out backwards;
+  animation-delay: ${props => props.index ? props.index * 0.05 : 0}s;
 
   &:hover {
     transform: translateY(-4px);
@@ -102,6 +104,7 @@ export const TooltipContent = styled.div`
   padding: 16px;
   ${font.size(13)}
   color: ${color.textDark};
+  animation: ${fadeIn} 0.2s ease-out;
 `;
 
 export const TooltipTitle = styled.div`
@@ -120,6 +123,8 @@ export const TaskItem = styled.li`
   color: ${color.textMedium};
   margin-bottom: 4px;
   line-height: 1.4;
+  animation: ${slideUp} 0.3s ease-out backwards;
+  animation-delay: ${props => props.index ? props.index * 0.05 : 0}s;
   
   &:last-child {
     margin-bottom: 0;
@@ -129,4 +134,58 @@ export const TaskItem = styled.li`
 export const NoTasksMessage = styled.div`
   color: ${color.textLight};
   font-style: italic;
+`;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const slideUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+export const TimeEstimate = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  width: 100%;
+  animation: ${slideUp} 0.3s ease-out;
+`;
+
+export const TimeBar = styled.div`
+  flex: 1;
+  height: 4px;
+  background: ${color.backgroundMedium};
+  border-radius: 2px;
+  overflow: hidden;
+`;
+
+export const TimeBarProgress = styled.div`
+  height: 100%;
+  background: ${color.primary};
+  width: ${props => props.progress}%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  animation: ${fadeIn} 0.4s ease-out;
+`;
+
+export const TimeInfo = styled.div`
+  ${font.size(10)}
+  ${font.medium}
+  color: ${color.textMedium};
+  white-space: nowrap;
+  animation: ${fadeIn} 0.3s ease-out;
 `;
