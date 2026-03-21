@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Avatar, Tooltip } from 'shared/components';
@@ -11,7 +11,7 @@ import {
   UserName,
   CapacityLabel,
   SectionHeading,
-  TooltipContent,
+  TooltipContentInner,
   TooltipTitle,
   TaskList,
   TaskItem,
@@ -40,6 +40,7 @@ const defaultProps = {
 };
 
 const AssigneeSelector = ({ users, selectedUserIds, onUserSelect, projectIssues }) => {
+
   const getUserCapacity = userId => {
     if (!projectIssues || projectIssues.length === 0) {
       return 0;
@@ -108,15 +109,14 @@ const AssigneeSelector = ({ users, selectedUserIds, onUserSelect, projectIssues 
           return (
             <Tooltip
               key={user.id}
-              placement="top"
               width={300}
-              renderLink={({ ref, onClick }) => (
+              placement="top"
+              renderLink={({ ref, onMouseEnter, onMouseLeave }) => (
                 <UserItem 
-                  ref={ref} 
-                  onClick={(e) => {
-                    onClick(e);
-                    handleUserClick(user.id);
-                  }} 
+                  ref={ref}
+                  onClick={() => handleUserClick(user.id)} 
+                  onMouseEnter={onMouseEnter}
+                  onMouseLeave={onMouseLeave}
                   isSelected={isSelected}
                   index={index}
                 >
@@ -138,7 +138,7 @@ const AssigneeSelector = ({ users, selectedUserIds, onUserSelect, projectIssues 
                 </UserItem>
               )}
               renderContent={() => (
-                <TooltipContent>
+                <TooltipContentInner>
                   {assignedIssues.length === 0 ? (
                     <NoTasksMessage>No tasks assigned</NoTasksMessage>
                   ) : (
@@ -151,7 +151,7 @@ const AssigneeSelector = ({ users, selectedUserIds, onUserSelect, projectIssues 
                       </TaskList>
                     </div>
                   )}
-                </TooltipContent>
+                </TooltipContentInner>
               )}
             />
           );

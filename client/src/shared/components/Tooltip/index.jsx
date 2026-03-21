@@ -59,11 +59,22 @@ const Tooltip = ({ className, placement, offset, width, renderLink, renderConten
 
   return (
     <Fragment>
-      {renderLink({ ref: $linkRef, onClick: isOpen ? closeTooltip : openTooltip })}
+      {renderLink({ 
+        ref: $linkRef, 
+        onClick: isOpen ? closeTooltip : openTooltip,
+        onMouseEnter: openTooltip,
+        onMouseLeave: closeTooltip,
+      })}
 
       {isOpen &&
         ReactDOM.createPortal(
-          <StyledTooltip className={className} ref={$tooltipRef} width={width}>
+          <StyledTooltip 
+            className={className} 
+            ref={$tooltipRef} 
+            width={width}
+            onMouseEnter={openTooltip}
+            onMouseLeave={closeTooltip}
+          >
             {renderContent({ close: closeTooltip })}
           </StyledTooltip>,
           $root,

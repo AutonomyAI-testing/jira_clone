@@ -19,6 +19,7 @@ export const Container = styled.div`
 `;
 
 export const UserItem = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -100,11 +101,10 @@ export const CapacityLabel = styled.div`
   text-align: center;
 `;
 
-export const TooltipContent = styled.div`
+export const TooltipContentInner = styled.div`
   padding: 16px;
   ${font.size(13)}
   color: ${color.textDark};
-  animation: ${fadeIn} 0.2s ease-out;
 `;
 
 export const TooltipTitle = styled.div`
