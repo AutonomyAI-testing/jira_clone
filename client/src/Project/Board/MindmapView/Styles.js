@@ -31,6 +31,20 @@ export const ZoomControls = styled.div`
   pointer-events: all;
 `;
 
+export const ToolboxContainer = styled.div`
+  display: flex;
+  gap: 8px;
+  background: #fff;
+  border-radius: 6px;
+  padding: 8px;
+  ${mixin.boxShadowMedium}
+  pointer-events: all;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+`;
+
 export const ZoomButton = styled.button`
   ${font.size(14)}
   ${font.medium}
@@ -44,6 +58,30 @@ export const ZoomButton = styled.button`
 
   &:hover {
     background: ${color.backgroundMedium};
+  }
+`;
+
+export const ToolButton = styled.button`
+  ${font.size(14)}
+  ${font.medium}
+  padding: 8px 16px;
+  border-radius: 4px;
+  background: ${props => props.isActive ? color.primary : color.backgroundLight};
+  color: ${props => props.isActive ? '#fff' : color.textDark};
+  border: none;
+  ${mixin.clickable}
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &:hover {
+    background: ${props => props.isActive ? mixin.darken(color.primary, 0.08) : color.backgroundMedium};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 `;
 

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-import { Avatar, IssueTypeIcon, IssuePriorityIcon, Select, TextEditor } from 'shared/components';
+import { Avatar, Icon, IssueTypeIcon, IssuePriorityIcon, Select, TextEditor } from 'shared/components';
 import { IssueTypeCopy, IssuePriorityCopy, IssueStatus, IssueStatusCopy, IssueType, IssuePriority } from 'shared/constants/issues';
 import { KeyCodes } from 'shared/constants/keyCodes';
 import api from 'shared/utils/api';
@@ -12,6 +12,8 @@ import {
   ControlsBar,
   ZoomControls,
   ZoomButton,
+  ToolboxContainer,
+  ToolButton,
   LegendContainer,
   LegendItem,
   LegendDot,
@@ -58,8 +60,12 @@ const MindmapView = ({ project, filters, currentUserId }) => {
   const [titleError, setTitleError] = useState(null);
   const [draggedNode, setDraggedNode] = useState(null);
   const [nodePositions, setNodePositions] = useState({});
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [playedTaskIds, setPlayedTaskIds] = useState([]);
+  const [currentPlayIndex, setCurrentPlayIndex] = useState(0);
   const containerRef = useRef();
   const editPanelRef = useRef();
+  const playIntervalRef = useRef(null);
 
   // Filter issues based on current filters
   const filteredIssues = useMemo(() => {
@@ -445,8 +451,138 @@ const MindmapView = ({ project, filters, currentUserId }) => {
     return statusColors[status] || '#DFE1E6';
   };
 
+  // Calculate chronological order of tasks based on dependencies
+  const getChronologicalTaskOrder = () => {
+    const taskMap = new Map();
+    filteredIssues.forEach(issue => {
+      taskMap.set(issue.id, { ...issue, level: 0 });
+    });
+
+    // Build dependency levels (tasks with no dependencies are level 0)
+    let changed = true;
+    while (changed) {
+      changed = false;
+      taskMap.forEach((task, id) => {
+        if (task.dependencies && task.dependencies.length > 0) {
+          const maxDepLevel = Math.max(
+            ...task.dependencies
+              .map(depId => taskMap.get(depId)?.level)
+              .filter(level => level !== undefined),
+            -1
+          );
+          const newLevel = maxDepLevel + 1;
+          if (newLevel > task.level) {
+            task.level = newLevel;
+            changed = true;
+          }
+        }
+      });
+    }
+
+    // Sort by level, then by status priority (backlog > selected > inprogress > done)
+    const statusPriority = { backlog: 0, selected: 1, inprogress: 2, done: 3 };
+    return Array.from(taskMap.values()).sort((a, b) => {
+      if (a.level !== b.level) return a.level - b.level;
+      return (statusPriority[a.status] || 0) - (statusPriority[b.status] || 0);
+    });
+  };
+
+  // Handle magic wand click - align tasks chronologically
+  const handleAlignChronologically = () => {
+    const orderedTasks = getChronologicalTaskOrder();
+    const centerX = 600;
+    const centerY = 400;
+    const verticalSpacing = 100;
+    const horizontalSpacing = 200;
+
+    const newPositions = { ...nodePositions };
+
+    // Keep person nodes in their original positions
+    // Update only task node positions
+    const tasksByLevel = {};
+    orderedTasks.forEach(task => {
+      if (!tasksByLevel[task.level]) tasksByLevel[task.level] = [];
+      tasksByLevel[task.level].push(task);
+    });
+
+    const maxLevel = Math.max(...orderedTasks.map(t => t.level));
+    const startX = centerX - (maxLevel * horizontalSpacing) / 2;
+
+    Object.entries(tasksByLevel).forEach(([level, tasks]) => {
+      const levelNum = parseInt(level, 10);
+      const levelX = startX + levelNum * horizontalSpacing;
+      const startY = centerY - (tasks.length * verticalSpacing) / 2;
+
+      tasks.forEach((task, idx) => {
+        newPositions[`task-${task.id}`] = {
+          x: levelX,
+          y: startY + idx * verticalSpacing,
+        };
+      });
+    });
+
+    setNodePositions(newPositions);
+  };
+
+  // Handle play button click - animate task flow
+  const handlePlayTaskFlow = () => {
+    if (isPlaying) {
+      // Stop playing
+      setIsPlaying(false);
+      setPlayedTaskIds([]);
+      setCurrentPlayIndex(0);
+      if (playIntervalRef.current) {
+        clearInterval(playIntervalRef.current);
+        playIntervalRef.current = null;
+      }
+    } else {
+      // Start playing
+      const orderedTasks = getChronologicalTaskOrder();
+      if (orderedTasks.length === 0) return;
+
+      setIsPlaying(true);
+      setPlayedTaskIds([]);
+      setCurrentPlayIndex(0);
+
+      let index = 0;
+      playIntervalRef.current = setInterval(() => {
+        if (index >= orderedTasks.length) {
+          clearInterval(playIntervalRef.current);
+          playIntervalRef.current = null;
+          setIsPlaying(false);
+          setCurrentPlayIndex(0);
+          // Keep all tasks highlighted
+          return;
+        }
+
+        setPlayedTaskIds(prev => [...prev, orderedTasks[index].id]);
+        setCurrentPlayIndex(index + 1);
+        index++;
+      }, 800); // Show each task for 800ms
+    }
+  };
+
+  // Clean up interval on unmount
+  useEffect(() => {
+    return () => {
+      if (playIntervalRef.current) {
+        clearInterval(playIntervalRef.current);
+      }
+    };
+  }, []);
+
   return (
     <Container>
+      <ToolboxContainer>
+        <ToolButton onClick={handleAlignChronologically} title="Align tasks in chronological order">
+          <Icon type="settings" size={16} />
+          Magic Wand
+        </ToolButton>
+        <ToolButton onClick={handlePlayTaskFlow} isActive={isPlaying} title={isPlaying ? "Stop playing" : "Play task flow animation"}>
+          <Icon type={isPlaying ? "close" : "arrow-right"} size={16} />
+          {isPlaying ? 'Stop' : 'Play Flow'}
+        </ToolButton>
+      </ToolboxContainer>
       <ControlsBar>
         <ZoomControls>
           <ZoomButton onClick={handleZoomOut}>-</ZoomButton>
@@ -467,7 +603,7 @@ const MindmapView = ({ project, filters, currentUserId }) => {
             <LegendLabel>Blocker</LegendLabel>
           </LegendItem>
           <LegendItem>
-            <LegendDot color="#DFE1E6" />
+            <LegendDot color="#7A869A" />
             <LegendLabel>Assignment</LegendLabel>
           </LegendItem>
         </LegendContainer>
@@ -510,9 +646,10 @@ const MindmapView = ({ project, filters, currentUserId }) => {
                 strokeDasharray = 'none';
                 label = 'blocks';
               } else if (edge.type === 'assignment') {
-                color = '#DFE1E6';
-                strokeWidth = 1;
-                strokeDasharray = '4,4';
+                // Stronger contrast for assignment lines
+                color = '#7A869A';
+                strokeWidth = 2;
+                strokeDasharray = '6,3';
               }
 
               return (
@@ -607,14 +744,18 @@ const MindmapView = ({ project, filters, currentUserId }) => {
 
               if (node.type === 'task') {
                 const task = node.data;
+                const isPlayed = playedTaskIds.includes(task.id);
+                const isCurrent = isPlaying && playedTaskIds.length > 0 && playedTaskIds[playedTaskIds.length - 1] === task.id;
                 const color = getStatusColor(task.status);
+                const highlightColor = isCurrent ? '#0052CC' : color;
+                const opacity = isPlaying && !isPlayed ? 0.3 : 1;
 
                 return (
                   <g
                     key={node.id}
                     onMouseDown={e => handleNodeMouseDown(e, node.id)}
                     onDoubleClick={e => handleTaskDoubleClick(e, task)}
-                    style={{ cursor: 'move' }}
+                    style={{ cursor: 'move', opacity }}
                   >
                     <TaskNode
                       x={pos.x - 50}
@@ -622,9 +763,9 @@ const MindmapView = ({ project, filters, currentUserId }) => {
                       width={100}
                       height={36}
                       rx={4}
-                      fill={color}
-                      stroke="#fff"
-                      strokeWidth={1.5}
+                      fill={highlightColor}
+                      stroke={isCurrent ? '#0052CC' : '#fff'}
+                      strokeWidth={isCurrent ? 3 : 1.5}
                     />
                     <foreignObject
                       x={pos.x - 46}
