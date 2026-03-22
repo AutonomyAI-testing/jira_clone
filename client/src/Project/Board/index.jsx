@@ -10,6 +10,7 @@ import Filters from './Filters';
 import Lists from './Lists';
 import ListView from './ListView';
 import GanttView from './GanttView';
+import TeamView from './TeamView';
 import ViewSwitcher from './ViewSwitcher';
 import IssueDetails from './IssueDetails';
 
@@ -44,6 +45,7 @@ const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
         defaultFilters={defaultFilters}
         filters={filters}
         mergeFilters={mergeFilters}
+        allIssues={project.issues}
       />
       {currentView === 'kanban' && (
         <Lists
@@ -61,6 +63,13 @@ const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
       )}
       {currentView === 'gantt' && (
         <GanttView
+          project={project}
+          filters={filters}
+          currentUserId={project.users[0] && project.users[0].id}
+        />
+      )}
+      {currentView === 'team' && (
+        <TeamView
           project={project}
           filters={filters}
           currentUserId={project.users[0] && project.users[0].id}

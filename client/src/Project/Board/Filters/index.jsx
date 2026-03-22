@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { xor } from 'lodash';
 
+import UserWorkloadTooltip from '../UserWorkloadTooltip';
 import {
   Filters,
   SearchInput,
@@ -17,9 +18,14 @@ const propTypes = {
   defaultFilters: PropTypes.object.isRequired,
   filters: PropTypes.object.isRequired,
   mergeFilters: PropTypes.func.isRequired,
+  allIssues: PropTypes.array,
 };
 
-const ProjectBoardFilters = ({ projectUsers, defaultFilters, filters, mergeFilters }) => {
+const defaultProps = {
+  allIssues: [],
+};
+
+const ProjectBoardFilters = ({ projectUsers, defaultFilters, filters, mergeFilters, allIssues }) => {
   const { searchTerm, userIds, myOnly, recent } = filters;
 
   const areFiltersCleared = !searchTerm && userIds.length === 0 && !myOnly && !recent;
@@ -32,15 +38,20 @@ const ProjectBoardFilters = ({ projectUsers, defaultFilters, filters, mergeFilte
         onChange={value => mergeFilters({ searchTerm: value })}
       />
       <Avatars>
-        {projectUsers.map(user => (
-          <AvatarIsActiveBorder key={user.id} isActive={userIds.includes(user.id)}>
-            <StyledAvatar
-              avatarUrl={user.avatarUrl}
-              name={user.name}
-              onClick={() => mergeFilters({ userIds: xor(userIds, [user.id]) })}
-            />
-          </AvatarIsActiveBorder>
-        ))}
+        {projectUsers.map(user => {
+          const userTasks = allIssues.filter(i => i.userIds.includes(user.id));
+          return (
+            <AvatarIsActiveBorder key={user.id} isActive={userIds.includes(user.id)}>
+              <UserWorkloadTooltip user={user} userTasks={userTasks}>
+                <StyledAvatar
+                  avatarUrl={user.avatarUrl}
+                  name={user.name}
+                  onClick={() => mergeFilters({ userIds: xor(userIds, [user.id]) })}
+                />
+              </UserWorkloadTooltip>
+            </AvatarIsActiveBorder>
+          );
+        })}
       </Avatars>
       <StyledButton
         variant="empty"
@@ -64,5 +75,6 @@ const ProjectBoardFilters = ({ projectUsers, defaultFilters, filters, mergeFilte
 };
 
 ProjectBoardFilters.propTypes = propTypes;
+ProjectBoardFilters.defaultProps = defaultProps;
 
 export default ProjectBoardFilters;

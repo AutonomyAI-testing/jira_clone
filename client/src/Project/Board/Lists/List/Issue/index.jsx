@@ -10,15 +10,21 @@ import api from 'shared/utils/api';
 import { is, generateErrors } from 'shared/utils/validation';
 import { getTextContentsFromHtmlString } from 'shared/utils/browser';
 
-import { IssueLink, Issue, Title, Bottom, Assignees, AssigneeAvatar, EditMode, EditTitle, EditDescription, EditRow, EditLabel, Actions, SaveButton, CancelButton, DescriptionPreview } from './Styles';
+import UserWorkloadTooltip from '../../../UserWorkloadTooltip';
+import { Issue, Title, Bottom, Assignees, AssigneeAvatar, EditMode, EditTitle, EditDescription, EditRow, EditLabel, Actions, SaveButton, CancelButton, DescriptionPreview } from './Styles';
 
 const propTypes = {
   projectUsers: PropTypes.array.isRequired,
   issue: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
+  allIssues: PropTypes.array,
 };
 
-const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
+const defaultProps = {
+  allIssues: [],
+};
+
+const ProjectBoardListIssue = ({ projectUsers, issue, index, allIssues }) => {
   const match = useRouteMatch();
   const history = useHistory();
   const [isEditing, setIsEditing] = useState(false);
@@ -222,14 +228,22 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
                     <IssuePriorityIcon priority={issue.priority} top={-1} left={4} />
                   </div>
                   <Assignees>
-                    {assignees.map(user => (
-                      <AssigneeAvatar
-                        key={user.id}
-                        size={24}
-                        avatarUrl={user.avatarUrl}
-                        name={user.name}
-                      />
-                    ))}
+                    {assignees.map(user => {
+                      const userTasks = allIssues.filter(i => i.userIds.includes(user.id));
+                      return (
+                        <UserWorkloadTooltip
+                          key={user.id}
+                          user={user}
+                          userTasks={userTasks}
+                        >
+                          <AssigneeAvatar
+                            size={24}
+                            avatarUrl={user.avatarUrl}
+                            name={user.name}
+                          />
+                        </UserWorkloadTooltip>
+                      );
+                    })}
                   </Assignees>
                 </Bottom>
               </>
@@ -242,5 +256,6 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
 };
 
 ProjectBoardListIssue.propTypes = propTypes;
+ProjectBoardListIssue.defaultProps = defaultProps;
 
 export default ProjectBoardListIssue;
