@@ -80,6 +80,16 @@ export const SectionTitle = styled.div`
 export const TaskItem = styled.div`
   padding: 10px 0;
   border-bottom: 1px solid ${color.backgroundMedium};
+  ${mixin.clickable}
+  transition: background 0.1s;
+  cursor: pointer;
+  border-radius: 3px;
+  margin: 0 -4px;
+  padding: 10px 4px;
+  
+  &:hover {
+    background: ${color.backgroundLight};
+  }
   
   &:last-child {
     border-bottom: none;
@@ -149,4 +159,77 @@ export const BlockerDependency = styled.div`
   ${font.size(12)}
   color: #E13C3C;
   font-style: italic;
+`;
+
+export const EditTaskItem = styled.div`
+  padding: 16px;
+  background: ${color.backgroundLightest};
+  border: 2px solid ${color.borderLightest};
+  border-radius: 4px;
+  margin-bottom: 10px;
+`;
+
+export const EditLabel = styled.div`
+  ${font.medium}
+  ${font.size(12.5)}
+  color: ${color.textMedium};
+  margin-bottom: 6px;
+`;
+
+export const EditInput = styled.input`
+  width: 100%;
+  padding: 8px 12px;
+  ${font.size(14)}
+  border-radius: 3px;
+  border: 1px solid ${color.borderLightest};
+  color: ${color.textDarkest};
+  background: #fff;
+  transition: border 0.1s;
+  
+  &:focus {
+    outline: none;
+    border: 1px solid ${color.borderInputFocus};
+  }
+  
+  &::placeholder {
+    color: ${color.textLight};
+  }
+`;
+
+export const EditActions = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+`;
+
+export const SaveButton = styled.button`
+  ${font.size(14)}
+  ${font.medium}
+  padding: 8px 16px;
+  border-radius: 3px;
+  background: ${color.primary};
+  color: #fff;
+  border: none;
+  ${mixin.clickable}
+  transition: background 0.1s;
+  
+  &:hover {
+    background: ${mixin.darken(color.primary, 0.08)};
+  }
+`;
+
+export const CancelButton = styled.button`
+  ${font.size(14)}
+  ${font.medium}
+  padding: 8px 16px;
+  border-radius: 3px;
+  background: ${color.backgroundMedium};
+  color: ${color.textDark};
+  border: none;
+  ${mixin.clickable}
+  transition: background 0.1s;
+  
+  &:hover {
+    background: ${mixin.darken(color.backgroundMedium, 0.05)};
+  }
 `;
