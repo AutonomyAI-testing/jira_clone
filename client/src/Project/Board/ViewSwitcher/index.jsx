@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { ViewSwitcherContainer, ViewButton } from './Styles';
+import { Icon } from 'shared/components';
+
+import { ViewSwitcherContainer, ViewButton, ViewIcon, ViewLabel } from './Styles';
 
 const propTypes = {
   currentView: PropTypes.string.isRequired,
@@ -11,13 +13,22 @@ const propTypes = {
 const ViewSwitcher = ({ currentView, onViewChange }) => (
   <ViewSwitcherContainer>
     <ViewButton active={currentView === 'kanban'} onClick={() => onViewChange('kanban')}>
-      Kanban
+      <ViewIcon>
+        <Icon type="board" size={18} />
+      </ViewIcon>
+      <ViewLabel>Kanban</ViewLabel>
     </ViewButton>
     <ViewButton active={currentView === 'list'} onClick={() => onViewChange('list')}>
-      List
+      <ViewIcon>
+        <Icon type="menu" size={18} />
+      </ViewIcon>
+      <ViewLabel>List</ViewLabel>
     </ViewButton>
     <ViewButton active={currentView === 'gantt'} onClick={() => onViewChange('gantt')}>
-      Gantt
+      <ViewIcon>
+        <Icon type="calendar" size={18} />
+      </ViewIcon>
+      <ViewLabel>Gantt</ViewLabel>
     </ViewButton>
   </ViewSwitcherContainer>
 );
