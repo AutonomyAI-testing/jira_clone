@@ -30,6 +30,18 @@ const ViewSwitcher = ({ currentView, onViewChange }) => (
       </ViewIcon>
       <ViewLabel>Gantt</ViewLabel>
     </ViewButton>
+    <ViewButton active={currentView === 'team'} onClick={() => onViewChange('team')}>
+      <ViewIcon>
+        <Icon type="user" size={18} />
+      </ViewIcon>
+      <ViewLabel>Team</ViewLabel>
+    </ViewButton>
+    <ViewButton active={currentView === 'mindmap'} onClick={() => onViewChange('mindmap')}>
+      <ViewIcon>
+        <Icon type="share-alt" size={18} />
+      </ViewIcon>
+      <ViewLabel>Mindmap</ViewLabel>
+    </ViewButton>
   </ViewSwitcherContainer>
 );
 
