@@ -39,13 +39,7 @@ const ProjectBoardList = ({ status, project, filters, currentUserId }) => {
             data-testid={`board-list:${status}`}
           >
             {filteredListIssues.map((issue, index) => (
-              <Issue
-                key={issue.id}
-                projectUsers={project.users}
-                issue={issue}
-                index={index}
-                allIssues={project.issues}
-              />
+              <Issue key={issue.id} projectUsers={project.users} issue={issue} index={index} />
             ))}
             {provided.placeholder}
           </Issues>
