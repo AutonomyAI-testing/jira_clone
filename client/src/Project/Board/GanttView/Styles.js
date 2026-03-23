@@ -20,10 +20,20 @@ export const TaskRow = styled.div`
   display: flex;
   border-bottom: 1px solid ${color.borderLightest};
   min-height: 56px;
+  transition: background 0.2s, box-shadow 0.2s;
 
   &:hover {
-    background: ${color.backgroundLightest};
+    background: ${props => props.isEditing ? '#fff' : color.backgroundLightest};
   }
+
+  ${props =>
+    props.isEditing &&
+    `
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(9, 30, 66, 0.2);
+    position: relative;
+    z-index: 10;
+  `}
 `;
 
 export const TaskListContainer = styled.div`

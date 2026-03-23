@@ -15,19 +15,30 @@ export const Issue = styled.div`
   border-radius: 3px;
   background: #fff;
   box-shadow: 0px 1px 2px 0px rgba(9, 30, 66, 0.25);
-  transition: background 0.1s;
-  ${mixin.clickable}
+  transition: all 0.2s;
+  ${props => !props.isEditing && mixin.clickable}
   @media (max-width: 1100px) {
     padding: 10px 8px;
   }
   &:hover {
-    background: ${color.backgroundLight};
+    background: ${props => props.isEditing ? '#fff' : color.backgroundLight};
+    ${props => props.isEditing && css`
+      box-shadow: 0px 2px 8px 0px rgba(9, 30, 66, 0.3);
+    `}
   }
   ${props =>
     props.isBeingDragged &&
     css`
       transform: rotate(3deg);
       box-shadow: 5px 10px 30px 0px rgba(9, 30, 66, 0.15);
+    `}
+  ${props =>
+    props.isEditing &&
+    css`
+      box-shadow: 0px 2px 8px 0px rgba(9, 30, 66, 0.3);
+      border: 2px solid ${color.borderInputFocus};
+      padding: 8px;
+      cursor: default;
     `}
 `;
 
@@ -71,16 +82,7 @@ export const TitleInput = styled.input`
   }
 `;
 
-export const EditingOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.95);
-  z-index: 1;
-  border-radius: 3px;
-`;
+
 
 export const FieldsRow = styled.div`
   position: relative;
@@ -98,10 +100,10 @@ export const FieldLabel = styled.div`
   text-transform: uppercase;
 `;
 
-export const StatusSelectWrapper = styled.div`
+export const SelectWrapper = styled.div`
   position: relative;
   z-index: 2;
-  min-width: 140px;
+  min-width: 120px;
   > div {
     font-size: 13px;
   }
@@ -112,15 +114,8 @@ export const StatusSelectWrapper = styled.div`
   }
 `;
 
-export const PrioritySelectWrapper = styled.div`
+export const AssigneesWrapper = styled.div`
   position: relative;
   z-index: 2;
-  min-width: 120px;
-  > div {
-    font-size: 13px;
-  }
-  span {
-    display: inline-flex;
-    align-items: center;
-  }
+  margin-top: 4px;
 `;
