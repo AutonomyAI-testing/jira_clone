@@ -105,6 +105,12 @@ export const DayCell = styled.div`
   min-width: ${props => props.width}px;
   height: 100%;
   border-right: 1px solid ${color.backgroundMedium};
+  background: ${props => props.isWeekend ? color.backgroundLightest : 'transparent'};
+
+  &:nth-child(7n + 1),
+  &:nth-child(7n) {
+    background: ${color.backgroundLightest};
+  }
 `;
 
 export const TaskBar = styled.div`

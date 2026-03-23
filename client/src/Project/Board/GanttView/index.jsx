@@ -99,6 +99,32 @@ const GanttView = ({ project, filters, currentUserId }) => {
     return monthsList;
   }, [startDate, endDate]);
 
+  // Generate week markers for the header
+  const weeks = useMemo(() => {
+    const weeksList = [];
+    const current = startDate.clone();
+    let dayOffset = 0;
+
+    while (current.isSameOrBefore(endDate)) {
+      const weekStart = current.clone().startOf('week');
+      const weekEnd = current.clone().endOf('week');
+      const clampedStart = moment.max(weekStart, startDate);
+      const clampedEnd = moment.min(weekEnd, endDate);
+      const daysInWeek = clampedEnd.diff(clampedStart, 'days') + 1;
+
+      weeksList.push({
+        label: current.format('D'),
+        days: daysInWeek,
+        offset: dayOffset,
+      });
+
+      dayOffset += daysInWeek;
+      current.add(1, 'week').startOf('week');
+    }
+
+    return weeksList;
+  }, [startDate, endDate]);
+
   const handleTaskClick = issueId => {
     history.push(`${match.url}/issues/${issueId}`);
   };
@@ -121,12 +147,32 @@ const GanttView = ({ project, filters, currentUserId }) => {
           <div style={{ padding: '12px 16px', fontWeight: 600 }}>Task</div>
         </TaskListContainer>
         <TimelineContainer>
-          <TimelineHeader>
-            {months.map((month, index) => (
-              <MonthCell key={index} width={month.days * dayWidth}>
-                {month.name}
-              </MonthCell>
-            ))}
+          <TimelineHeader style={{ flexDirection: 'column' }}>
+            <div style={{ display: 'flex' }}>
+              {months.map((month, index) => (
+                <MonthCell key={index} width={month.days * dayWidth}>
+                  {month.name}
+                </MonthCell>
+              ))}
+            </div>
+            <div style={{ display: 'flex', borderTop: '1px solid #dfe1e6' }}>
+              {weeks.map((week, index) => (
+                <div
+                  key={index}
+                  style={{
+                    width: week.days * dayWidth,
+                    minWidth: week.days * dayWidth,
+                    textAlign: 'center',
+                    padding: '4px 0',
+                    fontSize: 11,
+                    color: '#5e6c84',
+                    borderRight: '1px solid #dfe1e6',
+                  }}
+                >
+                  {week.label}
+                </div>
+              ))}
+            </div>
           </TimelineHeader>
         </TimelineContainer>
       </GanttHeader>
@@ -162,8 +208,8 @@ const GanttView = ({ project, filters, currentUserId }) => {
                   status={issue.status}
                   onClick={() => handleTaskClick(issue.id)}
                 >
-                  <TaskBarInner>
-                    {issue.title.length > 20 ? `${issue.title.substring(0, 20)}...` : issue.title}
+                  <TaskBarInner title={`${issue.title} (${issue.startDate ? moment(issue.startDate).format('MMM D') : 'N/A'} - ${issue.dueDate ? moment(issue.dueDate).format('MMM D') : 'N/A'})`}>
+                    {issue.title}
                   </TaskBarInner>
                 </TaskBar>
               </Timeline>
