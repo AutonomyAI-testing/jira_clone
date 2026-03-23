@@ -145,10 +145,10 @@ const ListView = ({ project, filters, currentUserId, updateLocalProjectIssues })
                         }}
                       />
                       <ActionsRow>
-                        <Button variant="empty" onClick={() => handleCancel(issue.title)}>
+                        <Button variant="empty" onClick={(e) => { e.stopPropagation(); handleCancel(issue.title); }}>
                           Cancel
                         </Button>
-                        <Button variant="primary" onClick={() => handleSave(issue.id, issue.title)}>
+                        <Button variant="primary" onClick={(e) => { e.stopPropagation(); handleSave(issue.id, issue.title); }}>
                           Save
                         </Button>
                       </ActionsRow>
@@ -182,6 +182,7 @@ const ListView = ({ project, filters, currentUserId, updateLocalProjectIssues })
                       withClearValue={false}
                       name="type"
                       value={issue.type}
+                      dropdownWidth={200}
                       options={Object.values(IssueType).map(type => ({
                         value: type,
                         label: IssueTypeCopy[type],
@@ -208,6 +209,7 @@ const ListView = ({ project, filters, currentUserId, updateLocalProjectIssues })
                       withClearValue={false}
                       name="priority"
                       value={issue.priority}
+                      dropdownWidth={200}
                       options={Object.values(IssuePriority).map(priority => ({
                         value: priority,
                         label: IssuePriorityCopy[priority],
@@ -234,6 +236,7 @@ const ListView = ({ project, filters, currentUserId, updateLocalProjectIssues })
                       withClearValue={false}
                       name="status"
                       value={issue.status}
+                      dropdownWidth={200}
                       options={Object.values(IssueStatus).map(status => ({
                         value: status,
                         label: IssueStatusCopy[status],
@@ -274,7 +277,7 @@ const ListView = ({ project, filters, currentUserId, updateLocalProjectIssues })
                               marginRight: 4,
                               cursor: 'pointer',
                             }}
-                            onClick={removeOptionValue}
+                            onClick={(e) => { e.stopPropagation(); removeOptionValue(); }}
                           >
                             <Avatar avatarUrl={user.avatarUrl} name={user.name} size={18} />
                             <span style={{ fontSize: 12 }}>{user.name}</span>

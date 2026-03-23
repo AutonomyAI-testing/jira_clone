@@ -276,12 +276,12 @@ const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }
                             marginBottom: 4,
                             cursor: 'pointer',
                           }}
-                          onClick={removeOptionValue}
+                          onClick={(e) => { e.stopPropagation(); removeOptionValue(); }}
                         >
                           <Avatar avatarUrl={user.avatarUrl} name={user.name} size={16} />
                           <span style={{ fontSize: 11 }}>{user.name}</span>
                           <Icon type="close" size={10} />
-                        </div>
+                          </div>
                       );
                     }}
                     renderOption={({ value: userId }) => {
@@ -295,10 +295,10 @@ const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }
                     }}
                   />
                   <ActionsRow>
-                    <Button variant="empty" onClick={() => handleCancel(issue.title)}>
+                    <Button variant="empty" onClick={(e) => { e.stopPropagation(); handleCancel(issue.title); }}>
                       Cancel
                     </Button>
-                    <Button variant="primary" onClick={() => handleSave(issue.id, issue.title)}>
+                    <Button variant="primary" onClick={(e) => { e.stopPropagation(); handleSave(issue.id, issue.title); }}>
                       Save
                     </Button>
                   </ActionsRow>

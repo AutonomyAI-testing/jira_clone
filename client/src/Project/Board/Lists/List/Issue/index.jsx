@@ -119,6 +119,7 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
                         withClearValue={false}
                         name="type"
                         value={issue.type}
+                        dropdownWidth={200}
                         options={Object.values(IssueType).map(type => ({
                           value: type,
                           label: IssueTypeCopy[type],
@@ -141,6 +142,7 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
                         withClearValue={false}
                         name="priority"
                         value={issue.priority}
+                        dropdownWidth={200}
                         options={Object.values(IssuePriority).map(priority => ({
                           value: priority,
                           label: IssuePriorityCopy[priority],
@@ -165,6 +167,7 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
                         withClearValue={false}
                         name="status"
                         value={issue.status}
+                        dropdownWidth={200}
                         options={Object.values(IssueStatus).map(status => ({
                           value: status,
                           label: IssueStatusCopy[status],
@@ -204,7 +207,7 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
                               marginBottom: 4,
                               cursor: 'pointer',
                             }}
-                            onClick={removeOptionValue}
+                            onClick={(e) => { e.stopPropagation(); removeOptionValue(); }}
                           >
                             <Avatar avatarUrl={user.avatarUrl} name={user.name} size={20} />
                             <span style={{ fontSize: 13 }}>{user.name}</span>
@@ -225,10 +228,10 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
                   </AssigneesWrapper>
                 </div>
                 <ActionsRow>
-                  <Button variant="empty" onClick={handleCancel}>
+                  <Button variant="empty" onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleCancel(); }}>
                     Cancel
                   </Button>
-                  <Button variant="primary" onClick={handleSave}>
+                  <Button variant="primary" onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleSave(); }}>
                     Save
                   </Button>
                 </ActionsRow>
