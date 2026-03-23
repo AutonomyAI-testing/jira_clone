@@ -131,17 +131,28 @@ const defaultFilters = {
 const ProjectBoardStory = ({ initialView = 'kanban' }) => {
   const [filters, mergeFilters] = useMergeState(defaultFilters);
   const [currentView, setCurrentView] = useState(initialView);
+  const [project, setProject] = useState(mockProject);
   const currentUserId = 1;
+
+  // Handler for updating issues locally (used for inline editing)
+  const updateLocalProjectIssues = (issueId, updatedFields) => {
+    setProject(prev => ({
+      ...prev,
+      issues: prev.issues.map(issue =>
+        issue.id === issueId ? { ...issue, ...updatedFields } : issue
+      ),
+    }));
+  };
 
   return (
     <MemoryRouter initialEntries={['/project/board']}>
       <Fragment>
-        <Breadcrumbs items={['Projects', mockProject.name, 'Board']} />
+        <Breadcrumbs items={['Projects', project.name, 'Board']} />
         <Header>
           <ViewSwitcher currentView={currentView} onViewChange={setCurrentView} />
         </Header>
         <Filters
-          projectUsers={mockProject.users}
+          projectUsers={project.users}
           defaultFilters={defaultFilters}
           filters={filters}
           mergeFilters={mergeFilters}
@@ -153,9 +164,10 @@ const ProjectBoardStory = ({ initialView = 'kanban' }) => {
                 <List
                   key={status}
                   status={status}
-                  project={mockProject}
+                  project={project}
                   filters={filters}
                   currentUserId={currentUserId}
+                  updateLocalProjectIssues={updateLocalProjectIssues}
                 />
               ))}
             </div>
@@ -163,14 +175,14 @@ const ProjectBoardStory = ({ initialView = 'kanban' }) => {
         )}
         {currentView === 'list' && (
           <ListViewComp
-            project={mockProject}
+            project={project}
             filters={filters}
             currentUserId={currentUserId}
           />
         )}
         {currentView === 'gantt' && (
           <GanttViewComp
-            project={mockProject}
+            project={project}
             filters={filters}
             currentUserId={currentUserId}
           />

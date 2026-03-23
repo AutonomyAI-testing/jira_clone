@@ -10,6 +10,7 @@ export const IssueLink = styled(Link)`
 `;
 
 export const Issue = styled.div`
+  position: relative;
   padding: 10px;
   border-radius: 3px;
   background: #fff;
@@ -53,4 +54,73 @@ export const Assignees = styled.div`
 export const AssigneeAvatar = styled(Avatar)`
   margin-left: -2px;
   box-shadow: 0 0 0 2px #fff;
+`;
+
+export const TitleInput = styled.input`
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+  border: 1px solid ${color.borderInputFocus};
+  border-radius: 3px;
+  background: #fff;
+  ${font.size(15)}
+  ${font.regular}
+  outline: none;
+  &::placeholder {
+    color: ${color.textMedium};
+  }
+`;
+
+export const EditingOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  z-index: 1;
+  border-radius: 3px;
+`;
+
+export const FieldsRow = styled.div`
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+`;
+
+export const FieldLabel = styled.div`
+  ${font.size(12)}
+  ${font.medium}
+  color: ${color.textMedium};
+  margin-bottom: 4px;
+  text-transform: uppercase;
+`;
+
+export const StatusSelectWrapper = styled.div`
+  position: relative;
+  z-index: 2;
+  min-width: 140px;
+  > div {
+    font-size: 13px;
+  }
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+`;
+
+export const PrioritySelectWrapper = styled.div`
+  position: relative;
+  z-index: 2;
+  min-width: 120px;
+  > div {
+    font-size: 13px;
+  }
+  span {
+    display: inline-flex;
+    align-items: center;
+  }
 `;

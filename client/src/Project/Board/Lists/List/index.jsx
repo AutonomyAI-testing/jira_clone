@@ -14,13 +14,14 @@ const propTypes = {
   project: PropTypes.object.isRequired,
   filters: PropTypes.object.isRequired,
   currentUserId: PropTypes.number,
+  updateLocalProjectIssues: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   currentUserId: null,
 };
 
-const ProjectBoardList = ({ status, project, filters, currentUserId }) => {
+const ProjectBoardList = ({ status, project, filters, currentUserId, updateLocalProjectIssues }) => {
   const filteredIssues = filterIssues(project.issues, filters, currentUserId);
   const filteredListIssues = getSortedListIssues(filteredIssues, status);
   const allListIssues = getSortedListIssues(project.issues, status);
@@ -39,7 +40,13 @@ const ProjectBoardList = ({ status, project, filters, currentUserId }) => {
             data-testid={`board-list:${status}`}
           >
             {filteredListIssues.map((issue, index) => (
-              <Issue key={issue.id} projectUsers={project.users} issue={issue} index={index} />
+              <Issue 
+                key={issue.id} 
+                projectUsers={project.users} 
+                issue={issue} 
+                index={index}
+                updateLocalProjectIssues={updateLocalProjectIssues}
+              />
             ))}
             {provided.placeholder}
           </Issues>
