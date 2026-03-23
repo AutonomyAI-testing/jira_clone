@@ -45,6 +45,7 @@ const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }
   const match = useRouteMatch();
   const [editingIssueId, setEditingIssueId] = useState(null);
   const [editedTitle, setEditedTitle] = useState('');
+  const [editedFields, setEditedFields] = useState({});
 
   const filteredIssues = filterIssues(project.issues, filters, currentUserId);
   const sortedIssues = filteredIssues.sort((a, b) => {
@@ -105,13 +106,19 @@ const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }
     return monthsList;
   }, [startDate, endDate]);
 
-  const handleTaskClick = (issueId, title, e) => {
+  const handleTaskClick = (issueId, issue, e) => {
     if (e) {
       e.stopPropagation();
     }
     if (editingIssueId !== issueId) {
       setEditingIssueId(issueId);
-      setEditedTitle(title);
+      setEditedTitle(issue.title);
+      setEditedFields({
+        type: issue.type,
+        priority: issue.priority,
+        status: issue.status,
+        userIds: issue.userIds,
+      });
     }
   };
 
@@ -124,25 +131,38 @@ const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }
     });
   };
 
-  const handleSave = (issueId, originalTitle) => {
+  const handleSave = (issueId) => {
     const trimmedTitle = editedTitle.trim();
-    if (trimmedTitle && trimmedTitle !== originalTitle) {
-      updateIssue(issueId, { title: trimmedTitle });
+    const updatedFields = {};
+    
+    if (trimmedTitle) {
+      updatedFields.title = trimmedTitle;
     }
+    if (editedFields.type !== undefined) updatedFields.type = editedFields.type;
+    if (editedFields.priority !== undefined) updatedFields.priority = editedFields.priority;
+    if (editedFields.status !== undefined) updatedFields.status = editedFields.status;
+    if (editedFields.userIds !== undefined) {
+      updatedFields.userIds = editedFields.userIds;
+      updatedFields.users = editedFields.userIds.map(userId => project.users.find(u => u.id === userId));
+    }
+    
+    updateIssue(issueId, updatedFields);
     setEditingIssueId(null);
+    setEditedFields({});
   };
 
-  const handleCancel = (originalTitle) => {
-    setEditedTitle(originalTitle);
+  const handleCancel = (issue) => {
+    setEditedTitle(issue.title);
     setEditingIssueId(null);
+    setEditedFields({});
   };
 
-  const handleTitleKeyDown = (e, issueId, originalTitle) => {
+  const handleTitleKeyDown = (e, issueId, issue) => {
     if (e.keyCode === KeyCodes.ENTER) {
       e.preventDefault();
-      handleSave(issueId, originalTitle);
+      handleSave(issueId);
     } else if (e.keyCode === KeyCodes.ESCAPE) {
-      handleCancel(originalTitle);
+      handleCancel(issue);
     }
   };
 
@@ -186,7 +206,7 @@ const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }
                   <input
                     value={editedTitle}
                     onChange={(e) => setEditedTitle(e.target.value)}
-                    onKeyDown={(e) => handleTitleKeyDown(e, issue.id, issue.title)}
+                    onKeyDown={(e) => handleTitleKeyDown(e, issue.id, issue)}
                     autoFocus
                     style={{
                       width: '100%',
@@ -203,12 +223,13 @@ const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }
                       variant="empty"
                       withClearValue={false}
                       name="type"
-                      value={issue.type}
+                      value={editedFields.type}
+                      dropdownWidth={200}
                       options={Object.values(IssueType).map(type => ({
                         value: type,
                         label: IssueTypeCopy[type],
                       }))}
-                      onChange={(type) => updateIssue(issue.id, { type })}
+                      onChange={(type) => setEditedFields({ ...editedFields, type })}
                       renderValue={({ value: type }) => (
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                           <IssueTypeIcon type={type} size={14} />
@@ -220,12 +241,13 @@ const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }
                       variant="empty"
                       withClearValue={false}
                       name="priority"
-                      value={issue.priority}
+                      value={editedFields.priority}
+                      dropdownWidth={200}
                       options={Object.values(IssuePriority).map(priority => ({
                         value: priority,
                         label: IssuePriorityCopy[priority],
                       }))}
-                      onChange={(priority) => updateIssue(issue.id, { priority })}
+                      onChange={(priority) => setEditedFields({ ...editedFields, priority })}
                       renderValue={({ value: priority }) => (
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                           <IssuePriorityIcon priority={priority} size={14} />
@@ -239,12 +261,13 @@ const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }
                       variant="empty"
                       withClearValue={false}
                       name="status"
-                      value={issue.status}
+                      value={editedFields.status}
+                      dropdownWidth={200}
                       options={Object.values(IssueStatus).map(status => ({
                         value: status,
                         label: IssueStatusCopy[status],
                       }))}
-                      onChange={(status) => updateIssue(issue.id, { status })}
+                      onChange={(status) => setEditedFields({ ...editedFields, status })}
                       renderValue={({ value: status }) => (
                         <span style={{ fontSize: 12 }}>{IssueStatusCopy[status]}</span>
                       )}
@@ -255,12 +278,10 @@ const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }
                     variant="empty"
                     placeholder="Unassigned"
                     name="assignees"
-                    value={issue.userIds}
+                    value={editedFields.userIds}
+                    dropdownWidth={250}
                     options={project.users.map(user => ({ value: user.id, label: user.name }))}
-                    onChange={(userIds) => {
-                      const users = userIds.map(userId => project.users.find(u => u.id === userId));
-                      updateIssue(issue.id, { userIds, users });
-                    }}
+                    onChange={(userIds) => setEditedFields({ ...editedFields, userIds })}
                     renderValue={({ value: userId, removeOptionValue }) => {
                       const user = project.users.find(u => u.id === userId);
                       return (
@@ -295,17 +316,17 @@ const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }
                     }}
                   />
                   <ActionsRow>
-                    <Button variant="empty" onClick={(e) => { e.stopPropagation(); handleCancel(issue.title); }}>
+                    <Button variant="empty" onClick={(e) => { e.stopPropagation(); handleCancel(issue); }}>
                       Cancel
                     </Button>
-                    <Button variant="primary" onClick={(e) => { e.stopPropagation(); handleSave(issue.id, issue.title); }}>
+                    <Button variant="primary" onClick={(e) => { e.stopPropagation(); handleSave(issue.id); }}>
                       Save
                     </Button>
                   </ActionsRow>
                 </div>
               ) : (
                 <div>
-                  <TaskInfo onClick={(e) => handleTaskClick(issue.id, issue.title, e)}>
+                  <TaskInfo onClick={(e) => handleTaskClick(issue.id, issue, e)}>
                     <IssueTypeIcon type={issue.type} size={16} />
                     <TaskName>{issue.title}</TaskName>
                   </TaskInfo>
@@ -330,7 +351,7 @@ const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }
                   left={left}
                   width={width}
                   status={issue.status}
-                  onClick={(e) => handleTaskClick(issue.id, issue.title, e)}
+                  onClick={(e) => handleTaskClick(issue.id, issue, e)}
                 >
                   <TaskBarInner>
                     {issue.title.length > 20 ? `${issue.title.substring(0, 20)}...` : issue.title}

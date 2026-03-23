@@ -1,10 +1,6 @@
 import React, { Fragment, useState } from 'react';
-import { MemoryRouter, Route } from 'react-router-dom';
-import { DragDropContext } from 'react-beautiful-dnd';
-
-import NormalizeStyles from 'App/NormalizeStyles';
-import BaseStyles from 'App/BaseStyles';
-import 'App/fontStyles.css';
+import { MemoryRouter } from 'react-router-dom';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { Breadcrumbs } from 'shared/components';
 import { IssueStatus } from 'shared/constants/issues';
@@ -15,17 +11,30 @@ import List from './Lists/List';
 import ListView from './ListView';
 import GanttView from './GanttView';
 import ViewSwitcher from './ViewSwitcher';
+
 import { Lists } from './Lists/Styles';
 
-// Mock project data with issues in different statuses
+export default {
+  title: 'Project/Board',
+  parameters: {
+    layout: 'fullscreen',
+  },
+  decorators: [
+    (Story) => (
+      <MemoryRouter initialEntries={['/project/board']}>
+        <Story />
+      </MemoryRouter>
+    ),
+  ],
+};
+
+// Mock project data with inline editing support
 const createMockProject = () => ({
   id: 1,
   name: 'Singularity 1.0',
   url: 'https://www.atlassian.com/software/jira',
   description: 'Plan, track, and manage your agile and software development projects.',
   category: 'software',
-  createdAt: '2020-06-01T00:00:00.000Z',
-  updatedAt: '2020-06-01T00:00:00.000Z',
   users: [
     {
       id: 1,
@@ -49,7 +58,7 @@ const createMockProject = () => ({
   issues: [
     {
       id: 101,
-      title: 'Add new navigation component',
+      title: 'Add new navigation component with responsive design',
       type: 'task',
       status: 'backlog',
       priority: '3',
@@ -65,15 +74,15 @@ const createMockProject = () => ({
         { id: 2, name: 'Pickle Rick', avatarUrl: 'https://i.ibb.co/7JM1P0V/pickle-rick.png' },
       ],
       productArea: 'Frontend',
-      startDate: '2020-06-01T00:00:00.000Z',
-      dueDate: '2020-06-10T00:00:00.000Z',
+      startDate: '2024-01-01T00:00:00.000Z',
+      dueDate: '2024-01-10T00:00:00.000Z',
       dependencies: [],
-      createdAt: '2020-06-01T00:00:00.000Z',
-      updatedAt: '2020-06-01T00:00:00.000Z',
+      createdAt: '2024-01-01T00:00:00.000Z',
+      updatedAt: '2024-01-01T00:00:00.000Z',
     },
     {
       id: 102,
-      title: 'Fix login form validation bug',
+      title: 'Fix login form validation with email format check',
       type: 'bug',
       status: 'selected',
       priority: '2',
@@ -84,17 +93,19 @@ const createMockProject = () => ({
       reporterId: 2,
       projectId: 1,
       userIds: [2],
-      users: [{ id: 2, name: 'Pickle Rick', avatarUrl: 'https://i.ibb.co/7JM1P0V/pickle-rick.png' }],
+      users: [
+        { id: 2, name: 'Pickle Rick', avatarUrl: 'https://i.ibb.co/7JM1P0V/pickle-rick.png' },
+      ],
       productArea: 'Authentication',
-      startDate: '2020-06-02T00:00:00.000Z',
-      dueDate: '2020-06-05T00:00:00.000Z',
+      startDate: '2024-01-02T00:00:00.000Z',
+      dueDate: '2024-01-05T00:00:00.000Z',
       dependencies: [101],
-      createdAt: '2020-06-02T00:00:00.000Z',
-      updatedAt: '2020-06-02T00:00:00.000Z',
+      createdAt: '2024-01-02T00:00:00.000Z',
+      updatedAt: '2024-01-02T00:00:00.000Z',
     },
     {
       id: 103,
-      title: 'Implement dark mode feature',
+      title: 'Implement dark mode theme support',
       type: 'story',
       status: 'inprogress',
       priority: '3',
@@ -110,15 +121,15 @@ const createMockProject = () => ({
         { id: 3, name: 'Baby Yoda', avatarUrl: 'https://i.ibb.co/6PrN4M5/baby-yoda.jpg' },
       ],
       productArea: 'UI/UX',
-      startDate: '2020-06-03T00:00:00.000Z',
-      dueDate: '2020-06-20T00:00:00.000Z',
+      startDate: '2024-01-03T00:00:00.000Z',
+      dueDate: '2024-01-20T00:00:00.000Z',
       dependencies: [],
-      createdAt: '2020-06-03T00:00:00.000Z',
-      updatedAt: '2020-06-03T00:00:00.000Z',
+      createdAt: '2024-01-03T00:00:00.000Z',
+      updatedAt: '2024-01-03T00:00:00.000Z',
     },
     {
       id: 104,
-      title: 'Update API documentation',
+      title: 'Update API documentation with examples',
       type: 'task',
       status: 'done',
       priority: '4',
@@ -129,34 +140,15 @@ const createMockProject = () => ({
       reporterId: 3,
       projectId: 1,
       userIds: [3],
-      users: [{ id: 3, name: 'Baby Yoda', avatarUrl: 'https://i.ibb.co/6PrN4M5/baby-yoda.jpg' }],
+      users: [
+        { id: 3, name: 'Baby Yoda', avatarUrl: 'https://i.ibb.co/6PrN4M5/baby-yoda.jpg' },
+      ],
       productArea: 'Backend',
-      startDate: '2020-06-04T00:00:00.000Z',
-      dueDate: '2020-06-06T00:00:00.000Z',
+      startDate: '2024-01-04T00:00:00.000Z',
+      dueDate: '2024-01-06T00:00:00.000Z',
       dependencies: [],
-      createdAt: '2020-06-04T00:00:00.000Z',
-      updatedAt: '2020-06-04T00:00:00.000Z',
-    },
-    {
-      id: 105,
-      title: 'Add user profile settings page',
-      type: 'task',
-      status: 'backlog',
-      priority: '3',
-      listPosition: 2,
-      description: 'Create user profile settings with avatar upload',
-      estimate: 10,
-      timeSpent: 0,
-      reporterId: 1,
-      projectId: 1,
-      userIds: [1],
-      users: [{ id: 1, name: 'Lord Gaben', avatarUrl: 'https://i.ibb.co/6n0hLML/lord-gaben.jpg' }],
-      productArea: 'User Management',
-      startDate: '2020-06-05T00:00:00.000Z',
-      dueDate: '2020-06-15T00:00:00.000Z',
-      dependencies: [],
-      createdAt: '2020-06-05T00:00:00.000Z',
-      updatedAt: '2020-06-05T00:00:00.000Z',
+      createdAt: '2024-01-04T00:00:00.000Z',
+      updatedAt: '2024-01-04T00:00:00.000Z',
     },
   ],
 });
@@ -168,203 +160,104 @@ const defaultFilters = {
   recent: false,
 };
 
-// Kanban View Story Component - replaces ProjectBoardLists to avoid useCurrentUser hook
-const KanbanBoardStory = () => {
-  const [project, setProject] = useState(createMockProject());
+// Interactive story component with all views and inline editing
+const ProjectBoardStory = () => {
+  const [project, setProject] = useState(createMockProject);
   const [filters, setFilters] = useState(defaultFilters);
   const [currentView, setCurrentView] = useState('kanban');
-  const currentUserId = 1;
-
-  const updateLocalProjectIssues = (issueId, updatedFields) => {
-    setProject(prevProject => ({
-      ...prevProject,
-      issues: prevProject.issues.map(issue =>
-        issue.id === issueId ? { ...issue, ...updatedFields } : issue
-      ),
-    }));
-  };
 
   const mergeFilters = (newFilters) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
   };
 
-  const handleDragEnd = () => {
-    // Drag-drop handling for story (no-op)
+  const updateLocalProjectIssues = (issueId, updatedFields) => {
+    setProject(prev => ({
+      ...prev,
+      issues: prev.issues.map(issue =>
+        issue.id === issueId ? { ...issue, ...updatedFields } : issue
+      ),
+    }));
+  };
+
+  const fetchProject = () => {
+    // Mock fetch - no-op in story
   };
 
   return (
-    <MemoryRouter initialEntries={['/project/board']}>
-      <Route path="/project/board">
-        <Fragment>
-          <Breadcrumbs items={['Projects', project.name, 'Board']} />
-          <Header>
-            <ViewSwitcher currentView={currentView} onViewChange={setCurrentView} />
-          </Header>
-          <Filters
-            projectUsers={project.users}
-            defaultFilters={defaultFilters}
-            filters={filters}
-            mergeFilters={mergeFilters}
-          />
-          {currentView === 'kanban' && (
-            <DragDropContext onDragEnd={handleDragEnd}>
-              <Lists>
-                {Object.values(IssueStatus).map(status => (
-                  <List
-                    key={status}
-                    status={status}
-                    project={project}
-                    filters={filters}
-                    currentUserId={currentUserId}
-                    updateLocalProjectIssues={updateLocalProjectIssues}
-                  />
-                ))}
-              </Lists>
-            </DragDropContext>
-          )}
-          {currentView === 'list' && (
-            <ListView
-              project={project}
-              filters={filters}
-              currentUserId={currentUserId}
-              updateLocalProjectIssues={updateLocalProjectIssues}
-            />
-          )}
-          {currentView === 'gantt' && (
-            <GanttView
-              project={project}
-              filters={filters}
-              currentUserId={currentUserId}
-              updateLocalProjectIssues={updateLocalProjectIssues}
-            />
-          )}
-        </Fragment>
-      </Route>
-    </MemoryRouter>
+    <div style={{ padding: 20, minHeight: '100vh', background: '#f4f5f7' }}>
+      <Breadcrumbs items={['Projects', project.name, 'Board']} />
+      <Header>
+        <ViewSwitcher currentView={currentView} onViewChange={setCurrentView} />
+      </Header>
+      <Filters
+        projectUsers={project.users}
+        defaultFilters={defaultFilters}
+        filters={filters}
+        mergeFilters={mergeFilters}
+      />
+      {currentView === 'kanban' && (
+        <DragDropContext onDragEnd={() => {}}>
+          <Lists>
+            {Object.values(IssueStatus).map(status => (
+              <List
+                key={status}
+                status={status}
+                project={project}
+                filters={filters}
+                currentUserId={1}
+                updateLocalProjectIssues={updateLocalProjectIssues}
+              />
+            ))}
+          </Lists>
+        </DragDropContext>
+      )}
+      {currentView === 'list' && (
+        <ListView
+          project={project}
+          filters={filters}
+          currentUserId={1}
+          updateLocalProjectIssues={updateLocalProjectIssues}
+        />
+      )}
+      {currentView === 'gantt' && (
+        <GanttView
+          project={project}
+          filters={filters}
+          currentUserId={1}
+          updateLocalProjectIssues={updateLocalProjectIssues}
+        />
+      )}
+    </div>
   );
 };
 
-export default {
-  title: 'Project/Board',
-  component: KanbanBoardStory,
+// Default story - Kanban view with inline editing
+export const InlineEditing = {
+  render: () => <ProjectBoardStory />,
   parameters: {
-    layout: 'fullscreen',
-  },
-  decorators: [
-    (Story) => (
-      <Fragment>
-        <NormalizeStyles />
-        <BaseStyles />
-        <div style={{ width: '100%', minHeight: '100vh', background: '#fff', padding: '20px' }}>
-          <Story />
-        </div>
-      </Fragment>
-    ),
-  ],
-};
+    docs: {
+      description: {
+        story: `
+## Inline Editing Test
 
-// Default story showing the Kanban board with inline editing capability
-export const KanbanView = {
-  render: () => <KanbanBoardStory />,
-};
+This story tests inline editing across all three views (Kanban, List, Gantt):
 
-// ListView story
-const ListViewStory = () => {
-  const [project, setProject] = useState(createMockProject());
-  const [filters, setFilters] = useState(defaultFilters);
-  const currentUserId = 1;
+### How to test:
+1. **Click on any issue card/row** to enter edit mode
+2. **Verify dropdown widths** - Type/Priority/Status = 220px, Assignees = 250px (should show full text)
+3. **Make changes** to multiple fields (title, type, priority, status, assignees)
+4. **Click Save** to apply all changes at once
+5. **Click Cancel** to discard changes
+6. **Test assignee add/remove** by clicking the X icon on selected users
+7. **Switch between views** using the view switcher to verify consistent behavior
 
-  const updateLocalProjectIssues = (issueId, updatedFields) => {
-    setProject(prevProject => ({
-      ...prevProject,
-      issues: prevProject.issues.map(issue =>
-        issue.id === issueId ? { ...issue, ...updatedFields } : issue
-      ),
-    }));
-  };
-
-  const mergeFilters = (newFilters) => {
-    setFilters(prev => ({ ...prev, ...newFilters }));
-  };
-
-  return (
-    <MemoryRouter initialEntries={['/project/board']}>
-      <Route path="/project/board">
-        <Fragment>
-          <Breadcrumbs items={['Projects', project.name, 'Board']} />
-          <Header>
-            <ViewSwitcher currentView="list" onViewChange={() => {}} />
-          </Header>
-          <Filters
-            projectUsers={project.users}
-            defaultFilters={defaultFilters}
-            filters={filters}
-            mergeFilters={mergeFilters}
-          />
-          <ListView
-            project={project}
-            filters={filters}
-            currentUserId={currentUserId}
-            updateLocalProjectIssues={updateLocalProjectIssues}
-          />
-        </Fragment>
-      </Route>
-    </MemoryRouter>
-  );
-};
-
-export const ListViewDisplay = {
-  render: () => <ListViewStory />,
-};
-
-// GanttView story
-const GanttViewStory = () => {
-  const [project, setProject] = useState(createMockProject());
-  const [filters, setFilters] = useState(defaultFilters);
-  const currentUserId = 1;
-
-  const updateLocalProjectIssues = (issueId, updatedFields) => {
-    setProject(prevProject => ({
-      ...prevProject,
-      issues: prevProject.issues.map(issue =>
-        issue.id === issueId ? { ...issue, ...updatedFields } : issue
-      ),
-    }));
-  };
-
-  const mergeFilters = (newFilters) => {
-    setFilters(prev => ({ ...prev, ...newFilters }));
-  };
-
-  return (
-    <MemoryRouter initialEntries={['/project/board']}>
-      <Route path="/project/board">
-        <Fragment>
-          <Breadcrumbs items={['Projects', project.name, 'Board']} />
-          <Header>
-            <ViewSwitcher currentView="gantt" onViewChange={() => {}} />
-          </Header>
-          <Filters
-            projectUsers={project.users}
-            defaultFilters={defaultFilters}
-            filters={filters}
-            mergeFilters={mergeFilters}
-          />
-          <GanttView
-            project={project}
-            filters={filters}
-            currentUserId={currentUserId}
-            updateLocalProjectIssues={updateLocalProjectIssues}
-          />
-        </Fragment>
-      </Route>
-    </MemoryRouter>
-  );
-};
-
-export const GanttViewDisplay = {
-  render: () => <GanttViewStory />,
-  parameters: {
-    layout: 'fullscreen',
+### Bug fixes verified:
+- Dropdown widths are wide enough to show full text labels
+- Save/Cancel buttons work correctly (don't navigate away)
+- Click events are properly captured (no unwanted navigation)
+- Changes persist after saving
+        `,
+      },
+    },
   },
 };

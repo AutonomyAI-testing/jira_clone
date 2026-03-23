@@ -21,6 +21,7 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
   const match = useRouteMatch();
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(issue.title);
+  const [editedFields, setEditedFields] = useState({});
   const titleInputRef = useRef();
 
   const assignees = issue.userIds.map(userId => projectUsers.find(user => user.id === userId));
@@ -31,6 +32,12 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
       e.stopPropagation();
       setIsEditing(true);
       setEditedTitle(issue.title);
+      setEditedFields({
+        type: issue.type,
+        priority: issue.priority,
+        status: issue.status,
+        userIds: issue.userIds,
+      });
       setTimeout(() => {
         if (titleInputRef.current) {
           titleInputRef.current.focus();
@@ -50,15 +57,28 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
 
   const handleSave = () => {
     const trimmedTitle = editedTitle.trim();
-    if (trimmedTitle && trimmedTitle !== issue.title) {
-      updateIssue({ title: trimmedTitle });
+    const updatedFields = {};
+    
+    if (trimmedTitle) {
+      updatedFields.title = trimmedTitle;
     }
+    if (editedFields.type !== undefined) updatedFields.type = editedFields.type;
+    if (editedFields.priority !== undefined) updatedFields.priority = editedFields.priority;
+    if (editedFields.status !== undefined) updatedFields.status = editedFields.status;
+    if (editedFields.userIds !== undefined) {
+      updatedFields.userIds = editedFields.userIds;
+      updatedFields.users = editedFields.userIds.map(userId => projectUsers.find(u => u.id === userId));
+    }
+    
+    updateIssue(updatedFields);
     setIsEditing(false);
+    setEditedFields({});
   };
 
   const handleCancel = () => {
     setEditedTitle(issue.title);
     setIsEditing(false);
+    setEditedFields({});
   };
 
   const handleTitleKeyDown = (e) => {
@@ -71,20 +91,19 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
   };
 
   const handleTypeChange = (type) => {
-    updateIssue({ type });
+    setEditedFields({ ...editedFields, type });
   };
 
   const handleStatusChange = (status) => {
-    updateIssue({ status });
+    setEditedFields({ ...editedFields, status });
   };
 
   const handlePriorityChange = (priority) => {
-    updateIssue({ priority });
+    setEditedFields({ ...editedFields, priority });
   };
 
   const handleAssigneesChange = (userIds) => {
-    const users = userIds.map(userId => projectUsers.find(user => user.id === userId));
-    updateIssue({ userIds, users });
+    setEditedFields({ ...editedFields, userIds });
   };
 
   const getUserById = userId => projectUsers.find(user => user.id === userId);
@@ -118,8 +137,8 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
                         variant="empty"
                         withClearValue={false}
                         name="type"
-                        value={issue.type}
-                        dropdownWidth={200}
+                        value={editedFields.type}
+                        dropdownWidth={220}
                         options={Object.values(IssueType).map(type => ({
                           value: type,
                           label: IssueTypeCopy[type],
@@ -141,8 +160,8 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
                         variant="empty"
                         withClearValue={false}
                         name="priority"
-                        value={issue.priority}
-                        dropdownWidth={200}
+                        value={editedFields.priority}
+                        dropdownWidth={220}
                         options={Object.values(IssuePriority).map(priority => ({
                           value: priority,
                           label: IssuePriorityCopy[priority],
@@ -166,8 +185,8 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
                         variant="empty"
                         withClearValue={false}
                         name="status"
-                        value={issue.status}
-                        dropdownWidth={200}
+                        value={editedFields.status}
+                        dropdownWidth={220}
                         options={Object.values(IssueStatus).map(status => ({
                           value: status,
                           label: IssueStatusCopy[status],
@@ -190,7 +209,8 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
                       variant="empty"
                       placeholder="Unassigned"
                       name="assignees"
-                      value={issue.userIds}
+                      value={editedFields.userIds}
+                      dropdownWidth={250}
                       options={projectUsers.map(user => ({ value: user.id, label: user.name }))}
                       onChange={handleAssigneesChange}
                       renderValue={({ value: userId, removeOptionValue }) => {
