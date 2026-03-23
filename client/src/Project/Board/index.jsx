@@ -57,6 +57,7 @@ const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
           project={project}
           filters={filters}
           currentUserId={project.users[0] && project.users[0].id}
+          updateLocalProjectIssues={updateLocalProjectIssues}
         />
       )}
       {currentView === 'gantt' && (

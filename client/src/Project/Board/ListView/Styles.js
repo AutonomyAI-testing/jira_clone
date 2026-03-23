@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-import { color, font } from 'shared/utils/styles';
+import { color, font, mixin } from 'shared/utils/styles';
 
 export const ListViewContainer = styled.div`
   margin-top: 24px;
@@ -33,8 +33,33 @@ export const TableRow = styled.tr`
     
     &:hover {
       background: ${color.backgroundLightest};
+      
+      .expand-icon {
+        opacity: 1;
+      }
     }
   `}
+
+  ${props =>
+    props.isEditing &&
+    css`
+      background: ${color.backgroundLight};
+      &:hover {
+        background: ${color.backgroundLight};
+        cursor: default;
+      }
+    `}
+
+  .expand-icon {
+    opacity: 0;
+    transition: opacity 0.1s;
+    ${mixin.clickable}
+    color: ${color.textMedium};
+    
+    &:hover {
+      color: ${color.primary};
+    }
+  }
 `;
 
 export const TableHeaderCell = styled.th`
@@ -49,6 +74,11 @@ export const TableCell = styled.td`
   padding: 12px 16px;
   color: ${color.textDark};
   vertical-align: middle;
+  
+  &:first-child {
+    text-align: center;
+    padding: 0;
+  }
 `;
 
 export const IssueKey = styled.span`

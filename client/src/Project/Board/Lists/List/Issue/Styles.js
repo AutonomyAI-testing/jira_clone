@@ -10,6 +10,7 @@ export const IssueLink = styled(Link)`
 `;
 
 export const Issue = styled.div`
+  position: relative;
   padding: 10px;
   border-radius: 3px;
   background: #fff;
@@ -21,6 +22,10 @@ export const Issue = styled.div`
   }
   &:hover {
     background: ${color.backgroundLight};
+    
+    .expand-icon {
+      opacity: 1;
+    }
   }
   ${props =>
     props.isBeingDragged &&
@@ -28,6 +33,34 @@ export const Issue = styled.div`
       transform: rotate(3deg);
       box-shadow: 5px 10px 30px 0px rgba(9, 30, 66, 0.15);
     `}
+  ${props =>
+    props.isEditing &&
+    css`
+      padding: 0;
+      min-height: auto;
+      cursor: default;
+      &:hover {
+        background: #fff;
+      }
+    `}
+
+  .expand-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    opacity: 0;
+    transition: opacity 0.1s;
+    padding: 2px;
+    border-radius: 3px;
+    color: ${color.textMedium};
+    cursor: pointer;
+    z-index: 1;
+    
+    &:hover {
+      background: ${color.backgroundMedium};
+      color: ${color.primary};
+    }
+  }
 `;
 
 export const Title = styled.p`

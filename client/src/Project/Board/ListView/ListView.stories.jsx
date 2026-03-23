@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import React, { Fragment, useState } from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import moment from 'moment';
-import { intersection } from 'lodash';
 
-import { IssueStatusCopy, IssueTypeCopy, IssuePriorityCopy } from 'shared/constants/issues';
+import { IssueStatusCopy, IssueTypeCopy, IssuePriorityCopy, IssueType, IssueStatus, IssuePriority } from 'shared/constants/issues';
 import { Avatar, IssueTypeIcon, IssuePriorityIcon, Icon } from 'shared/components';
 import { formatDate } from 'shared/utils/dateTime';
-import api from 'shared/utils/api';
 
 import InlineIssueEditor from '../InlineIssueEditor';
 
@@ -24,24 +21,103 @@ import {
   AssigneesContainer,
 } from './Styles';
 
-const propTypes = {
-  project: PropTypes.object.isRequired,
-  filters: PropTypes.object.isRequired,
-  currentUserId: PropTypes.number,
-  updateLocalProjectIssues: PropTypes.func.isRequired,
+export default {
+  title: 'Project/Board/ListView',
+  parameters: {
+    layout: 'fullscreen',
+  },
 };
 
-const defaultProps = {
-  currentUserId: null,
-};
+// Mock users for the project
+const mockUsers = [
+  { id: 1, name: 'John Doe', avatarUrl: 'https://i.pravatar.cc/150?u=1' },
+  { id: 2, name: 'Jane Smith', avatarUrl: 'https://i.pravatar.cc/150?u=2' },
+  { id: 3, name: 'Bob Johnson', avatarUrl: 'https://i.pravatar.cc/150?u=3' },
+];
 
-const ListView = ({ project, filters, currentUserId, updateLocalProjectIssues }) => {
-  const history = useHistory();
-  const match = useRouteMatch();
-  const [editingIssueId, setEditingIssueId] = useState(null);
+// Mock issues for displaying in the list
+const mockIssues = [
+  {
+    id: 101,
+    title: 'Implement user authentication flow',
+    type: IssueType.STORY,
+    status: IssueStatus.INPROGRESS,
+    priority: IssuePriority.HIGH,
+    productArea: 'Auth',
+    estimate: 8,
+    startDate: moment().subtract(3, 'days').toISOString(),
+    dueDate: moment().add(5, 'days').toISOString(),
+    users: [mockUsers[0], mockUsers[1]],
+    userIds: [1, 2],
+    dependencies: [102],
+    updatedAt: moment().subtract(1, 'day').toISOString(),
+  },
+  {
+    id: 102,
+    title: 'Fix login page CSS styling issues',
+    type: IssueType.BUG,
+    status: IssueStatus.SELECTED,
+    priority: IssuePriority.HIGHEST,
+    productArea: 'Frontend',
+    estimate: 3,
+    startDate: null,
+    dueDate: moment().add(2, 'days').toISOString(),
+    users: [mockUsers[2]],
+    userIds: [3],
+    dependencies: [],
+    updatedAt: moment().subtract(2, 'hours').toISOString(),
+  },
+  {
+    id: 103,
+    title: 'Create database migration scripts',
+    type: IssueType.TASK,
+    status: IssueStatus.BACKLOG,
+    priority: IssuePriority.MEDIUM,
+    productArea: 'Backend',
+    estimate: 5,
+    startDate: moment().add(1, 'week').toISOString(),
+    dueDate: moment().add(2, 'weeks').toISOString(),
+    users: [mockUsers[0]],
+    userIds: [1],
+    dependencies: [],
+    updatedAt: moment().subtract(3, 'days').toISOString(),
+  },
+  {
+    id: 104,
+    title: 'Write unit tests for payment module',
+    type: IssueType.TASK,
+    status: IssueStatus.DONE,
+    priority: IssuePriority.LOW,
+    productArea: 'Testing',
+    estimate: 6,
+    startDate: moment().subtract(2, 'weeks').toISOString(),
+    dueDate: moment().subtract(1, 'week').toISOString(),
+    users: [mockUsers[1], mockUsers[2]],
+    userIds: [2, 3],
+    dependencies: [101],
+    updatedAt: moment().subtract(1, 'week').toISOString(),
+  },
+  {
+    id: 105,
+    title: 'Update API documentation',
+    type: IssueType.TASK,
+    status: IssueStatus.INPROGRESS,
+    priority: IssuePriority.LOWEST,
+    productArea: 'Documentation',
+    estimate: 2,
+    startDate: moment().subtract(1, 'day').toISOString(),
+    dueDate: moment().add(3, 'days').toISOString(),
+    users: [],
+    userIds: [],
+    dependencies: [],
+    updatedAt: moment().subtract(5, 'hours').toISOString(),
+  },
+];
 
-  const filteredIssues = filterIssues(project.issues, filters, currentUserId);
-  const sortedIssues = filteredIssues.sort((a, b) => b.id - a.id);
+// Inline story component that avoids hooks that need React Router and API
+const ListViewStory = ({ issues, users, showInlineEditor }) => {
+  const [editingIssueId, setEditingIssueId] = useState(showInlineEditor ? issues[0]?.id : null);
+  const [localIssues, setLocalIssues] = useState(issues);
 
   const handleRowDoubleClick = (event, issueId) => {
     event.stopPropagation();
@@ -50,16 +126,17 @@ const ListView = ({ project, filters, currentUserId, updateLocalProjectIssues })
 
   const handleExpandClick = (event, issueId) => {
     event.stopPropagation();
-    history.push(`${match.url}/issues/${issueId}`);
+    // In Storybook, we just log instead of navigating
+    console.log(`Expand clicked for issue ${issueId}`);
   };
 
   const updateIssue = (issueId, updatedFields) => {
-    const issue = project.issues.find(i => i.id === issueId);
-    api.optimisticUpdate(`/issues/${issueId}`, {
-      updatedFields,
-      currentFields: issue,
-      setLocalData: fields => updateLocalProjectIssues(issueId, fields),
-    });
+    setLocalIssues(prev => 
+      prev.map(issue => 
+        issue.id === issueId ? { ...issue, ...updatedFields } : issue
+      )
+    );
+    console.log(`Updated issue ${issueId}:`, updatedFields);
   };
 
   const getDependencyTitles = (dependencies, allIssues) => {
@@ -71,6 +148,8 @@ const ListView = ({ project, filters, currentUserId, updateLocalProjectIssues })
       })
       .join(', ');
   };
+
+  const sortedIssues = [...localIssues].sort((a, b) => b.id - a.id);
 
   return (
     <ListViewContainer>
@@ -100,7 +179,7 @@ const ListView = ({ project, filters, currentUserId, updateLocalProjectIssues })
                   <TableCell colSpan={11}>
                     <InlineIssueEditor
                       issue={issue}
-                      projectUsers={project.users}
+                      projectUsers={users}
                       updateIssue={updatedFields => updateIssue(issue.id, updatedFields)}
                       onClose={() => setEditingIssueId(null)}
                     />
@@ -148,7 +227,7 @@ const ListView = ({ project, filters, currentUserId, updateLocalProjectIssues })
                 </TableCell>
                 <TableCell>{issue.startDate ? formatDate(issue.startDate) : '-'}</TableCell>
                 <TableCell>{issue.dueDate ? formatDate(issue.dueDate) : '-'}</TableCell>
-                <TableCell>{getDependencyTitles(issue.dependencies, project.issues)}</TableCell>
+                <TableCell>{getDependencyTitles(issue.dependencies, localIssues)}</TableCell>
               </TableRow>
             );
           })}
@@ -158,26 +237,26 @@ const ListView = ({ project, filters, currentUserId, updateLocalProjectIssues })
   );
 };
 
-const filterIssues = (projectIssues, filters, currentUserId) => {
-  const { searchTerm, userIds, myOnly, recent } = filters;
-  let issues = projectIssues;
+export const Default = () => (
+  <MemoryRouter>
+    <ListViewStory issues={mockIssues} users={mockUsers} showInlineEditor={false} />
+  </MemoryRouter>
+);
 
-  if (searchTerm) {
-    issues = issues.filter(issue => issue.title.toLowerCase().includes(searchTerm.toLowerCase()));
-  }
-  if (userIds.length > 0) {
-    issues = issues.filter(issue => intersection(issue.userIds, userIds).length > 0);
-  }
-  if (myOnly && currentUserId) {
-    issues = issues.filter(issue => issue.userIds.includes(currentUserId));
-  }
-  if (recent) {
-    issues = issues.filter(issue => moment(issue.updatedAt).isAfter(moment().subtract(3, 'days')));
-  }
-  return issues;
-};
+export const WithInlineEditor = () => (
+  <MemoryRouter>
+    <ListViewStory issues={mockIssues} users={mockUsers} showInlineEditor={true} />
+  </MemoryRouter>
+);
 
-ListView.propTypes = propTypes;
-ListView.defaultProps = defaultProps;
+export const EmptyList = () => (
+  <MemoryRouter>
+    <ListViewStory issues={[]} users={mockUsers} showInlineEditor={false} />
+  </MemoryRouter>
+);
 
-export default ListView;
+export const SingleIssue = () => (
+  <MemoryRouter>
+    <ListViewStory issues={[mockIssues[0]]} users={mockUsers} showInlineEditor={false} />
+  </MemoryRouter>
+);
