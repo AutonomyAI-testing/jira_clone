@@ -165,3 +165,10 @@ export const DependencyLine = styled.svg`
   pointer-events: none;
   z-index: 1;
 `;
+
+export const ActionsRow = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  justify-content: flex-end;
+`;

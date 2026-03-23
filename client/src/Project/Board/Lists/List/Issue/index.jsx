@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { useRouteMatch } from 'react-router-dom';
 import { Draggable } from 'react-beautiful-dnd';
 
-import { IssueTypeIcon, IssuePriorityIcon, Select, Icon, Avatar } from 'shared/components';
+import { IssueTypeIcon, IssuePriorityIcon, Select, Icon, Avatar, Button } from 'shared/components';
 import { IssueType, IssueTypeCopy, IssueStatus, IssueStatusCopy, IssuePriority, IssuePriorityCopy } from 'shared/constants/issues';
 import { KeyCodes } from 'shared/constants/keyCodes';
 import api from 'shared/utils/api';
 
-import { IssueLink, Issue, Title, Bottom, Assignees, AssigneeAvatar, TitleInput, EditingOverlay, FieldsRow, FieldLabel, SelectWrapper, AssigneesWrapper } from './Styles';
+import { IssueLink, Issue, Title, Bottom, Assignees, AssigneeAvatar, TitleInput, EditingOverlay, FieldsRow, FieldLabel, SelectWrapper, AssigneesWrapper, ActionsRow } from './Styles';
 
 const propTypes = {
   projectUsers: PropTypes.array.isRequired,
@@ -48,7 +48,7 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
     });
   };
 
-  const handleTitleSave = () => {
+  const handleSave = () => {
     const trimmedTitle = editedTitle.trim();
     if (trimmedTitle && trimmedTitle !== issue.title) {
       updateIssue({ title: trimmedTitle });
@@ -56,18 +56,18 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
     setIsEditing(false);
   };
 
+  const handleCancel = () => {
+    setEditedTitle(issue.title);
+    setIsEditing(false);
+  };
+
   const handleTitleKeyDown = (e) => {
     if (e.keyCode === KeyCodes.ENTER) {
       e.preventDefault();
-      handleTitleSave();
+      handleSave();
     } else if (e.keyCode === KeyCodes.ESCAPE) {
-      setEditedTitle(issue.title);
-      setIsEditing(false);
+      handleCancel();
     }
-  };
-
-  const handleTitleBlur = () => {
-    handleTitleSave();
   };
 
   const handleTypeChange = (type) => {
@@ -107,7 +107,6 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
                   ref={titleInputRef}
                   value={editedTitle}
                   onChange={(e) => setEditedTitle(e.target.value)}
-                  onBlur={handleTitleBlur}
                   onKeyDown={handleTitleKeyDown}
                   placeholder="Enter issue title"
                 />
@@ -225,6 +224,14 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index, updateLocalProjectI
                     />
                   </AssigneesWrapper>
                 </div>
+                <ActionsRow>
+                  <Button variant="empty" onClick={handleCancel}>
+                    Cancel
+                  </Button>
+                  <Button variant="primary" onClick={handleSave}>
+                    Save
+                  </Button>
+                </ActionsRow>
               </Fragment>
             ) : (
               <Fragment>

@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import { color, font, mixin } from 'shared/utils/styles';
+import { color, font, mixin, zIndexValues } from 'shared/utils/styles';
 import { Avatar } from 'shared/components';
 
 export const IssueLink = styled(Link)`
@@ -86,7 +86,6 @@ export const TitleInput = styled.input`
 
 export const FieldsRow = styled.div`
   position: relative;
-  z-index: 2;
   display: flex;
   gap: 12px;
   margin-top: 8px;
@@ -102,7 +101,6 @@ export const FieldLabel = styled.div`
 
 export const SelectWrapper = styled.div`
   position: relative;
-  z-index: 2;
   min-width: 120px;
   > div {
     font-size: 13px;
@@ -116,6 +114,12 @@ export const SelectWrapper = styled.div`
 
 export const AssigneesWrapper = styled.div`
   position: relative;
-  z-index: 2;
   margin-top: 4px;
+`;
+
+export const ActionsRow = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  justify-content: flex-end;
 `;

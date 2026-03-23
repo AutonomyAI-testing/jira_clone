@@ -5,7 +5,7 @@ import moment from 'moment';
 import { intersection } from 'lodash';
 
 import { IssueType, IssueTypeCopy, IssueStatus, IssueStatusCopy, IssuePriority, IssuePriorityCopy } from 'shared/constants/issues';
-import { Avatar, IssueTypeIcon, IssuePriorityIcon, Select, Icon } from 'shared/components';
+import { Avatar, IssueTypeIcon, IssuePriorityIcon, Select, Icon, Button } from 'shared/components';
 import { formatDate } from 'shared/utils/dateTime';
 import { KeyCodes } from 'shared/constants/keyCodes';
 import api from 'shared/utils/api';
@@ -21,6 +21,7 @@ import {
   IssueKey,
   IssueTitle,
   AssigneesContainer,
+  ActionsRow,
 } from './Styles';
 
 const propTypes = {
@@ -59,7 +60,7 @@ const ListView = ({ project, filters, currentUserId, updateLocalProjectIssues })
     });
   };
 
-  const handleTitleSave = (issueId, originalTitle) => {
+  const handleSave = (issueId, originalTitle) => {
     const trimmedTitle = editedTitle.trim();
     if (trimmedTitle && trimmedTitle !== originalTitle) {
       updateIssue(issueId, { title: trimmedTitle });
@@ -67,13 +68,17 @@ const ListView = ({ project, filters, currentUserId, updateLocalProjectIssues })
     setEditingIssueId(null);
   };
 
+  const handleCancel = (originalTitle) => {
+    setEditedTitle(originalTitle);
+    setEditingIssueId(null);
+  };
+
   const handleTitleKeyDown = (e, issueId, originalTitle) => {
     if (e.keyCode === KeyCodes.ENTER) {
       e.preventDefault();
-      handleTitleSave(issueId, originalTitle);
+      handleSave(issueId, originalTitle);
     } else if (e.keyCode === KeyCodes.ESCAPE) {
-      setEditedTitle(originalTitle);
-      setEditingIssueId(null);
+      handleCancel(originalTitle);
     }
   };
 
@@ -124,21 +129,30 @@ const ListView = ({ project, filters, currentUserId, updateLocalProjectIssues })
                 </TableCell>
                 <TableCell onClick={(e) => e.stopPropagation()}>
                   {isEditing ? (
-                    <input
-                      value={editedTitle}
-                      onChange={(e) => setEditedTitle(e.target.value)}
-                      onBlur={() => handleTitleSave(issue.id, issue.title)}
-                      onKeyDown={(e) => handleTitleKeyDown(e, issue.id, issue.title)}
-                      autoFocus
-                      style={{
-                        width: '100%',
-                        padding: '6px 8px',
-                        border: '1px solid #4C9AFF',
-                        borderRadius: 3,
-                        fontSize: 14,
-                        outline: 'none',
-                      }}
-                    />
+                    <div>
+                      <input
+                        value={editedTitle}
+                        onChange={(e) => setEditedTitle(e.target.value)}
+                        onKeyDown={(e) => handleTitleKeyDown(e, issue.id, issue.title)}
+                        autoFocus
+                        style={{
+                          width: '100%',
+                          padding: '6px 8px',
+                          border: '1px solid #4C9AFF',
+                          borderRadius: 3,
+                          fontSize: 14,
+                          outline: 'none',
+                        }}
+                      />
+                      <ActionsRow>
+                        <Button variant="empty" onClick={() => handleCancel(issue.title)}>
+                          Cancel
+                        </Button>
+                        <Button variant="primary" onClick={() => handleSave(issue.id, issue.title)}>
+                          Save
+                        </Button>
+                      </ActionsRow>
+                    </div>
                   ) : (
                     <IssueTitle>{issue.title}</IssueTitle>
                   )}

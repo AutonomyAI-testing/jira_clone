@@ -79,3 +79,10 @@ export const AssigneesContainer = styled.div`
   gap: 4px;
   align-items: center;
 `;
+
+export const ActionsRow = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  justify-content: flex-end;
+`;

@@ -5,7 +5,7 @@ import moment from 'moment';
 import { intersection } from 'lodash';
 
 import { IssueType, IssueTypeCopy, IssueStatus, IssueStatusCopy, IssuePriority, IssuePriorityCopy } from 'shared/constants/issues';
-import { IssueTypeIcon, IssuePriorityIcon, Avatar, Select, Icon } from 'shared/components';
+import { IssueTypeIcon, IssuePriorityIcon, Avatar, Select, Icon, Button } from 'shared/components';
 import { KeyCodes } from 'shared/constants/keyCodes';
 import api from 'shared/utils/api';
 
@@ -26,6 +26,7 @@ import {
   TaskBarInner,
   DependencyLine,
   AssigneesContainer,
+  ActionsRow,
 } from './Styles';
 
 const propTypes = {
@@ -123,7 +124,7 @@ const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }
     });
   };
 
-  const handleTitleSave = (issueId, originalTitle) => {
+  const handleSave = (issueId, originalTitle) => {
     const trimmedTitle = editedTitle.trim();
     if (trimmedTitle && trimmedTitle !== originalTitle) {
       updateIssue(issueId, { title: trimmedTitle });
@@ -131,13 +132,17 @@ const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }
     setEditingIssueId(null);
   };
 
+  const handleCancel = (originalTitle) => {
+    setEditedTitle(originalTitle);
+    setEditingIssueId(null);
+  };
+
   const handleTitleKeyDown = (e, issueId, originalTitle) => {
     if (e.keyCode === KeyCodes.ENTER) {
       e.preventDefault();
-      handleTitleSave(issueId, originalTitle);
+      handleSave(issueId, originalTitle);
     } else if (e.keyCode === KeyCodes.ESCAPE) {
-      setEditedTitle(originalTitle);
-      setEditingIssueId(null);
+      handleCancel(originalTitle);
     }
   };
 
@@ -181,7 +186,6 @@ const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }
                   <input
                     value={editedTitle}
                     onChange={(e) => setEditedTitle(e.target.value)}
-                    onBlur={() => handleTitleSave(issue.id, issue.title)}
                     onKeyDown={(e) => handleTitleKeyDown(e, issue.id, issue.title)}
                     autoFocus
                     style={{
@@ -290,6 +294,14 @@ const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }
                       );
                     }}
                   />
+                  <ActionsRow>
+                    <Button variant="empty" onClick={() => handleCancel(issue.title)}>
+                      Cancel
+                    </Button>
+                    <Button variant="primary" onClick={() => handleSave(issue.id, issue.title)}>
+                      Save
+                    </Button>
+                  </ActionsRow>
                 </div>
               ) : (
                 <div>
