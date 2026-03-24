@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
 
-import api from 'shared/utils/api';
-import { getStoredAuthToken, storeAuthToken } from 'shared/utils/authToken';
 import { Form } from 'shared/components';
 
 import {
@@ -21,27 +19,14 @@ import {
   SocialButton,
 } from './Styles';
 
-const Login = () => {
-  const history = useHistory();
-
-  useEffect(() => {
-    if (getStoredAuthToken()) {
-      history.push('/');
-    }
-  }, [history]);
-
-  const handleGuestLogin = () => {
-    history.push('/authenticate');
+// Inline story component that replicates the Login UI without hooks
+const LoginStory = () => {
+  const handleSocialLogin = (provider) => {
+    console.log(`Social login clicked: ${provider}`);
   };
 
-  const handleSocialLogin = async provider => {
-    try {
-      const { authToken } = await api.post(`/authentication/social/${provider}`);
-      storeAuthToken(authToken);
-      history.push('/');
-    } catch (error) {
-      // Error will be handled by the api utility with toast
-    }
+  const handleGuestLogin = () => {
+    console.log('Guest login clicked');
   };
 
   return (
@@ -76,17 +61,8 @@ const Login = () => {
             emailOrUsername: Form.is.required(),
             password: [Form.is.required(), Form.is.minLength(6)],
           }}
-          onSubmit={async (values, form) => {
-            try {
-              const { authToken } = await api.post('/authentication/login', {
-                emailOrUsername: values.emailOrUsername,
-                password: values.password,
-              });
-              storeAuthToken(authToken);
-              history.push('/');
-            } catch (error) {
-              Form.handleAPIError(error, form);
-            }
+          onSubmit={(values, form) => {
+            console.log('Login submitted:', values);
           }}
         >
           <Form.Element>
@@ -115,4 +91,23 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default {
+  title: 'Auth/Login',
+  component: LoginStory,
+  parameters: {
+    layout: 'fullscreen',
+  },
+  decorators: [
+    (Story) => (
+      <MemoryRouter>
+        <Story />
+      </MemoryRouter>
+    ),
+  ],
+};
+
+export const Default = {};
+
+export const SocialLoginButtons = {
+  name: 'Social Login Buttons',
+};

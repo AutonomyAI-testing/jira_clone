@@ -91,3 +91,30 @@ export const GuestLink = styled.span`
   ${font.size(14)}
   cursor: pointer;
 `;
+
+export const SocialButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+`;
+
+export const SocialButton = styled(Button)`
+  width: 100%;
+  height: 40px;
+  justify-content: center;
+  background: #fff;
+  border: 1px solid ${color.borderLightest};
+  color: ${color.textDarkest};
+  ${font.medium}
+  
+  &:not(:disabled) {
+    &:hover {
+      background: ${color.backgroundLight};
+      border-color: ${color.borderLight};
+    }
+    &:active {
+      background: ${color.backgroundMedium};
+    }
+  }
+`;
