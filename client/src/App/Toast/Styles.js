@@ -37,6 +37,7 @@ export const StyledToast = styled.div`
   pointer-events: all;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   min-width: 280px;
+  border: 2px solid ${color.danger} !important;
 
   &:hover {
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
