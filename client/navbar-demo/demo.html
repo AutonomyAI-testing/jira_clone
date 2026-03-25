@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navbar Component Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'CircularStdBook', sans-serif;
+      background: #f5f6f8;
+      min-height: 100vh;
+    }
+
+    @font-face {
+      font-family: 'CircularStdBook';
+      font-weight: normal;
+      src: local('CircularStdBook'), local('Circular Std Book');
+    }
+
+    @font-face {
+      font-family: 'CircularStdBold';
+      font-weight: bold;
+      src: local('CircularStdBold'), local('Circular Std Bold');
+    }
+
+    @font-face {
+      font-family: 'CircularStdMedium';
+      font-weight: 500;
+      src: local('CircularStdMedium'), local('Circular Std Medium');
+    }
+
+    /* Navbar Styles */
+    .navbar-container {
+      z-index: 300;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: #0747A6;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+      transform: translateZ(0);
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+    }
+
+    /* User Section */
+    .user-section {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.1s;
+      user-select: none;
+    }
+
+    .user-section:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .user-section.open {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Avatar */
+    .avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 100%;
+      background: #5784DA;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    /* User Info */
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .user-name {
+      font-family: 'CircularStdBold', sans-serif;
+      font-size: 14px;
+      color: #fff;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-email {
+      font-family: 'CircularStdBook', sans-serif;
+      font-size: 12px;
+      color: #deebff;
+      font-weight: normal;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Dropdown Menu */
+    .user-menu-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      right: 0;
+      background: #fff;
+      border-radius: 4px;
+      min-width: 200px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      z-index: 101;
+      display: none;
+      animation: slideDown 0.15s ease-out;
+    }
+
+    .user-menu-dropdown.open {
+      display: block;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .menu-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: background 0.1s;
+      color: #172b4d;
+      font-family: 'CircularStdBook', sans-serif;
+      font-size: 14px;
+      font-weight: normal;
+      border: none;
+      width: 100%;
+      text-align: left;
+      background: #fff;
+    }
+
+    .menu-item:hover {
+      background: #ebecf0;
+    }
+
+    .menu-item:active {
+      background: #dfe1e6;
+    }
+
+    .menu-item.danger {
+      color: #E13C3C;
+      border-top: 1px solid #dfe1e6;
+    }
+
+    .menu-item.danger:hover {
+      background: #fbecec;
+    }
+
+    /* Page content area */
+    .page-content {
+      margin-top: 56px;
+      padding: 20px;
+      min-height: calc(100vh - 56px);
+    }
+
+    .demo-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 4px;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    }
+
+    .demo-section h1 {
+      color: #172b4d;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+    .demo-section p {
+      color: #42526E;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .features-list {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+    }
+
+    .features-list li {
+      padding: 8px 0;
+      color: #42526E;
+      display: flex;
+      align-items: center;
+    }
+
+    .features-list li:before {
+      content: "✓";
+      display: inline-block;
+      margin-right: 12px;
+      color: #0B875B;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .instructions {
+      background: #EAF2FF;
+      padding: 15px;
+      border-radius: 4px;
+      border-left: 3px solid #0052cc;
+      margin: 20px 0;
+      color: #0747A6;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar Component -->
+  <nav class="navbar-container">
+    <div class="navbar-left">
+      <!-- Logo or other left navbar content can go here -->
+    </div>
+    <div class="navbar-right">
+      <div class="user-section" id="userSection">
+        <div class="avatar">JD</div>
+        <div class="user-info">
+          <div class="user-name">John Doe</div>
+          <div class="user-email">john@example.com</div>
+        </div>
+      </div>
+      <div class="user-menu-dropdown" id="userMenu">
+        <button class="menu-item" id="settingsBtn">Settings</button>
+        <button class="menu-item danger" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="page-content">
+    <div class="demo-section">
+      <h1>Navbar Component Demo</h1>
+      <p>This is a demonstration of the new Navbar component with user profile and dropdown menu.</p>
+
+      <div class="instructions">
+        <strong>💡 Try clicking on the user avatar or name to toggle the dropdown menu.</strong>
+      </div>
+
+      <h2 style="color: #172b4d; margin-top: 30px; margin-bottom: 15px; font-size: 18px;">Features Demonstrated:</h2>
+      <ul class="features-list">
+        <li>Fixed sticky navbar positioned at the top with dark blue background (#0747A6)</li>
+        <li>User avatar (32x32px circle with initials "JD")</li>
+        <li>User name and email display</li>
+        <li>Clickable user section with hover state</li>
+        <li>Dropdown menu with Settings and Logout options</li>
+        <li>Menu closes when clicking outside (click anywhere in the page)</li>
+        <li>Smooth animations and transitions</li>
+        <li>Z-index layering for proper stacking context (navbar: 300, dropdown: 101)</li>
+      </ul>
+
+      <h2 style="color: #172b4d; margin-top: 30px; margin-bottom: 15px; font-size: 18px;">Component Properties:</h2>
+      <ul class="features-list">
+        <li>Height: 56px</li>
+        <li>Position: Fixed at top (top: 0)</li>
+        <li>Background: Dark blue primary (#0747A6)</li>
+        <li>Box shadow: 0 1px 1px rgba(0, 0, 0, 0.2)</li>
+        <li>Responsive layout with flexbox</li>
+      </ul>
+
+      <h2 style="color: #172b4d; margin-top: 30px; margin-bottom: 15px; font-size: 18px;">Design Tokens Used:</h2>
+      <ul class="features-list">
+        <li>Background: backgroundDarkPrimary (#0747A6)</li>
+        <li>Text: textLight (#8993a4), textDarkest (#172b4d)</li>
+        <li>Secondary text: #deebff</li>
+        <li>Hover state: rgba(255, 255, 255, 0.1)</li>
+        <li>Danger text: danger (#E13C3C)</li>
+      </ul>
+
+      <h2 style="color: #172b4d; margin-top: 30px; margin-bottom: 15px; font-size: 18px;">Implementation Notes:</h2>
+      <p style="color: #42526E; margin-bottom: 15px;">
+        The Navbar component is a top-level navigation bar that includes:
+      </p>
+      <ul class="features-list">
+        <li>NavbarContainer: Fixed, full-width, flex layout with proper z-index</li>
+        <li>UserSection: Clickable profile area showing avatar, name, and email</li>
+        <li>UserMenu: Dropdown menu with Settings and Logout options</li>
+        <li>Styled components using design system colors and typography</li>
+        <li>useCurrentUser hook for fetching user data</li>
+        <li>useHistory hook for navigation on logout and settings</li>
+        <li>onOutsideClick hook for closing menu on external clicks</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Navbar dropdown functionality
+    const userSection = document.getElementById('userSection');
+    const userMenu = document.getElementById('userMenu');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // Toggle menu on user section click
+    userSection.addEventListener('click', function(e) {
+      e.stopPropagation();
+      userMenu.classList.toggle('open');
+      userSection.classList.toggle('open');
+    });
+
+    // Close menu when clicking settings
+    settingsBtn.addEventListener('click', function() {
+      userMenu.classList.remove('open');
+      userSection.classList.remove('open');
+      alert('Settings clicked - In real app, would navigate to /project/settings');
+    });
+
+    // Close menu when clicking logout
+    logoutBtn.addEventListener('click', function() {
+      userMenu.classList.remove('open');
+      userSection.classList.remove('open');
+      alert('Logout clicked - In real app, would remove auth token and navigate to /authenticate');
+    });
+
+    // Close menu when clicking anywhere else
+    document.addEventListener('click', function(e) {
+      if (!userSection.contains(e.target) && !userMenu.contains(e.target)) {
+        userMenu.classList.remove('open');
+        userSection.classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>

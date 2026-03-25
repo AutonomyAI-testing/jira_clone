@@ -64,6 +64,7 @@ export const sizes = {
 
 export const zIndexValues = {
   modal: 1000,
+  navbar: 300,
   dropdown: 101,
   navLeft: 100,
 };

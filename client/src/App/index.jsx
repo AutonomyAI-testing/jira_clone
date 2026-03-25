@@ -3,6 +3,7 @@ import React, { Fragment } from 'react';
 import NormalizeStyles from './NormalizeStyles';
 import BaseStyles from './BaseStyles';
 import Toast from './Toast';
+import Navbar from './Navbar';
 import Routes from './Routes';
 
 // We're importing .css because @font-face in styled-components causes font files
@@ -14,6 +15,7 @@ const App = () => (
   <Fragment>
     <NormalizeStyles />
     <BaseStyles />
+    <Navbar />
     <Toast />
     <Routes />
   </Fragment>
