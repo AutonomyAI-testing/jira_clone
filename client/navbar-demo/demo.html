@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar Component Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: #0f1419;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 20px;
+            z-index: 300;
+        }
+        
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+        
+        .user-section:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #0052cc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .user-name {
+            color: #deebff;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        /* Dropdown Menu */
+        .menu-container {
+            position: absolute;
+            top: 56px;
+            right: 20px;
+            background: #fff;
+            border-radius: 4px;
+            min-width: 200px;
+            box-shadow: 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31);
+            z-index: 300;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .menu-container.open {
+            display: flex;
+        }
+        
+        .user-info {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e8ebf2;
+        }
+        
+        .user-email {
+            color: #626f86;
+            font-size: 12px;
+            margin-top: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.1s;
+            color: #161b22;
+            font-size: 13px;
+        }
+        
+        .menu-item:hover {
+            background: #f5f5f5;
+        }
+        
+        .menu-item-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            color: #626f86;
+        }
+        
+        /* Demo Area */
+        .demo-container {
+            margin-top: 70px;
+            padding: 20px;
+            background: white;
+        }
+        
+        .demo-section {
+            margin-bottom: 40px;
+        }
+        
+        h2 {
+            margin-bottom: 20px;
+            color: #0f1419;
+        }
+        
+        .description {
+            margin-bottom: 10px;
+            color: #626f86;
+            font-size: 14px;
+        }
+        
+        .demo-box {
+            border: 1px solid #e8ebf2;
+            border-radius: 4px;
+            padding: 20px;
+            background: #fafbfc;
+            height: 200px;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="user-section" onclick="toggleMenu(event)">
+            <div class="avatar">JD</div>
+            <span class="user-name">John Doe</span>
+        </div>
+        
+        <!-- Dropdown Menu -->
+        <div class="menu-container" id="userMenu">
+            <div class="user-info">
+                <div class="user-name">John Doe</div>
+                <div class="user-email">john.doe@example.com</div>
+            </div>
+            
+            <div class="menu-item" onclick="handleLogout()">
+                <div class="menu-item-icon">←</div>
+                <span>Logout</span>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Demo Content -->
+    <div class="demo-container">
+        <div class="demo-section">
+            <h2>Navbar Component Demo</h2>
+            <p class="description">Fixed sticky navbar at the top with user profile dropdown menu.</p>
+            <div class="demo-box">
+                <p style="color: #626f86; font-size: 13px; margin-top: 80px;">
+                    ↑ Click on "John Doe" above to open the dropdown menu
+                </p>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h3 style="font-size: 16px; margin-bottom: 10px;">Features:</h3>
+            <ul style="color: #626f86; font-size: 14px; margin-left: 20px;">
+                <li>Fixed position navbar at top with dark blue background (#0f1419)</li>
+                <li>User avatar (circular with initials) + name display</li>
+                <li>Clickable user section to toggle dropdown menu</li>
+                <li>Dropdown shows user info (name + email) and logout option</li>
+                <li>Responsive hover states on user section and menu items</li>
+                <li>Z-index: 300 to stay above other content</li>
+                <li>Click outside menu to close it (arrow-left icon for logout)</li>
+            </ul>
+        </div>
+        
+        <div class="demo-section">
+            <h3 style="font-size: 16px; margin-bottom: 10px;">Component Structure:</h3>
+            <ul style="color: #626f86; font-size: 14px; margin-left: 20px;">
+                <li><strong>Navbar:</strong> Fixed container with flex layout, right-aligned content</li>
+                <li><strong>UserSection:</strong> Avatar + name, clickable, hover state with background</li>
+                <li><strong>Avatar:</strong> 32x32px circle with user initials</li>
+                <li><strong>UserMenu:</strong> Dropdown positioned below user section</li>
+                <li><strong>MenuItems:</strong> User info + logout option</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        function toggleMenu(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('userMenu');
+            menu.classList.toggle('open');
+        }
+        
+        function handleLogout() {
+            alert('Logout button clicked. In the actual app, this would:\n1. Remove stored auth token\n2. Redirect to /authenticate');
+            document.getElementById('userMenu').classList.remove('open');
+        }
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('userMenu');
+            if (!event.target.closest('.user-section') && !event.target.closest('.menu-container')) {
+                menu.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>
