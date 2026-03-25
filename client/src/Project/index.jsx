@@ -7,6 +7,7 @@ import { createQueryParamModalHelpers } from 'shared/utils/queryParamModal';
 import { PageLoader, PageError, Modal } from 'shared/components';
 
 import NavbarLeft from './NavbarLeft';
+import NavbarTop from './NavbarTop';
 import Sidebar from './Sidebar';
 import Board from './Board';
 import IssueSearch from './IssueSearch';
@@ -39,6 +40,11 @@ const Project = () => {
 
   return (
     <ProjectPage>
+      <NavbarTop
+        issueSearchModalOpen={issueSearchModalHelpers.open}
+        issueCreateModalOpen={issueCreateModalHelpers.open}
+      />
+
       <NavbarLeft
         issueSearchModalOpen={issueSearchModalHelpers.open}
         issueCreateModalOpen={issueCreateModalHelpers.open}
