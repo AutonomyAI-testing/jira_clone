@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NavbarTop Component Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      background: #f5f5f5;
+    }
+
+    /* NavbarTop Styles - replicated from Styles.js */
+    .navbar-top {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      background: #0052cc;
+      z-index: 310;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex: 1;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      color: #fff;
+    }
+
+    .logo-container:hover {
+      opacity: 0.8;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .logo-text {
+      color: #fff;
+      font-weight: 700;
+      font-size: 18px;
+      margin-left: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      margin-left: 32px;
+    }
+
+    .nav-item {
+      color: #fff;
+      background: transparent;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 400;
+      font-size: 14px;
+      border-radius: 3px;
+    }
+
+    .nav-item:hover {
+      background: rgba(0, 82, 204, 0.8);
+    }
+
+    .nav-item:active {
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-left: auto;
+    }
+
+    .user-profile-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: none;
+      padding: 4px 8px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.2s;
+      color: #fff;
+    }
+
+    .user-profile-button:hover {
+      background: rgba(0, 82, 204, 0.8);
+    }
+
+    .user-profile-button:active {
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .avatar-image {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-name {
+      color: #fff;
+      font-weight: 400;
+      font-size: 13px;
+      max-width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .separator {
+      width: 1px;
+      height: 24px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Main content area with red outline */
+    .main-content-area {
+      border: 3px solid red;
+      padding: 30px;
+      margin-top: 80px;
+      margin-left: 20px;
+      margin-right: 20px;
+      background: white;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .main-content-text {
+      font-size: 16px;
+      color: #333;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <!-- NavbarTop Component -->
+  <div class="navbar-top">
+    <div class="navbar-left">
+      <div class="logo-container">
+        <div class="logo-icon">J</div>
+        <span class="logo-text">Jira</span>
+      </div>
+      <div class="nav-menu">
+        <button class="nav-item" title="Search issues">Filters</button>
+        <button class="nav-item" title="Create new issue">Create</button>
+      </div>
+    </div>
+    <div class="navbar-right">
+      <button class="user-profile-button" title="Lord Gaben">
+        <div class="avatar">
+          <img
+            class="avatar-image"
+            src="https://i.ibb.co/6n0hLML/lord-gaben.jpg"
+            alt="Lord Gaben"
+          />
+        </div>
+        <span class="user-name">Lord Gaben</span>
+      </button>
+      <div class="separator"></div>
+    </div>
+  </div>
+
+  <!-- Main Content Area with Red Outline -->
+  <div class="main-content-area">
+    <p class="main-content-text">Main content area goes here</p>
+  </div>
+
+  <script>
+    // Add click handlers for demo purposes
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('logo-container')) {
+        console.log('Logo clicked - would navigate to /project');
+      }
+      if (e.target.closest('.nav-item')) {
+        const text = e.target.textContent;
+        if (text === 'Filters') {
+          console.log('Filters clicked - would open search modal');
+        } else if (text === 'Create') {
+          console.log('Create clicked - would open create modal');
+        }
+      }
+      if (e.target.closest('.user-profile-button')) {
+        console.log('User profile clicked - would open user menu');
+      }
+    });
+  </script>
+</body>
+</html>
