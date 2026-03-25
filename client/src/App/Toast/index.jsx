@@ -3,7 +3,21 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import pubsub from 'sweet-pubsub';
 import { uniqueId } from 'lodash';
 
-import { Container, StyledToast, CloseIcon, Title, Message } from './Styles';
+import { Container, StyledToast, CloseIcon, Title, Message, IconContainer, ToastContent } from './Styles';
+
+const getToastIcon = type => {
+  const icons = {
+    success: '\u2713',
+    danger: '\u2715',
+    warning: '\u26a0',
+    info: '\u2139',
+  };
+  return icons[type] || icons.success;
+};
+
+const getToastRole = type => {
+  return type === 'danger' ? 'alert' : 'status';
+};
 
 const Toast = () => {
   const [toasts, setToasts] = useState([]);
@@ -30,18 +44,43 @@ const Toast = () => {
     setToasts(currentToasts => currentToasts.filter(toast => toast.id !== id));
   };
 
+  const handleCloseKeyDown = (e, id) => {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+      e.preventDefault();
+      removeToast(id);
+    }
+  };
+
   return (
-    <Container>
+    <Container aria-live="polite" aria-atomic="true">
       <TransitionGroup>
-        {toasts.map(toast => (
-          <CSSTransition key={toast.id} classNames="jira-toast" timeout={200}>
-            <StyledToast key={toast.id} type={toast.type} onClick={() => removeToast(toast.id)}>
-              <CloseIcon type="close" />
-              {toast.title && <Title>{toast.title}</Title>}
-              {toast.message && <Message>{toast.message}</Message>}
-            </StyledToast>
-          </CSSTransition>
-        ))}
+        {toasts.map(toast => {
+          const ariaLabel = `${toast.type} notification: ${toast.title}${toast.message ? ` - ${toast.message}` : ''}`;
+          return (
+            <CSSTransition key={toast.id} classNames="jira-toast" timeout={200}>
+              <StyledToast
+                key={toast.id}
+                type={toast.type}
+                role={getToastRole(toast.type)}
+                aria-label={ariaLabel}
+              >
+                <IconContainer>{getToastIcon(toast.type)}</IconContainer>
+                <ToastContent>
+                  {toast.title && <Title>{toast.title}</Title>}
+                  {toast.message && <Message>{toast.message}</Message>}
+                </ToastContent>
+                <CloseIcon
+                  type="close"
+                  tabIndex={0}
+                  role="button"
+                  aria-label="Close notification"
+                  onKeyDown={e => handleCloseKeyDown(e, toast.id)}
+                  onClick={() => removeToast(toast.id)}
+                />
+              </StyledToast>
+            </CSSTransition>
+          );
+        })}
       </TransitionGroup>
     </Container>
   );

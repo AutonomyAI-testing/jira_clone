@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Toast Component Demo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { margin-bottom: 30px; color: #333; }
+        h2 { margin-bottom: 15px; color: #555; font-size: 18px; }
+        .demo-section { margin-bottom: 40px; background: white; padding: 20px; border-radius: 8px; }
+        .toast { position: relative; display: flex; margin-bottom: 10px; width: 300px; padding: 15px 20px; border-radius: 3px; color: #fff; cursor: pointer; transition: all 0.15s; }
+        .toast.success { background: #0B875B; }
+        .toast.danger { background: #E13C3C; }
+        .toast.warning { background: #F89C1C; }
+        .toast.info { background: #0052cc; }
+        .toast-icon { flex-shrink: 0; width: 20px; margin-right: 10px; font-size: 14px; display: flex; align-items: flex-start; padding-top: 1px; }
+        .toast-content { display: flex; flex-direction: column; flex-grow: 1; }
+        .toast-title { font-weight: bold; font-size: 15px; }
+        .toast-message { padding: 8px 0 0 0; white-space: pre-wrap; font-size: 14px; }
+        .close-btn { position: absolute; top: 10px; right: 10px; font-size: 20px; cursor: pointer; background: none; border: none; color: #fff; padding: 0; }
+        .close-btn:hover { opacity: 0.8; }
+        .close-btn:focus { outline: 2px solid rgba(255, 255, 255, 0.5); outline-offset: 2px; }
+        .description { color: #666; font-size: 13px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Toast Component - All Types</h1>
+        
+        <div class="demo-section">
+            <h2>Success Toast (✓ Check mark)</h2>
+            <div class="toast success" role="status" aria-label="success notification: Success! Your changes have been saved.">
+                <div class="toast-icon">✓</div>
+                <div class="toast-content">
+                    <div class="toast-title">Success!</div>
+                    <div class="toast-message">Your changes have been saved.</div>
+                </div>
+                <button class="close-btn" tabindex="0" role="button" aria-label="Close notification">×</button>
+            </div>
+            <div class="description">Green background with white check mark (✓). Role: status</div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Danger Toast (✕ X mark)</h2>
+            <div class="toast danger" role="alert" aria-label="danger notification: Error! Something went wrong. Please try again.">
+                <div class="toast-icon">✕</div>
+                <div class="toast-content">
+                    <div class="toast-title">Error!</div>
+                    <div class="toast-message">Something went wrong. Please try again.</div>
+                </div>
+                <button class="close-btn" tabindex="0" role="button" aria-label="Close notification">×</button>
+            </div>
+            <div class="description">Red background with white X mark (✕). Role: alert</div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Warning Toast (⚠ Warning symbol)</h2>
+            <div class="toast warning" role="status" aria-label="warning notification: Warning. Please review before proceeding.">
+                <div class="toast-icon">⚠</div>
+                <div class="toast-content">
+                    <div class="toast-title">Warning</div>
+                    <div class="toast-message">Please review before proceeding.</div>
+                </div>
+                <button class="close-btn" tabindex="0" role="button" aria-label="Close notification">×</button>
+            </div>
+            <div class="description">Orange background with warning symbol (⚠). Role: status</div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Info Toast (ⓘ Information symbol)</h2>
+            <div class="toast info" role="status" aria-label="info notification: Info. Here is some information you should know.">
+                <div class="toast-icon">ⓘ</div>
+                <div class="toast-content">
+                    <div class="toast-title">Info</div>
+                    <div class="toast-message">Here is some information you should know.</div>
+                </div>
+                <button class="close-btn" tabindex="0" role="button" aria-label="Close notification">×</button>
+            </div>
+            <div class="description">Blue background with info symbol (ⓘ). Role: status</div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Keyboard Navigation Test</h2>
+            <p style="margin-bottom: 10px; color: #666;">Try tabbing to the close button (×) and pressing Enter/Space/Escape to test keyboard interaction:</p>
+            <div class="toast success" role="status" aria-label="success notification: Keyboard Test. Tab to the close button and press Enter.">
+                <div class="toast-icon">✓</div>
+                <div class="toast-content">
+                    <div class="toast-title">Keyboard Test</div>
+                    <div class="toast-message">Tab to the close button and press Enter</div>
+                </div>
+                <button class="close-btn" tabindex="0" role="button" aria-label="Close notification">×</button>
+            </div>
+            <div class="description">Use Tab key to focus the close button (×), then press Enter, Space, or Escape</div>
+        </div>
+    </div>
+</body>
+</html>
