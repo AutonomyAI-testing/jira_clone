@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import pubsub from 'sweet-pubsub';
 import Toast from './index';
 
@@ -11,9 +11,10 @@ export default {
 };
 
 // Auto-display wrapper that shows toasts on mount
+// Emits toasts with staggered timing to demonstrate all states without user interaction
 const ToastAutoDisplayWrapper = () => {
   useEffect(() => {
-    // Emit toasts with staggered timing to show them one by one
+    // Stagger toast emissions to prevent overlap and show each toast clearly
     const successTimer = setTimeout(() => {
       pubsub.emit('toast', {
         type: 'success',
@@ -71,7 +72,8 @@ const ToastAutoDisplayWrapper = () => {
   );
 };
 
-// Interactive wrapper for testing button clicks
+// Interactive wrapper allowing users to trigger toasts via buttons
+// Demonstrates the toast's dismissible behavior and auto-dismiss timer
 const ToastInteractiveWrapper = () => {
   return (
     <div>

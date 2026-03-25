@@ -20,7 +20,7 @@ export const Default = () => {
         pubsub.emit('toast', {
           type: 'success',
           title: 'Success Toast',
-          message: 'This is a success notification with red outline.',
+          message: 'This is a success notification showing the positive state.',
           duration: 0,
         });
       }, 100)
@@ -31,7 +31,7 @@ export const Default = () => {
         pubsub.emit('toast', {
           type: 'danger',
           title: 'Danger Toast',
-          message: 'This is a danger notification with red outline.',
+          message: 'This is a danger notification showing the error state.',
           duration: 0,
         });
       }, 500)
@@ -42,7 +42,7 @@ export const Default = () => {
         pubsub.emit('toast', {
           type: 'warning',
           title: 'Warning Toast',
-          message: 'This is a warning notification with red outline.',
+          message: 'This is a warning notification showing the caution state.',
           duration: 0,
         });
       }, 900)
@@ -61,7 +61,7 @@ export const Success = () => {
     pubsub.emit('toast', {
       type: 'success',
       title: 'Success',
-      message: 'Operation completed successfully with red outline.',
+      message: 'Operation completed successfully.',
       duration: 0,
     });
   }, []);
@@ -74,7 +74,7 @@ export const Danger = () => {
     pubsub.emit('toast', {
       type: 'danger',
       title: 'Error',
-      message: 'Something went wrong with red outline.',
+      message: 'Something went wrong. Please try again.',
       duration: 0,
     });
   }, []);
@@ -87,7 +87,7 @@ export const Warning = () => {
     pubsub.emit('toast', {
       type: 'warning',
       title: 'Warning',
-      message: 'Please be careful with red outline.',
+      message: 'Please proceed with caution.',
       duration: 0,
     });
   }, []);

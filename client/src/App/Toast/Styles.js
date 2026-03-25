@@ -12,6 +12,8 @@ export const Container = styled.div`
   pointer-events: none;
 `;
 
+// Type-based background colors for toast notifications
+// Extracted as a separate object for maintainability and clarity
 const typeStyles = {
   success: css`
     background: ${color.success};
@@ -30,20 +32,21 @@ export const StyledToast = styled.div`
   padding: 16px 16px 16px 16px;
   border-radius: 4px;
   color: #fff;
-  ${props => typeStyles[props.type] || typeStyles.success}
+  ${props => typeStyles[props.type] || typeStyles.success} /* Apply type-specific background */
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   ${mixin.hardwareAccelerate}
   pointer-events: all;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   min-width: 280px;
-  border: 2px solid ${color.danger} !important;
 
   &:hover {
+    /* Enhanced shadow and subtle lift on hover for better interaction feedback */
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     transform: translateY(-2px);
   }
 
+  /* Slide-in animation from the right using transform for better performance */
   &.jira-toast-enter,
   &.jira-toast-exit.jira-toast-exit-active {
     opacity: 0;
