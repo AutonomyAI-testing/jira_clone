@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toast Component Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #172b4d;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .demo-box {
+            background: white;
+            padding: 20px;
+            border-radius: 3px;
+            box-shadow: 0 1px 1px rgba(9, 30, 66, 0.13), 0 0 1px rgba(9, 30, 66, 0.13);
+        }
+
+        .demo-box h2 {
+            color: #172b4d;
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .demo-box p {
+            color: #5e6c84;
+            font-size: 13px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .demo-box button {
+            background: #0052cc;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background 0.15s;
+        }
+
+        .demo-box button:hover {
+            background: #003a99;
+        }
+
+        /* Toast Container - Fixed positioning at top right */
+        .toast-container {
+            z-index: 1000;
+            position: fixed;
+            right: 30px;
+            top: 50px;
+        }
+
+        /* Toast Styles */
+        .toast {
+            position: relative;
+            margin-bottom: 5px;
+            width: 300px;
+            padding: 15px 20px;
+            border-radius: 3px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.15s;
+            animation: slideInRight 0.2s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutRight {
+            to {
+                opacity: 0;
+                transform: translateX(10px);
+            }
+        }
+
+        .toast.removing {
+            animation: slideOutRight 0.2s ease-in forwards;
+        }
+
+        /* Project color palette from styles.js */
+        .toast.success {
+            background: #0B875B;
+        }
+
+        .toast.danger {
+            background: #E13C3C;
+        }
+
+        .toast.warning {
+            background: #F89C1C;
+        }
+
+        .toast.info {
+            background: #0052cc;
+        }
+
+        .toast-close {
+            position: absolute;
+            top: 13px;
+            right: 14px;
+            font-size: 22px;
+            cursor: pointer;
+            color: #fff;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast-title {
+            padding-right: 22px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .toast-message {
+            padding: 8px 10px 0 0;
+            white-space: pre-wrap;
+            font-size: 14px;
+            font-weight: 500;
+            word-wrap: break-word;
+        }
+
+        .all-types-demo {
+            background: white;
+            padding: 40px;
+            border-radius: 3px;
+            box-shadow: 0 1px 1px rgba(9, 30, 66, 0.13), 0 0 1px rgba(9, 30, 66, 0.13);
+            text-align: center;
+        }
+
+        .all-types-demo h2 {
+            color: #172b4d;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .all-types-demo p {
+            color: #5e6c84;
+            margin-bottom: 20px;
+        }
+
+        .all-types-demo button {
+            background: #0052cc;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.15s;
+        }
+
+        .all-types-demo button:hover {
+            background: #003a99;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>Toast Component Demo</h1>
+        
+        <div class="demo-grid">
+            <div class="demo-box">
+                <h2>Success Toast</h2>
+                <p>Display a success message when an operation completes successfully.</p>
+                <button onclick="showToast('success', 'Success', 'Operation completed successfully')">Show Success Toast</button>
+            </div>
+
+            <div class="demo-box">
+                <h2>Danger Toast</h2>
+                <p>Display an error message when something goes wrong.</p>
+                <button onclick="showToast('danger', 'Error', 'Something went wrong. Please try again.')">Show Danger Toast</button>
+            </div>
+
+            <div class="demo-box">
+                <h2>Warning Toast</h2>
+                <p>Display a warning message for important notices.</p>
+                <button onclick="showToast('warning', 'Warning', 'Please review this action before proceeding.')">Show Warning Toast</button>
+            </div>
+
+            <div class="demo-box">
+                <h2>Info Toast</h2>
+                <p>Display an informational message to the user.</p>
+                <button onclick="showToast('info', 'Info', 'This is an informational message for you.')">Show Info Toast</button>
+            </div>
+
+            <div class="demo-box">
+                <h2>Toast Without Message</h2>
+                <p>Toast can display just a title without any message.</p>
+                <button onclick="showToast('success', 'Saved', '')">Show Title-Only Toast</button>
+            </div>
+
+            <div class="demo-box">
+                <h2>Toast Without Title</h2>
+                <p>Toast can display just a message without any title.</p>
+                <button onclick="showToast('info', '', 'This is just a message without a title.')">Show Message-Only Toast</button>
+            </div>
+        </div>
+
+        <div class="all-types-demo">
+            <h2>Show All Toast Types</h2>
+            <p>Click to display all four toast types in sequence in the fixed top-right corner</p>
+            <button onclick="showAllToasts()">Display All Toast Types</button>
+        </div>
+    </div>
+
+    <!-- Toast Container at fixed top-right position -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        function showToast(type, title, message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            let content = '';
+            if (title) {
+                content += `<div class="toast-title">${escapeHtml(title)}</div>`;
+            }
+            if (message) {
+                content += `<div class="toast-message">${escapeHtml(message)}</div>`;
+            }
+            
+            toast.innerHTML = `
+                ${content}
+                <button class="toast-close" onclick="this.parentElement.remove()">✕</button>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.classList.add('removing');
+                    setTimeout(() => toast.remove(), 200);
+                }
+            }, 5000);
+        }
+
+        function showAllToasts() {
+            // Clear any existing toasts first
+            const container = document.getElementById('toastContainer');
+            container.innerHTML = '';
+
+            const types = [
+                { type: 'success', title: 'Success', message: '✓ Operation completed successfully' },
+                { type: 'danger', title: 'Error', message: '✕ Something went wrong' },
+                { type: 'warning', title: 'Warning', message: '⚠ Please review this action' },
+                { type: 'info', title: 'Info', message: 'ℹ This is an informational message' }
+            ];
+
+            types.forEach((toast, index) => {
+                setTimeout(() => {
+                    showToast(toast.type, toast.title, toast.message);
+                }, index * 300);
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
