@@ -37,10 +37,13 @@ const Project = () => {
     }));
   };
 
+  const currentCreateMode = issueCreateModalHelpers.getMode() || 'quick';
+  const createModalWidth = currentCreateMode === 'detailed' ? 800 : 500;
+
   return (
     <ProjectPage>
       <NavbarLeft
-        issueSearchModalOpen={issueSearchModalHelpers.open}
+        issueSearchModalOpen={issueCreateModalHelpers.open}
         issueCreateModalOpen={issueCreateModalHelpers.open}
       />
 
@@ -61,7 +64,7 @@ const Project = () => {
         <Modal
           isOpen
           testid="modal:issue-create"
-          width={800}
+          width={createModalWidth}
           withCloseIcon={false}
           onClose={issueCreateModalHelpers.close}
           renderContent={modal => (
@@ -70,6 +73,8 @@ const Project = () => {
               fetchProject={fetchProject}
               onCreate={() => history.push(`${match.url}/board`)}
               modalClose={modal.close}
+              mode={currentCreateMode}
+              onModeChange={issueCreateModalHelpers.setMode}
             />
           )}
         />
