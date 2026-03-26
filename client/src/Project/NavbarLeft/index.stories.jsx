@@ -4,7 +4,9 @@ import ProjectNavbarLeft from './index';
 export default {
   title: 'Project/NavbarLeft',
   component: ProjectNavbarLeft,
-  parameters: { layout: 'fullscreen' },
+  parameters: {
+    layout: 'fullscreen',
+  },
 };
 
 export const Default = () => (
@@ -15,10 +17,13 @@ export const Default = () => (
 );
 
 export const Hover = () => (
-  <div style={{ width: '200px' }}>
+  <div style={{ height: '100vh' }}>
     <ProjectNavbarLeft
       issueSearchModalOpen={() => {}}
       issueCreateModalOpen={() => {}}
     />
+    <div style={{ marginLeft: 200, padding: 20 }}>
+      <p>Hover over the sidebar to see the expanded state with text labels.</p>
+    </div>
   </div>
 );
