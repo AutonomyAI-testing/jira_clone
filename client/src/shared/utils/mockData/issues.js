@@ -148,3 +148,11 @@ export const getIssueById = id => {
   const issue = issuesData.issues.find(item => item.id === parseInt(id));
   return issue || issuesData.issues[0]; // Fallback to first issue if not found
 };
+
+// Add a new comment to an issue
+export const addCommentToIssue = comment => {
+  const issue = issuesData.issues.find(item => item.id === comment.issueId);
+  if (issue) {
+    issue.comments.push(comment);
+  }
+};

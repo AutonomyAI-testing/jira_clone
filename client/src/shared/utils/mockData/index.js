@@ -1,6 +1,6 @@
 import { projectData } from './project';
 import { currentUserData } from './currentUser';
-import { issuesData, getIssueById } from './issues';
+import { issuesData, getIssueById, addCommentToIssue } from './issues';
 import { authenticationData } from './authentication';
 
 // Mock data router - matches URL patterns to mock data
@@ -56,6 +56,8 @@ const routeMockData = (method, url, variables) => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
+      // Persist the comment to the issue's comments array
+      addCommentToIssue(newComment);
       return { comment: newComment };
     }
   }
