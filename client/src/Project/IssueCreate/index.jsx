@@ -93,7 +93,7 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose, mode,
       }}
     >
       <FormElement>
-        <FormHeading>{mode === 'quick' ? 'Quick Create' : 'Create issue'}</FormHeading>
+        <FormHeading isQuickCreate={mode === 'quick'}>{mode === 'quick' ? 'Quick Create' : 'Create issue'}</FormHeading>
         {mode === 'quick' ? (
           <QuickFormContent>
             <Form.Field.Input
