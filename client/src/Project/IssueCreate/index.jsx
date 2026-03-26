@@ -192,7 +192,7 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose, mode,
         )}
         <Actions>
           <ActionButton type="submit" variant="primary" isWorking={isCreating}>
-            {mode === 'quick' ? 'Create Issue' : 'Create Issue'}
+            Create Issue
           </ActionButton>
           <ActionButton type="button" variant="empty" onClick={modalClose}>
             Cancel

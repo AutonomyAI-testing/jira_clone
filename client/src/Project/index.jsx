@@ -43,7 +43,7 @@ const Project = () => {
   return (
     <ProjectPage>
       <NavbarLeft
-        issueSearchModalOpen={issueCreateModalHelpers.open}
+        issueSearchModalOpen={issueSearchModalHelpers.open}
         issueCreateModalOpen={issueCreateModalHelpers.open}
       />
 
