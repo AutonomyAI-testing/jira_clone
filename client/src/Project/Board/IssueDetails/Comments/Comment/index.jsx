@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import api from 'shared/utils/api';
 import toast from 'shared/utils/toast';
+import useCurrentUser from 'shared/hooks/currentUser';
 import { formatDateTimeConversational } from 'shared/utils/dateTime';
 import { ConfirmModal } from 'shared/components';
 
@@ -16,6 +17,7 @@ import {
   Body,
   EditLink,
   DeleteLink,
+  ReplyLink,
 } from './Styles';
 
 const propTypes = {
@@ -27,6 +29,9 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
   const [isFormOpen, setFormOpen] = useState(false);
   const [isUpdating, setUpdating] = useState(false);
   const [body, setBody] = useState(comment.body);
+  const [isReplyFormOpen, setReplyFormOpen] = useState(false);
+  const [isReplying, setReplying] = useState(false);
+  const [replyBody, setReplyBody] = useState('');
 
   const handleCommentDelete = async () => {
     try {
@@ -44,6 +49,21 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
       await fetchIssue();
       setUpdating(false);
       setFormOpen(false);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  const { currentUser } = useCurrentUser();
+
+  const handleReplyCreate = async () => {
+    try {
+      setReplying(true);
+      await api.post(`/comments`, { body: replyBody, issueId: comment.issueId, userId: currentUser.id });
+      await fetchIssue();
+      setReplying(false);
+      setReplyFormOpen(false);
+      setReplyBody('');
     } catch (error) {
       toast.error(error);
     }
@@ -75,7 +95,18 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
               onConfirm={handleCommentDelete}
               renderLink={modal => <DeleteLink onClick={modal.open}>Delete</DeleteLink>}
             />
+            <ReplyLink onClick={() => setReplyFormOpen(true)}>Reply</ReplyLink>
           </Fragment>
+        )}
+
+        {isReplyFormOpen && (
+          <BodyForm
+            value={replyBody}
+            onChange={setReplyBody}
+            isWorking={isReplying}
+            onSubmit={handleReplyCreate}
+            onCancel={() => setReplyFormOpen(false)}
+          />
         )}
       </Content>
     </Comment>

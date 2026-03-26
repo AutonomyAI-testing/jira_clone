@@ -64,3 +64,13 @@ export const DeleteLink = styled.div`
     display: inline-block;
   }
 `;
+
+export const ReplyLink = styled.div`
+  ${actionLinkStyles}
+  &:before {
+    position: relative;
+    right: 6px;
+    content: '·';
+    display: inline-block;
+  }
+`;
