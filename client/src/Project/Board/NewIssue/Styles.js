@@ -3,8 +3,57 @@ import styled from 'styled-components';
 import { color, font } from 'shared/utils/styles';
 import { Button, Form } from 'shared/components';
 
+export const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: ${color.backgroundLightest};
+`;
+
+export const PageHeader = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 20px 40px;
+  border-bottom: 1px solid ${color.borderLightest};
+  background-color: ${color.backgroundLight};
+  gap: 20px;
+`;
+
+export const BackButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  margin: -4px -8px;
+  color: ${color.textDark};
+  transition: color 0.1s;
+  ${font.size(14)}
+
+  &:hover {
+    color: ${color.textDarkest};
+  }
+
+  span {
+    font-weight: 500;
+  }
+`;
+
+export const PageTitle = styled.h1`
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  ${font.size(24)}
+  ${font.bold}
+  color: ${color.textDarkest};
+`;
+
 export const FormElement = styled(Form.Element)`
   padding: 25px 40px 35px;
+  flex: 1;
+  overflow-y: auto;
 `;
 
 export const FormContent = styled.div`
@@ -21,11 +70,6 @@ export const LeftColumn = styled.div`
 export const RightColumn = styled.div`
   width: 320px;
   flex-shrink: 0;
-`;
-
-export const FormHeading = styled.div`
-  padding-bottom: 15px;
-  ${font.size(21)}
 `;
 
 export const SelectItem = styled.div`
@@ -60,5 +104,4 @@ export const Actions = styled.div`
 
 export const ActionButton = styled(Button)`
   margin-left: 10px;
-  color: ${color.danger};
 `;
