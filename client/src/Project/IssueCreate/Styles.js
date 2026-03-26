@@ -60,4 +60,5 @@ export const Actions = styled.div`
 
 export const ActionButton = styled(Button)`
   margin-left: 10px;
+  color: ${color.danger};
 `;
