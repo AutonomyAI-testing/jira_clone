@@ -25,6 +25,8 @@ import {
   Divider,
   Actions,
   ActionButton,
+  QuickFormContent,
+  MoreOptionsLink,
 } from './Styles';
 
 const propTypes = {
@@ -32,12 +34,32 @@ const propTypes = {
   fetchProject: PropTypes.func.isRequired,
   onCreate: PropTypes.func.isRequired,
   modalClose: PropTypes.func.isRequired,
+  mode: PropTypes.oneOf(['quick', 'detailed']),
+  onModeChange: PropTypes.func,
 };
 
-const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => {
+const defaultProps = {
+  mode: 'quick',
+  onModeChange: undefined,
+};
+
+const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose, mode, onModeChange }) => {
   const [{ isCreating }, createIssue] = useApi.post('/issues');
 
   const { currentUserId } = useCurrentUser();
+
+  const validationsMap = {
+    quick: {
+      type: Form.is.required(),
+      title: [Form.is.required(), Form.is.maxLength(200)],
+    },
+    detailed: {
+      type: Form.is.required(),
+      title: [Form.is.required(), Form.is.maxLength(200)],
+      reporterId: Form.is.required(),
+      priority: Form.is.required(),
+    },
+  };
 
   return (
     <Form
@@ -53,12 +75,7 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
         dueDate: undefined,
         dependencies: [],
       }}
-      validations={{
-        type: Form.is.required(),
-        title: [Form.is.required(), Form.is.maxLength(200)],
-        reporterId: Form.is.required(),
-        priority: Form.is.required(),
-      }}
+      validations={validationsMap[mode]}
       onSubmit={async (values, form) => {
         try {
           await createIssue({
@@ -76,74 +93,103 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
       }}
     >
       <FormElement>
-        <FormHeading>Create issue</FormHeading>
-        <FormContent>
-          <LeftColumn>
+        <FormHeading isQuickCreate={mode === 'quick'}>{mode === 'quick' ? 'Quick Create' : 'Create issue'}</FormHeading>
+        {mode === 'quick' ? (
+          <QuickFormContent>
             <Form.Field.Input
               name="title"
               label="Short Summary"
               tip="Concisely summarize the issue in one or two sentences."
             />
-            <Form.Field.TextEditor
-              name="description"
-              label="Description"
-              tip="Describe the issue in as much detail as you'd like."
-            />
-          </LeftColumn>
-          <RightColumn>
-            <SectionTitle>Issue Type</SectionTitle>
             <Form.Field.Select
               name="type"
-              label=""
+              label="Issue Type"
               tip="Start typing to get a list of possible matches."
               options={typeOptions}
               renderOption={renderType}
               renderValue={renderType}
             />
-            <SectionTitle>Priority</SectionTitle>
             <Form.Field.Select
               name="priority"
-              label=""
+              label="Priority"
               tip="Priority in relation to other issues."
               options={priorityOptions}
               renderOption={renderPriority}
               renderValue={renderPriority}
             />
-            <SectionTitle>Reporter</SectionTitle>
-            <Form.Field.Select
-              name="reporterId"
-              label=""
-              options={userOptions(project)}
-              renderOption={renderUser(project)}
-              renderValue={renderUser(project)}
-            />
-            <SectionTitle>Assignees</SectionTitle>
-            <Form.Field.Select
-              isMulti
-              name="userIds"
-              label=""
-              tip="People who are responsible for dealing with this issue."
-              options={userOptions(project)}
-              renderOption={renderUser(project)}
-              renderValue={renderUser(project)}
-            />
-            <Divider />
-            <SectionTitle>Start Date</SectionTitle>
-            <Form.Field.DatePicker name="startDate" label="" withTime={false} />
-            <SectionTitle>Due Date</SectionTitle>
-            <Form.Field.DatePicker name="dueDate" label="" withTime={false} />
-            <SectionTitle>Dependencies</SectionTitle>
-            <Form.Field.Select
-              isMulti
-              name="dependencies"
-              label=""
-              tip="Select issues that must be completed before this one."
-              options={issueOptions(project)}
-              renderOption={renderIssue(project)}
-              renderValue={renderIssue(project)}
-            />
-          </RightColumn>
-        </FormContent>
+            <MoreOptionsLink onClick={() => onModeChange && onModeChange('detailed')}>
+              More Options
+            </MoreOptionsLink>
+          </QuickFormContent>
+        ) : (
+          <FormContent>
+            <LeftColumn>
+              <Form.Field.Input
+                name="title"
+                label="Short Summary"
+                tip="Concisely summarize the issue in one or two sentences."
+              />
+              <Form.Field.TextEditor
+                name="description"
+                label="Description"
+                tip="Describe the issue in as much detail as you'd like."
+              />
+            </LeftColumn>
+            <RightColumn>
+              <SectionTitle>Issue Type</SectionTitle>
+              <Form.Field.Select
+                name="type"
+                label=""
+                tip="Start typing to get a list of possible matches."
+                options={typeOptions}
+                renderOption={renderType}
+                renderValue={renderType}
+              />
+              <SectionTitle>Priority</SectionTitle>
+              <Form.Field.Select
+                name="priority"
+                label=""
+                tip="Priority in relation to other issues."
+                options={priorityOptions}
+                renderOption={renderPriority}
+                renderValue={renderPriority}
+              />
+              <SectionTitle>Reporter</SectionTitle>
+              <Form.Field.Select
+                name="reporterId"
+                label=""
+                options={userOptions(project)}
+                renderOption={renderUser(project)}
+                renderValue={renderUser(project)}
+              />
+              <SectionTitle>Assignees</SectionTitle>
+              <Form.Field.Select
+                isMulti
+                name="userIds"
+                label=""
+                tip="People who are responsible for dealing with this issue."
+                options={userOptions(project)}
+                renderOption={renderUser(project)}
+                renderValue={renderUser(project)}
+              />
+              <Divider />
+              <SectionTitle>Start Date</SectionTitle>
+              <Form.Field.DatePicker name="startDate" label="" withTime={false} />
+              <SectionTitle>Due Date</SectionTitle>
+              <Form.Field.DatePicker name="dueDate" label="" withTime={false} />
+              <SectionTitle>Dependencies</SectionTitle>
+              <Form.Field.Select
+                isMulti
+                name="dependencies"
+                label=""
+                tip="Select issues that must be completed before this one."
+                options={issueOptions(project)}
+                renderOption={renderIssue(project)}
+                renderValue={renderIssue(project)}
+              />
+            </RightColumn>
+          </FormContent>
+        )}
         <Actions>
           <ActionButton type="submit" variant="primary" isWorking={isCreating}>
             Create Issue
@@ -219,5 +265,6 @@ const renderIssue = project => ({ value: issueId, removeOptionValue }) => {
 };
 
 ProjectIssueCreate.propTypes = propTypes;
+ProjectIssueCreate.defaultProps = defaultProps;
 
 export default ProjectIssueCreate;

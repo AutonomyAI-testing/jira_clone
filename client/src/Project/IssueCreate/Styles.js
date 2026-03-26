@@ -26,6 +26,7 @@ export const RightColumn = styled.div`
 export const FormHeading = styled.div`
   padding-bottom: 15px;
   ${font.size(21)}
+  ${props => props.isQuickCreate && `color: ${color.danger};`}
 `;
 
 export const SelectItem = styled.div`
@@ -60,4 +61,32 @@ export const Actions = styled.div`
 
 export const ActionButton = styled(Button)`
   margin-left: 10px;
+`;
+
+export const QuickFormContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+`;
+
+export const MoreOptionsLink = styled.button`
+  align-self: flex-start;
+  padding: 0;
+  background: none;
+  border: none;
+  color: ${color.primary};
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.15s;
+
+  &:hover {
+    color: ${color.primary};
+    text-decoration: underline;
+  }
+
+  &:focus {
+    outline: none;
+  }
 `;
