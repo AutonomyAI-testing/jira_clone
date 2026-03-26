@@ -42,6 +42,7 @@ const ProjectBoardNewIssue = ({ project, fetchProject }) => {
   const match = useRouteMatch();
   const { currentUserId } = useCurrentUser();
 
+  // Navigate back to the parent board route by removing the /new-issue segment
   const handleGoBack = () => {
     history.push(`${match.url.replace('/new-issue', '')}`);
   };
@@ -50,7 +51,7 @@ const ProjectBoardNewIssue = ({ project, fetchProject }) => {
     <PageContainer>
       <PageHeader>
         <BackButton onClick={handleGoBack}>
-          <Icon type="back-arrow" size={24} />
+          <Icon type="arrow-left" size={24} />
           <span>Back to board</span>
         </BackButton>
         <PageTitle>Create Issue</PageTitle>
@@ -202,6 +203,8 @@ const renderPriority = ({ value: priority }) => (
   </SelectItem>
 );
 
+// Render user option with avatar and name.
+// In multi-select mode, includes a clickable close icon to remove the selection.
 const renderUser = project => ({ value: userId, removeOptionValue }) => {
   const user = project.users.find(({ id }) => id === userId);
 
@@ -218,6 +221,8 @@ const renderUser = project => ({ value: userId, removeOptionValue }) => {
   );
 };
 
+// Render issue option with type icon and title.
+// In multi-select mode, includes a clickable close icon to remove the selection.
 const renderIssue = project => ({ value: issueId, removeOptionValue }) => {
   const issue = project.issues.find(({ id }) => id === issueId);
 
