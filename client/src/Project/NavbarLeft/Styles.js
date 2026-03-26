@@ -12,6 +12,7 @@ export const NavLeft = styled.aside`
   overflow-x: hidden;
   height: 100vh;
   width: ${sizes.appNavBarLeftWidth}px;
+  // Using success color for the navbar background for visual prominence
   background: ${color.success};
   transition: all 0.1s;
   ${mixin.hardwareAccelerate}
