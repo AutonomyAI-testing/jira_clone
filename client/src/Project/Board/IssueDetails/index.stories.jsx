@@ -7,6 +7,7 @@ import Type from './Type';
 import Delete from './Delete';
 import Title from './Title';
 import Description from './Description';
+import Attachments from './Attachments';
 import Comments from './Comments';
 import Status from './Status';
 import AssigneesReporter from './AssigneesReporter';
@@ -112,6 +113,7 @@ const MockedIssueDetails = ({ issue, projectUsers, fetchProject, updateLocalProj
         <Left>
           <Title issue={issue} updateIssue={updateIssue} />
           <Description issue={issue} updateIssue={updateIssue} />
+          <Attachments issue={issue} />
           <Comments issue={issue} fetchIssue={() => {}} />
         </Left>
         <Right>
