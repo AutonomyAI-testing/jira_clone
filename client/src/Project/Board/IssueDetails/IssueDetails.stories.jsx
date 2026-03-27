@@ -1,15 +1,81 @@
 import React from 'react';
+
 import ProjectBoardIssueDetails from './index';
 import Loader from './Loader';
 
-export default {
-  title: 'Project/Board/IssueDetails',
-  component: ProjectBoardIssueDetails,
-  parameters: { layout: 'padded' },
+// Mock issue data
+const mockIssue = {
+  id: 101,
+  title: 'Add new navigation component',
+  type: 'story',
+  status: 'inprogress',
+  priority: '3',
+  listPosition: 1,
+  description: '<p>Create a responsive navigation component with mobile support. This component should handle both desktop and mobile layouts seamlessly.</p>',
+  descriptionText: 'Create a responsive navigation component with mobile support',
+  estimate: 16,
+  timeSpent: 8,
+  timeRemaining: 8,
+  reporterId: 1,
+  projectId: 1,
+  userIds: [1, 2],
+  users: [
+    {
+      id: 1,
+      name: 'Lord Gaben',
+      avatarUrl: 'https://i.ibb.co/6n0hLML/lord-gaben.jpg',
+    },
+    {
+      id: 2,
+      name: 'Pickle Rick',
+      avatarUrl: 'https://i.ibb.co/7JM1P0V/pickle-rick.png',
+    },
+  ],
+  comments: [
+    {
+      id: 201,
+      body: 'Great progress so far! The theme switcher looks good.',
+      issueId: 101,
+      userId: 2,
+      user: {
+        id: 2,
+        name: 'Pickle Rick',
+        avatarUrl: 'https://i.ibb.co/7JM1P0V/pickle-rick.png',
+      },
+      createdAt: '2020-06-05T00:00:00.000Z',
+      updatedAt: '2020-06-05T00:00:00.000Z',
+    },
+  ],
+  startDate: '2020-06-01T00:00:00.000Z',
+  dueDate: '2020-06-15T00:00:00.000Z',
+  dependencies: [],
+  createdAt: '2020-06-01T00:00:00.000Z',
+  updatedAt: '2020-06-05T00:00:00.000Z',
 };
 
-// Mock issue data based on project mock data
-const mockUsers = [
+const mockBugIssue = {
+  ...mockIssue,
+  id: 102,
+  title: 'Fix login form validation',
+  type: 'bug',
+  status: 'selected',
+  priority: '2',
+  description: '<p>Login form does not validate email format correctly. Users can submit invalid email addresses.</p>',
+  descriptionText: 'Login form does not validate email format correctly',
+};
+
+const mockTaskIssue = {
+  ...mockIssue,
+  id: 103,
+  title: 'Update API documentation',
+  type: 'task',
+  status: 'done',
+  priority: '4',
+  description: '<p>Update all API endpoints documentation with examples and proper response schemas.</p>',
+  descriptionText: 'Update all API endpoints documentation with examples',
+};
+
+const projectUsers = [
   {
     id: 1,
     name: 'Lord Gaben',
@@ -30,90 +96,18 @@ const mockUsers = [
   },
 ];
 
-const mockStoryIssue = {
-  id: 103,
-  title: 'Implement dark mode',
-  type: 'story',
-  status: 'inprogress',
-  priority: '3',
-  listPosition: 1,
-  description: 'Add dark mode theme support across the application',
-  descriptionText: 'Add dark mode theme support across the application',
-  estimate: 16,
-  timeSpent: 8,
-  timeRemaining: 8,
-  reporterId: 1,
-  projectId: 1,
-  userIds: [1, 3],
-  users: [mockUsers[0], mockUsers[2]],
-  comments: [
-    {
-      id: 201,
-      body: 'Great progress so far! The theme switcher looks good.',
-      issueId: 103,
-      userId: 2,
-      user: mockUsers[1],
-      createdAt: '2020-06-05T00:00:00.000Z',
-      updatedAt: '2020-06-05T00:00:00.000Z',
-    },
-  ],
-  startDate: '2020-06-01T00:00:00.000Z',
-  dueDate: '2020-06-20T00:00:00.000Z',
-  createdAt: '2020-06-03T00:00:00.000Z',
-  updatedAt: '2020-06-03T00:00:00.000Z',
-};
-
-const mockBugIssue = {
-  id: 102,
-  title: 'Fix login form validation',
-  type: 'bug',
-  status: 'selected',
-  priority: '2',
-  listPosition: 1,
-  description: 'Login form does not validate email format correctly',
-  descriptionText: 'Login form does not validate email format correctly',
-  estimate: 4,
-  timeSpent: 2,
-  timeRemaining: 2,
-  reporterId: 2,
-  projectId: 1,
-  userIds: [2],
-  users: [mockUsers[1]],
-  comments: [],
-  startDate: '2020-06-02T00:00:00.000Z',
-  dueDate: '2020-06-05T00:00:00.000Z',
-  createdAt: '2020-06-02T00:00:00.000Z',
-  updatedAt: '2020-06-02T00:00:00.000Z',
-};
-
-const mockTaskIssue = {
-  id: 101,
-  title: 'Add new navigation component',
-  type: 'task',
-  status: 'backlog',
-  priority: '3',
-  listPosition: 1,
-  description: 'Create a responsive navigation component with mobile support',
-  descriptionText: 'Create a responsive navigation component with mobile support',
-  estimate: 8,
-  timeSpent: 0,
-  timeRemaining: 8,
-  reporterId: 1,
-  projectId: 1,
-  userIds: [1, 2],
-  users: [mockUsers[0], mockUsers[1]],
-  comments: [],
-  startDate: '2020-06-01T00:00:00.000Z',
-  dueDate: '2020-06-10T00:00:00.000Z',
-  createdAt: '2020-06-01T00:00:00.000Z',
-  updatedAt: '2020-06-01T00:00:00.000Z',
-};
-
-// Mock component that renders the issue directly without API call
-const MockIssueDetails = ({ issue }) => {
-  // Import the actual styled components and sub-components
+// Create a wrapper that mocks the useApi hook behavior
+const MockedIssueDetails = ({ issue, isLoading = false, hasError = false }) => {
+  // We need to mock the useApi hook by providing data directly
+  // Since the component uses useApi internally, we'll render a simplified version
+  // that just shows the layout with the Attachments component
+  
+  if (isLoading) {
+    return <Loader />;
+  }
+  
+  // Import and render sub-components directly for testing
   const Type = require('./Type').default;
-  const Delete = require('./Delete').default;
   const Title = require('./Title').default;
   const Description = require('./Description').default;
   const Attachments = require('./Attachments').default;
@@ -125,12 +119,14 @@ const MockIssueDetails = ({ issue }) => {
   const Dates = require('./Dates').default;
   const { TopActions, TopActionsRight, Content, Left, Right } = require('./Styles');
   const { CopyLinkButton, Button, AboutTooltip } = require('shared/components');
-
-  const updateIssue = () => {};
-  const fetchIssue = () => {};
-  const fetchProject = () => {};
-  const modalClose = () => {};
-
+  const Delete = require('./Delete').default;
+  
+  const noop = () => {};
+  const updateIssue = noop;
+  const fetchProject = noop;
+  const fetchIssue = noop;
+  const modalClose = noop;
+  
   return (
     <React.Fragment>
       <TopActions>
@@ -157,7 +153,7 @@ const MockIssueDetails = ({ issue }) => {
         </Left>
         <Right>
           <Status issue={issue} updateIssue={updateIssue} />
-          <AssigneesReporter issue={issue} updateIssue={updateIssue} projectUsers={mockUsers} />
+          <AssigneesReporter issue={issue} updateIssue={updateIssue} projectUsers={projectUsers} />
           <Priority issue={issue} updateIssue={updateIssue} />
           <EstimateTracking issue={issue} updateIssue={updateIssue} />
           <Dates issue={issue} />
@@ -167,26 +163,36 @@ const MockIssueDetails = ({ issue }) => {
   );
 };
 
-export const Default = () => (
-  <div style={{ width: 1000, padding: 20, backgroundColor: '#fff' }}>
-    <MockIssueDetails issue={mockStoryIssue} />
-  </div>
-);
+export default {
+  title: 'Project/Board/IssueDetails',
+  component: MockedIssueDetails,
+  parameters: {
+    layout: 'padded',
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        width: '1040px', 
+        maxWidth: '100%',
+        background: '#fff',
+        borderRadius: '3px',
+        boxShadow: 'rgba(0, 0, 0, 0.2) 0px 5px 20px',
+        padding: '24px 35px 60px',
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
 
-export const BugIssue = () => (
-  <div style={{ width: 1000, padding: 20, backgroundColor: '#fff' }}>
-    <MockIssueDetails issue={mockBugIssue} />
-  </div>
-);
+// Default story - story issue type
+export const Default = () => <MockedIssueDetails issue={mockIssue} />;
 
-export const TaskIssue = () => (
-  <div style={{ width: 1000, padding: 20, backgroundColor: '#fff' }}>
-    <MockIssueDetails issue={mockTaskIssue} />
-  </div>
-);
+// Bug issue type
+export const BugIssue = () => <MockedIssueDetails issue={mockBugIssue} />;
 
-export const Loading = () => (
-  <div style={{ width: 1000, padding: 20, backgroundColor: '#fff' }}>
-    <Loader />
-  </div>
-);
+// Task issue type
+export const TaskIssue = () => <MockedIssueDetails issue={mockTaskIssue} />;
+
+// Loading state
+export const Loading = () => <MockedIssueDetails isLoading={true} />;
