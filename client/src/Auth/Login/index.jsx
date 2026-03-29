@@ -24,6 +24,7 @@ import {
 const Login = () => {
   const history = useHistory();
 
+  // Redirect to home if user is already authenticated
   useEffect(() => {
     if (getStoredAuthToken()) {
       history.push('/');
@@ -40,7 +41,7 @@ const Login = () => {
       storeAuthToken(authToken);
       history.push('/');
     } catch (error) {
-      // Error will be handled by the api utility with toast
+      // API errors are handled by the api utility with toast notifications
     }
   };
 
@@ -66,7 +67,7 @@ const Login = () => {
           </SocialButton>
         </SocialButtonsContainer>
 
-        <Divider style={{ marginTop: '24px', marginBottom: '24px' }}>
+        <Divider>
           <DividerText>or</DividerText>
         </Divider>
 
@@ -85,6 +86,7 @@ const Login = () => {
               storeAuthToken(authToken);
               history.push('/');
             } catch (error) {
+              // Form handles API errors and displays field-specific validation messages
               Form.handleAPIError(error, form);
             }
           }}

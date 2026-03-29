@@ -36,7 +36,7 @@ export const AppName = styled.span`
 export const FormContainer = styled.div`
   width: 100%;
   max-width: 400px;
-  background: #fff;
+  background: ${color.backgroundLightest};
   border-radius: 8px;
   padding: 40px;
   ${mixin.boxShadowMedium}
@@ -69,7 +69,7 @@ export const Divider = styled.div`
   align-items: center;
   width: 100%;
   max-width: 400px;
-  margin-bottom: 16px;
+  margin: 24px 0;
 
   &::before,
   &::after {
@@ -103,11 +103,11 @@ export const SocialButton = styled(Button)`
   width: 100%;
   height: 40px;
   justify-content: center;
-  background: #fff;
+  background: ${color.backgroundLightest};
   border: 1px solid ${color.borderLightest};
   color: ${color.textDarkest};
   ${font.medium}
-  
+
   &:not(:disabled) {
     &:hover {
       background: ${color.backgroundLight};

@@ -19,14 +19,17 @@ import {
   SocialButton,
 } from './Styles';
 
-// Inline story component that replicates the Login UI without hooks
+/**
+ * Story component that demonstrates the Login UI in Storybook.
+ * Uses no-op handlers since we're only demonstrating the visual appearance.
+ */
 const LoginStory = () => {
-  const handleSocialLogin = (provider) => {
-    console.log(`Social login clicked: ${provider}`);
+  const handleSocialLogin = () => {
+    // No-op in Storybook - visual demonstration only
   };
 
   const handleGuestLogin = () => {
-    console.log('Guest login clicked');
+    // No-op in Storybook - visual demonstration only
   };
 
   return (
@@ -51,7 +54,7 @@ const LoginStory = () => {
           </SocialButton>
         </SocialButtonsContainer>
 
-        <Divider style={{ marginTop: '24px', marginBottom: '24px' }}>
+        <Divider>
           <DividerText>or</DividerText>
         </Divider>
 
@@ -61,8 +64,8 @@ const LoginStory = () => {
             emailOrUsername: Form.is.required(),
             password: [Form.is.required(), Form.is.minLength(6)],
           }}
-          onSubmit={(values, form) => {
-            console.log('Login submitted:', values);
+          onSubmit={() => {
+            // No-op in Storybook - visual demonstration only
           }}
         >
           <Form.Element>
@@ -98,7 +101,7 @@ export default {
     layout: 'fullscreen',
   },
   decorators: [
-    (Story) => (
+    Story => (
       <MemoryRouter>
         <Story />
       </MemoryRouter>
