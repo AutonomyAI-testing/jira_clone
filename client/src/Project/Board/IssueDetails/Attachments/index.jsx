@@ -1,24 +1,28 @@
 import React, { useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 
 import { Button } from 'shared/components';
 
 import { Attachments, Title, AttachmentButton, AttachmentList, AttachmentItem, FileName, RemoveButton } from './Styles';
 
-const propTypes = {
-  issue: PropTypes.object.isRequired,
-};
-
-const ProjectBoardIssueDetailsAttachments = ({ issue }) => {
+/**
+ * ProjectBoardIssueDetailsAttachments renders an attachments section for an issue.
+ * Allows users to select and manage file attachments with visual feedback.
+ * File upload to server is handled separately and can be integrated as needed.
+ */
+const ProjectBoardIssueDetailsAttachments = () => {
   const fileInputRef = useRef(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
 
+  // Trigger hidden file input when "Add attachment" button is clicked
   const handleAttachmentClick = () => {
-    fileInputRef.current?.click();
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
-  const handleFileChange = event => {
-    const files = event.target.files;
+  // Process selected files and add them to the list
+  const handleFileChange = (event) => {
+    const { files } = event.target;
     if (files && files.length > 0) {
       const fileArray = Array.from(files).map((file, index) => ({
         id: `${Date.now()}_${index}`,
@@ -27,12 +31,12 @@ const ProjectBoardIssueDetailsAttachments = ({ issue }) => {
         file,
       }));
       setSelectedFiles(prev => [...prev, ...fileArray]);
-      // TODO: Handle file upload logic here
-      console.log('Files selected:', fileArray);
+      // File upload integration will be implemented in a follow-up
     }
   };
 
-  const handleRemoveFile = fileId => {
+  // Remove file from selected files list
+  const handleRemoveFile = (fileId) => {
     setSelectedFiles(prev => prev.filter(file => file.id !== fileId));
   };
 
@@ -56,7 +60,13 @@ const ProjectBoardIssueDetailsAttachments = ({ issue }) => {
           {selectedFiles.map(file => (
             <AttachmentItem key={file.id}>
               <FileName>{file.name}</FileName>
-              <RemoveButton onClick={() => handleRemoveFile(file.id)}>×</RemoveButton>
+              <RemoveButton
+                type="button"
+                aria-label={`Remove ${file.name}`}
+                onClick={() => handleRemoveFile(file.id)}
+              >
+                ×
+              </RemoveButton>
             </AttachmentItem>
           ))}
         </AttachmentList>
@@ -64,7 +74,5 @@ const ProjectBoardIssueDetailsAttachments = ({ issue }) => {
     </Attachments>
   );
 };
-
-ProjectBoardIssueDetailsAttachments.propTypes = propTypes;
 
 export default ProjectBoardIssueDetailsAttachments;
