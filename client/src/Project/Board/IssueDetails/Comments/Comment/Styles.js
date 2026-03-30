@@ -64,3 +64,24 @@ export const DeleteLink = styled.div`
     display: inline-block;
   }
 `;
+
+export const ReplyLink = styled.div`
+  ${actionLinkStyles}
+  &:before {
+    position: relative;
+    right: 6px;
+    content: '·';
+    display: inline-block;
+  }
+`;
+
+export const Replies = styled.div`
+  margin-top: 20px;
+  padding-left: 44px;
+`;
+
+export const Reply = styled.div`
+  position: relative;
+  margin-top: 20px;
+  ${font.size(15)}
+`;

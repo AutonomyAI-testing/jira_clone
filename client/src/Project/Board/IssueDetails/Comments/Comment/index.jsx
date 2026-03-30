@@ -5,6 +5,7 @@ import api from 'shared/utils/api';
 import toast from 'shared/utils/toast';
 import { formatDateTimeConversational } from 'shared/utils/dateTime';
 import { ConfirmModal } from 'shared/components';
+import useCurrentUser from 'shared/hooks/currentUser';
 
 import BodyForm from '../BodyForm';
 import {
@@ -16,6 +17,9 @@ import {
   Body,
   EditLink,
   DeleteLink,
+  ReplyLink,
+  Replies,
+  Reply,
 } from './Styles';
 
 const propTypes = {
@@ -27,6 +31,11 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
   const [isFormOpen, setFormOpen] = useState(false);
   const [isUpdating, setUpdating] = useState(false);
   const [body, setBody] = useState(comment.body);
+  const [isReplyFormOpen, setReplyFormOpen] = useState(false);
+  const [isCreatingReply, setCreatingReply] = useState(false);
+  const [replyBody, setReplyBody] = useState('');
+
+  const { currentUser } = useCurrentUser();
 
   const handleCommentDelete = async () => {
     try {
@@ -44,6 +53,32 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
       await fetchIssue();
       setUpdating(false);
       setFormOpen(false);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  const handleReplyCreate = async () => {
+    try {
+      setCreatingReply(true);
+      await api.post(`/comments/${comment.id}/replies`, {
+        body: replyBody,
+        userId: currentUser.id,
+      });
+      await fetchIssue();
+      setReplyBody('');
+      setReplyFormOpen(false);
+      setCreatingReply(false);
+    } catch (error) {
+      toast.error(error);
+      setCreatingReply(false);
+    }
+  };
+
+  const handleReplyDelete = async replyId => {
+    try {
+      await api.delete(`/comments/${comment.id}/replies/${replyId}`);
+      await fetchIssue();
     } catch (error) {
       toast.error(error);
     }
@@ -75,9 +110,47 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
               onConfirm={handleCommentDelete}
               renderLink={modal => <DeleteLink onClick={modal.open}>Delete</DeleteLink>}
             />
+            <ReplyLink onClick={() => setReplyFormOpen(!isReplyFormOpen)}>Reply</ReplyLink>
           </Fragment>
         )}
       </Content>
+
+      {isReplyFormOpen && (
+        <Replies>
+          <BodyForm
+            value={replyBody}
+            onChange={setReplyBody}
+            isWorking={isCreatingReply}
+            onSubmit={handleReplyCreate}
+            onCancel={() => {
+              setReplyFormOpen(false);
+              setReplyBody('');
+            }}
+          />
+        </Replies>
+      )}
+
+      {comment.replies && comment.replies.length > 0 && (
+        <Replies>
+          {comment.replies.map(reply => (
+            <Reply key={reply.id}>
+              <UserAvatar name={reply.user.name} avatarUrl={reply.user.avatarUrl} />
+              <Content>
+                <Username>{reply.user.name}</Username>
+                <CreatedAt>{formatDateTimeConversational(reply.createdAt)}</CreatedAt>
+                <Body>{reply.body}</Body>
+                <ConfirmModal
+                  title="Are you sure you want to delete this reply?"
+                  message="Once you delete, it's gone for good."
+                  confirmText="Delete reply"
+                  onConfirm={() => handleReplyDelete(reply.id)}
+                  renderLink={modal => <DeleteLink onClick={modal.open}>Delete</DeleteLink>}
+                />
+              </Content>
+            </Reply>
+          ))}
+        </Replies>
+      )}
     </Comment>
   );
 };
