@@ -5,8 +5,9 @@
   "license": "MIT",
   "scripts": {
     "pre-commit": "cd client && npm run pre-commit",
-    "install-dependencies": "cd client && npm install",
-    "build": "cd client && npm run build",
+    "install-dependencies": "cd client && npm install && cd ../api && npm install",
+    "postinstall": "cd client && CYPRESS_INSTALL_BINARY=0 npm install && cd ../api && npm install",
+    "build": "cd client && CYPRESS_INSTALL_BINARY=0 npm install && npm run build",
     "start:production": "cd client && npm run start:production"
   },
   "devDependencies": {
