@@ -31,6 +31,24 @@ const defaultProps = {
   currentUserId: null,
 };
 
+// Column widths are balanced to fit all fields while maintaining readability
+// Summary and Product Area get more space as they contain variable-length text
+const COLUMN_WIDTHS = {
+  KEY: '8%',
+  SUMMARY: '22%',
+  PRODUCT_AREA: '10%',
+  TYPE: '8%',
+  PRIORITY: '8%',
+  STATUS: '8%',
+  ASSIGNEES: '10%',
+  START_DATE: '9%',
+  DUE_DATE: '9%',
+  DEPENDENCIES: '8%',
+};
+
+// Fallback display value for missing optional fields
+const EMPTY_FIELD_PLACEHOLDER = '-';
+
 const ListView = ({ project, filters, currentUserId }) => {
   const history = useHistory();
   const match = useRouteMatch();
@@ -47,6 +65,7 @@ const ListView = ({ project, filters, currentUserId }) => {
     return dependencies
       .map(depId => {
         const issue = allIssues.find(i => i.id === depId);
+        // Show issue title if found, otherwise display issue ID as fallback
         return issue ? issue.title : `#${depId}`;
       })
       .join(', ');
@@ -57,16 +76,16 @@ const ListView = ({ project, filters, currentUserId }) => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHeaderCell width="8%">Key</TableHeaderCell>
-            <TableHeaderCell width="22%">Summary</TableHeaderCell>
-            <TableHeaderCell width="10%">Product Area</TableHeaderCell>
-            <TableHeaderCell width="8%">Type</TableHeaderCell>
-            <TableHeaderCell width="8%">Priority</TableHeaderCell>
-            <TableHeaderCell width="8%">Status</TableHeaderCell>
-            <TableHeaderCell width="10%">Assignees</TableHeaderCell>
-            <TableHeaderCell width="9%">Start Date</TableHeaderCell>
-            <TableHeaderCell width="9%">Due Date</TableHeaderCell>
-            <TableHeaderCell width="8%">Dependencies</TableHeaderCell>
+            <TableHeaderCell width={COLUMN_WIDTHS.KEY}>Key</TableHeaderCell>
+            <TableHeaderCell width={COLUMN_WIDTHS.SUMMARY}>Summary</TableHeaderCell>
+            <TableHeaderCell width={COLUMN_WIDTHS.PRODUCT_AREA}>Product Area</TableHeaderCell>
+            <TableHeaderCell width={COLUMN_WIDTHS.TYPE}>Type</TableHeaderCell>
+            <TableHeaderCell width={COLUMN_WIDTHS.PRIORITY}>Priority</TableHeaderCell>
+            <TableHeaderCell width={COLUMN_WIDTHS.STATUS}>Status</TableHeaderCell>
+            <TableHeaderCell width={COLUMN_WIDTHS.ASSIGNEES}>Assignees</TableHeaderCell>
+            <TableHeaderCell width={COLUMN_WIDTHS.START_DATE}>Start Date</TableHeaderCell>
+            <TableHeaderCell width={COLUMN_WIDTHS.DUE_DATE}>Due Date</TableHeaderCell>
+            <TableHeaderCell width={COLUMN_WIDTHS.DEPENDENCIES}>Dependencies</TableHeaderCell>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -78,7 +97,7 @@ const ListView = ({ project, filters, currentUserId }) => {
               <TableCell>
                 <IssueTitle>{issue.title}</IssueTitle>
               </TableCell>
-              <TableCell>{issue.productArea || '-'}</TableCell>
+              <TableCell>{issue.productArea || EMPTY_FIELD_PLACEHOLDER}</TableCell>
               <TableCell>
                 <IssueTypeIcon type={issue.type} size={16} />
                 <span style={{ marginLeft: 6 }}>{IssueTypeCopy[issue.type]}</span>
@@ -95,8 +114,12 @@ const ListView = ({ project, filters, currentUserId }) => {
                   ))}
                 </AssigneesContainer>
               </TableCell>
-              <TableCell>{issue.startDate ? formatDate(issue.startDate) : '-'}</TableCell>
-              <TableCell>{issue.dueDate ? formatDate(issue.dueDate) : '-'}</TableCell>
+              <TableCell>
+                {issue.startDate ? formatDate(issue.startDate) : EMPTY_FIELD_PLACEHOLDER}
+              </TableCell>
+              <TableCell>
+                {issue.dueDate ? formatDate(issue.dueDate) : EMPTY_FIELD_PLACEHOLDER}
+              </TableCell>
               <TableCell>{getDependencyTitles(issue.dependencies, project.issues)}</TableCell>
             </TableRow>
           ))}
