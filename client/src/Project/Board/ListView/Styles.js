@@ -24,15 +24,28 @@ export const TableBody = styled.tbody``;
 
 export const TableRow = styled.tr`
   border-bottom: 1px solid ${color.borderLightest};
+  transition: background 0.2s, box-shadow 0.2s;
 
   ${props =>
     props.clickable &&
     `
     cursor: pointer;
-    transition: background 0.1s;
     
     &:hover {
       background: ${color.backgroundLightest};
+    }
+  `}
+
+  ${props =>
+    props.isEditing &&
+    `
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(9, 30, 66, 0.2);
+    position: relative;
+    z-index: 10;
+    
+    &:hover {
+      background: #fff;
     }
   `}
 `;
@@ -65,4 +78,11 @@ export const AssigneesContainer = styled.div`
   display: flex;
   gap: 4px;
   align-items: center;
+`;
+
+export const ActionsRow = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  justify-content: flex-end;
 `;
