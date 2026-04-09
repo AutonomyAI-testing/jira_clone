@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import { intersection } from 'lodash';
 
@@ -33,13 +33,12 @@ const defaultProps = {
 
 const ListView = ({ project, filters, currentUserId }) => {
   const history = useHistory();
-  const match = useRouteMatch();
 
   const filteredIssues = filterIssues(project.issues, filters, currentUserId);
   const sortedIssues = filteredIssues.sort((a, b) => b.id - a.id);
 
   const handleRowClick = issueId => {
-    history.push(`${match.url}/issues/${issueId}`);
+    history.push(`/project/issues/${issueId}`);
   };
 
   const getDependencyTitles = (dependencies, allIssues) => {
