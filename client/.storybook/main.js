@@ -3,6 +3,26 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Vite plugin to patch React 16 act() issue in @storybook/react browser chunks
+const react16ActPatchPlugin = {
+  name: 'react16-act-patch',
+  transform(code, id) {
+    if (id.includes('chunk-L3JF7GGZ') || (id.includes('@storybook/react') && code.includes('deprecatedTestUtils') && code.includes('act: void 0'))) {
+      return code.replace(
+        /let deprecatedTestUtils = \{ act: void 0 \};/g,
+        'let deprecatedTestUtils = { act: (cb) => { const result = cb(); return result && typeof result.then === "function" ? result : Promise.resolve(result); } };'
+      );
+    }
+    // Also patch the pre-bundled storybook_internal_preview_runtime.js
+    if (id.includes('storybook_internal_preview_runtime') && code.includes('act: void 0') && code.includes('deprecatedTestUtils')) {
+      return code.replace(
+        /let deprecatedTestUtils = \{ act: void 0 \};/g,
+        'let deprecatedTestUtils = { act: (cb) => { const result = cb(); return result && typeof result.then === "function" ? result : Promise.resolve(result); } };'
+      );
+    }
+  },
+};
+
 /** @type { import('@storybook/react-vite').StorybookConfig } */
 const config = {
   stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
@@ -14,6 +34,10 @@ const config = {
   async viteFinal(config) {
     return {
       ...config,
+      plugins: [
+        ...(config.plugins || []),
+        react16ActPatchPlugin,
+      ],
       resolve: {
         ...config.resolve,
         alias: {
@@ -35,6 +59,7 @@ const config = {
         exclude: [
           ...((config.optimizeDeps && config.optimizeDeps.exclude) || []),
           'react-dom/test-utils',
+          '@storybook/react',
         ],
       },
     };
