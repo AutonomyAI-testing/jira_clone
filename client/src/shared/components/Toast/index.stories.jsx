@@ -1,129 +1,70 @@
-import React, { useEffect } from 'react';
-import pubsub from 'sweet-pubsub';
-import Toast from './index';
+import React from 'react';
+import ToastItem from './ToastItem';
 
 export default {
   title: 'Components/Toast',
-  component: Toast,
-  parameters: {
-    layout: 'fullscreen',
-  },
+  component: ToastItem,
 };
 
-// Wrapper that positions the story content with proper height so fixed Toast is visible
+// Wrapper that positions the story content with proper height and spacing
 const StoryWrapper = ({ children }) => (
-  <div style={{ minHeight: '200px', position: 'relative', padding: '20px' }}>
+  <div style={{ padding: '40px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
     {children}
   </div>
 );
 
-export const Success = () => {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      pubsub.emit('toast', {
-        type: 'success',
-        title: 'Issue updated',
-        message: 'Your changes have been saved successfully.',
-        duration: 0,
-      });
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
+export const Success = () => (
+  <StoryWrapper>
+    <ToastItem
+      type="success"
+      title="Issue updated"
+      message="Your changes have been saved successfully."
+    />
+  </StoryWrapper>
+);
 
-  return (
-    <StoryWrapper>
-      <Toast />
-    </StoryWrapper>
-  );
-};
+export const Danger = () => (
+  <StoryWrapper>
+    <ToastItem
+      type="danger"
+      title="Error occurred"
+      message="Something went wrong. Please try again."
+    />
+  </StoryWrapper>
+);
 
-export const Danger = () => {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      pubsub.emit('toast', {
-        type: 'danger',
-        title: 'Error occurred',
-        message: 'Something went wrong. Please try again.',
-        duration: 0,
-      });
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
+export const Warning = () => (
+  <StoryWrapper>
+    <ToastItem
+      type="warning"
+      title="Warning"
+      message="This action cannot be undone."
+    />
+  </StoryWrapper>
+);
 
-  return (
-    <StoryWrapper>
-      <Toast />
-    </StoryWrapper>
-  );
-};
+export const TitleOnly = () => (
+  <StoryWrapper>
+    <ToastItem type="success" title="Saved!" />
+  </StoryWrapper>
+);
 
-export const Warning = () => {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      pubsub.emit('toast', {
-        type: 'warning',
-        title: 'Warning',
-        message: 'This action cannot be undone.',
-        duration: 0,
-      });
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <StoryWrapper>
-      <Toast />
-    </StoryWrapper>
-  );
-};
-
-export const TitleOnly = () => {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      pubsub.emit('toast', {
-        type: 'success',
-        title: 'Saved!',
-        duration: 0,
-      });
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <StoryWrapper>
-      <Toast />
-    </StoryWrapper>
-  );
-};
-
-export const Multiple = () => {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      pubsub.emit('toast', {
-        type: 'success',
-        title: 'Issue created',
-        message: 'PROJ-42 has been created.',
-        duration: 0,
-      });
-      pubsub.emit('toast', {
-        type: 'danger',
-        title: 'Upload failed',
-        message: 'File size exceeds the 5MB limit.',
-        duration: 0,
-      });
-      pubsub.emit('toast', {
-        type: 'warning',
-        title: 'Unsaved changes',
-        message: 'You have unsaved changes in this issue.',
-        duration: 0,
-      });
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <StoryWrapper>
-      <Toast />
-    </StoryWrapper>
-  );
-};
+export const Multiple = () => (
+  <StoryWrapper>
+    <ToastItem
+      type="success"
+      title="Issue created"
+      message="PROJ-42 has been created."
+    />
+    <ToastItem
+      type="danger"
+      title="Upload failed"
+      message="File size exceeds the 5MB limit."
+    />
+    <ToastItem
+      type="warning"
+      title="Unsaved changes"
+      message="You have unsaved changes in this issue."
+    />
+  </StoryWrapper>
+);
