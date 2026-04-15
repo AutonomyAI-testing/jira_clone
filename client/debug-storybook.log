@@ -1,0 +1,18 @@
+[15:56:31.454] [INFO] storybook v10.3.5
+[15:56:31.794] [DEBUG] Getting package.json info for /home/user/jira_clone/client/package.json...
+[15:56:32.946] [INFO] Starting...
+[15:56:33.137] [DEBUG] Starting preview..
+[15:56:33.151] [ERROR] Failed to build the preview
+[15:56:33.152] [ERROR] [38;2;241;97;97mError [ERR_PACKAGE_PATH_NOT_EXPORTED]: Package subpath './package.json' is not defined by "exports" in ./node_modules/react-dom/package.json[39m
+    at exportsNotFound (node:internal/modules/esm/resolve:322:10)
+    at packageExportsResolve (node:internal/modules/esm/resolve:670:9)
+    at resolveExports (node:internal/modules/cjs/loader:638:36)
+    at Module._findPath (node:internal/modules/cjs/loader:711:31)
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1193:27)
+    at Function.resolve (node:internal/modules/helpers:193:19)
+    at resolvePackageDir (file://./node_modules/@storybook/react-dom-shim/dist/preset.js:214:26)
+    at getIsReactVersion18or19 (file://./node_modules/@storybook/react-dom-shim/dist/preset.js:224:81)
+    at async Object.viteFinal (file://./node_modules/@storybook/react-dom-shim/dist/preset.js:239:26)
+    at async createViteServer (file://./node_modules/@storybook/builder-vite/dist/index.js:1532:21)
+[15:56:33.157] [WARN] Broken build, fix the error above.
+You may need to refresh the browser.
