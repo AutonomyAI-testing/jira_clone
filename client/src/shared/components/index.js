@@ -21,4 +21,5 @@ export { default as Spinner } from './Spinner';
 export { default as Textarea } from './Textarea';
 export { default as TextEditedContent } from './TextEditedContent';
 export { default as TextEditor } from './TextEditor';
+export { default as Toast } from './Toast';
 export { default as Tooltip } from './Tooltip';
