@@ -1,7 +1,7 @@
 import { projectData } from './project';
 import { currentUserData } from './currentUser';
 import { issuesData, getIssueById } from './issues';
-import { authenticationData } from './authentication';
+import { authenticationData, loginData } from './authentication';
 
 // Mock data router - matches URL patterns to mock data
 export const getMockData = (method, url, variables) => {
@@ -36,6 +36,18 @@ const routeMockData = (method, url, variables) => {
   if (method === 'post') {
     if (url === '/authentication/guest') {
       return authenticationData;
+    }
+    if (url === '/authentication/login') {
+      const result = loginData(variables.email, variables.password);
+      if (!result) {
+        throw {
+          code: 'INVALID_CREDENTIALS',
+          message: 'Invalid email or password',
+          status: 401,
+          data: {},
+        };
+      }
+      return result;
     }
     if (url === '/issues') {
       // Return a mock newly created issue
