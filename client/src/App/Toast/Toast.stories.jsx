@@ -31,6 +31,31 @@ const ToastDemo = ({ toasts }) => {
   );
 };
 
+export const InfoBlueToast = {
+  name: 'Info (Blue - Default)',
+  render: () => (
+    <ToastDemo
+      toasts={[
+        { type: 'info', title: 'Info Toast', message: 'Background color is #0052cc (primary blue).' },
+      ]}
+    />
+  ),
+};
+
+export const AllTypes = {
+  name: 'All Types',
+  render: () => (
+    <ToastDemo
+      toasts={[
+        { type: 'info', title: 'Info Toast', message: 'Uses the primary blue color (#0052cc).' },
+        { type: 'success', title: 'Success Toast', message: 'Issue created successfully.' },
+        { type: 'danger', title: 'Error Toast', message: 'Something went wrong. Please try again.' },
+        { type: 'warning', title: 'Warning Toast', message: 'Your session is about to expire.' },
+      ]}
+    />
+  ),
+};
+
 export const SuccessToast = {
   name: 'Success',
   render: () => (

@@ -31,7 +31,10 @@ const getTypeStyles = props => {
       border-left: 4px solid ${mixin.darken(color.primary, 0.2)};
     `,
   };
-  return typeMap[props.type] || typeMap.info;
+  return typeMap[props.type] || css`
+    background: ${color.primary};
+    border-left: 4px solid ${mixin.darken(color.primary, 0.2)};
+  `;
 };
 
 export const StyledToast = styled.div`
