@@ -49,6 +49,7 @@ export const Title = styled.div`
   padding-right: 22px;
   ${font.size(15)}
   ${font.medium}
+  color: ${color.danger};
 `;
 
 export const Message = styled.div`
@@ -56,4 +57,5 @@ export const Message = styled.div`
   white-space: pre-wrap;
   ${font.size(14)}
   ${font.medium}
+  color: ${color.danger};
 `;
