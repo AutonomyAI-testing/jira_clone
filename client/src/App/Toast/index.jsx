@@ -3,16 +3,16 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import pubsub from 'sweet-pubsub';
 import { uniqueId } from 'lodash';
 
-import { Container, StyledToast, CloseIcon, Title, Message } from './Styles';
+import { Container, StyledToast, CloseIcon, Title, Message, LoadingSpinner } from './Styles';
 
 const Toast = () => {
   const [toasts, setToasts] = useState([]);
 
   useEffect(() => {
-    const addToast = ({ type = 'success', title, message, duration = 5 }) => {
+    const addToast = ({ type = 'success', title, message, duration = 5, loading = false, disabled = false }) => {
       const id = uniqueId('toast-');
 
-      setToasts(currentToasts => [...currentToasts, { id, type, title, message }]);
+      setToasts(currentToasts => [...currentToasts, { id, type, title, message, loading, disabled }]);
 
       if (duration) {
         setTimeout(() => removeToast(id), duration * 1000);
@@ -35,7 +35,13 @@ const Toast = () => {
       <TransitionGroup>
         {toasts.map(toast => (
           <CSSTransition key={toast.id} classNames="jira-toast" timeout={200}>
-            <StyledToast key={toast.id} type={toast.type} onClick={() => removeToast(toast.id)}>
+            <StyledToast
+              key={toast.id}
+              type={toast.type}
+              disabled={toast.disabled}
+              onClick={() => !toast.disabled && removeToast(toast.id)}
+            >
+              {toast.loading && <LoadingSpinner size={16} color="#fff" />}
               <CloseIcon type="close" />
               {toast.title && <Title>{toast.title}</Title>}
               {toast.message && <Message>{toast.message}</Message>}

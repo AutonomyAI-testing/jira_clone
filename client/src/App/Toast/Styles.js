@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { color, font, mixin, zIndexValues } from 'shared/utils/styles';
-import { Icon } from 'shared/components';
+import { Icon, Spinner } from 'shared/components';
 
 export const Container = styled.div`
   z-index: ${zIndexValues.modal + 1};
@@ -22,6 +22,14 @@ export const StyledToast = styled.div`
   transition: all 0.15s;
   ${mixin.clearfix}
   ${mixin.hardwareAccelerate}
+
+  ${props =>
+    props.disabled &&
+    css`
+      opacity: 0.6;
+      cursor: not-allowed;
+      pointer-events: none;
+    `}
 
   &.jira-toast-enter,
   &.jira-toast-exit.jira-toast-exit-active {
@@ -56,4 +64,11 @@ export const Message = styled.div`
   white-space: pre-wrap;
   ${font.size(14)}
   ${font.medium}
+`;
+
+export const LoadingSpinner = styled(Spinner)`
+  display: inline-block;
+  margin-right: 10px;
+  position: relative;
+  top: 2px;
 `;

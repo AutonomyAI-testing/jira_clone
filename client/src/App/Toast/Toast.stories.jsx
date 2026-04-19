@@ -11,10 +11,10 @@ export default {
 };
 
 // Helper component that emits a toast on mount
-const ToastTrigger = ({ type, title, message, duration = 0 }) => {
+const ToastTrigger = ({ type, title, message, duration = 0, loading = false, disabled = false }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      pubsub.emit('toast', { type, title, message, duration });
+      pubsub.emit('toast', { type, title, message, duration, loading, disabled });
     }, 100);
     return () => clearTimeout(timer);
   }, []);
@@ -56,6 +56,28 @@ export const MessageOnly = {
     React.createElement(ToastTrigger, {
       type: 'danger',
       message: 'Failed to load project data.',
+      duration: 0,
+    }),
+};
+
+export const Loading = {
+  render: () =>
+    React.createElement(ToastTrigger, {
+      type: 'success',
+      title: 'Processing',
+      message: 'Your request is being processed...',
+      loading: true,
+      duration: 0,
+    }),
+};
+
+export const Disabled = {
+  render: () =>
+    React.createElement(ToastTrigger, {
+      type: 'success',
+      title: 'Action in progress',
+      message: 'This notification cannot be dismissed.',
+      disabled: true,
       duration: 0,
     }),
 };
