@@ -87,19 +87,46 @@ export const WorkingIconOnly = {
 
 export const AllVariants = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '20px' }}>
-      <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '20px',
+        padding: '20px',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          gap: '10px',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+        }}
+      >
         <Button variant="primary">Primary</Button>
         <Button variant="success">Success</Button>
         <Button variant="danger">Danger</Button>
         <Button variant="secondary">Secondary</Button>
         <Button variant="empty">Empty</Button>
       </div>
-      <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
-        <Button variant="primary" icon="plus" iconSize={18}>With Icon</Button>
+      <div
+        style={{
+          display: 'flex',
+          gap: '10px',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+        }}
+      >
+        <Button variant="primary" icon="plus" iconSize={18}>
+          With Icon
+        </Button>
         <Button variant="secondary" icon="search" iconSize={18} />
-        <Button variant="primary" disabled>Disabled</Button>
-        <Button variant="primary" isWorking>Working</Button>
+        <Button variant="primary" disabled>
+          Disabled
+        </Button>
+        <Button variant="primary" isWorking>
+          Working
+        </Button>
         <Button variant="secondary" icon="search" isWorking />
       </div>
     </div>
