@@ -23,14 +23,14 @@ const ToastWithTrigger = ({ toasts }) => {
   return React.createElement(Toast, null);
 };
 
-export const MultipleToasts = {
-  name: 'Multiple Toasts (Success, Error, Info)',
+export const AllToastTypes = {
+  name: 'All Toast Types',
   render: () => React.createElement(ToastWithTrigger, {
     toasts: [
       {
         type: 'success',
-        title: 'Issue Created',
-        message: 'Your issue has been successfully created and added to the backlog.',
+        title: 'Changes Saved',
+        message: 'Your project settings have been updated successfully.',
         duration: 0,
       },
       {
@@ -40,9 +40,15 @@ export const MultipleToasts = {
         duration: 0,
       },
       {
+        type: 'warning',
+        title: 'Low Disk Space',
+        message: 'You are running low on storage. Please clean up some files.',
+        duration: 0,
+      },
+      {
         type: 'info',
-        title: 'New Comment',
-        message: 'John Doe commented on issue JRA-42.',
+        title: 'Heads Up',
+        message: 'Your session will expire in 5 minutes.',
         duration: 0,
       },
     ],
@@ -50,7 +56,7 @@ export const MultipleToasts = {
 };
 
 export const SuccessToast = {
-  name: 'Success Toast',
+  name: 'Success Toast (Yellow #F9C74F)',
   render: () => React.createElement(ToastWithTrigger, {
     toasts: [
       {
@@ -63,8 +69,8 @@ export const SuccessToast = {
   }),
 };
 
-export const ErrorToast = {
-  name: 'Error Toast',
+export const DangerToast = {
+  name: 'Danger Toast (Red)',
   render: () => React.createElement(ToastWithTrigger, {
     toasts: [
       {
@@ -77,28 +83,28 @@ export const ErrorToast = {
   }),
 };
 
-export const InfoToast = {
-  name: 'Info Toast',
-  render: () => React.createElement(ToastWithTrigger, {
-    toasts: [
-      {
-        type: 'info',
-        title: 'Heads Up',
-        message: 'Your session will expire in 5 minutes.',
-        duration: 0,
-      },
-    ],
-  }),
-};
-
 export const WarningToast = {
-  name: 'Warning Toast',
+  name: 'Warning Toast (Orange)',
   render: () => React.createElement(ToastWithTrigger, {
     toasts: [
       {
         type: 'warning',
         title: 'Low Disk Space',
         message: 'You are running low on storage. Please clean up some files.',
+        duration: 0,
+      },
+    ],
+  }),
+};
+
+export const InfoToast = {
+  name: 'Info Toast (Blue)',
+  render: () => React.createElement(ToastWithTrigger, {
+    toasts: [
+      {
+        type: 'info',
+        title: 'New Comment',
+        message: 'John Doe commented on issue JRA-42.',
         duration: 0,
       },
     ],
