@@ -44,20 +44,20 @@ const colored = css`
 `;
 
 const secondaryAndEmptyShared = css`
-  color: ${color.textDark};
+  color: ${color.danger};
   ${font.regular}
   &:not(:disabled) {
     &:hover {
       background: ${color.backgroundLight};
     }
     &:active {
-      color: ${color.primary};
+      color: ${color.danger};
       background: ${color.backgroundLightPrimary};
     }
     ${props =>
       props.isActive &&
       css`
-        color: ${color.primary};
+        color: ${color.danger};
         background: ${color.backgroundLightPrimary} !important;
       `}
   }

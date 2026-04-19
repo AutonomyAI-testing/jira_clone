@@ -7,6 +7,11 @@ import { Avatar } from 'shared/components';
 export const IssueLink = styled(Link)`
   display: block;
   margin-bottom: 5px;
+  color: ${color.danger};
+  text-decoration: none;
+  &:hover {
+    color: ${color.danger};
+  }
 `;
 
 export const Issue = styled.div`
@@ -33,6 +38,7 @@ export const Issue = styled.div`
 export const Title = styled.p`
   padding-bottom: 11px;
   ${font.size(15)}
+  color: ${color.danger};
   @media (max-width: 1100px) {
     ${font.size(14.5)}
   }
