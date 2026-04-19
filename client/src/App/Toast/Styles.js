@@ -12,6 +12,7 @@ export const Container = styled.div`
   flex-direction: column;
   gap: 12px;
   max-width: 360px;
+  /* Disable pointer events on container; individual toasts enable them as needed */
   pointer-events: none;
 
   > div {

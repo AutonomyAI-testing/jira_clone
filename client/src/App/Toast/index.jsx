@@ -4,17 +4,25 @@ import pubsub from 'sweet-pubsub';
 import { uniqueId } from 'lodash';
 
 import { Icon } from 'shared/components';
-import { Container, StyledToast, CloseIcon, Title, Message, IconContainer, Content } from './Styles';
+import {
+  Container,
+  StyledToast,
+  CloseIcon,
+  Title,
+  Message,
+  IconContainer,
+  Content,
+} from './Styles';
 
-const getIconForType = type => {
-  const iconMap = {
-    success: 'shipping',
-    danger: 'close',
-    warning: 'help',
-    info: 'help',
-  };
-  return iconMap[type] || 'help';
+// Icon types used for different toast types
+const TOAST_ICON_MAP = {
+  success: 'shipping',
+  danger: 'close',
+  warning: 'help',
+  info: 'help',
 };
+
+const getIconForType = type => TOAST_ICON_MAP[type] || 'help';
 
 const Toast = () => {
   const [toasts, setToasts] = useState([]);
@@ -54,11 +62,7 @@ const Toast = () => {
                 {toast.title && <Title>{toast.title}</Title>}
                 {toast.message && <Message>{toast.message}</Message>}
               </Content>
-              <CloseIcon
-                type="close"
-                size={18}
-                onClick={() => removeToast(toast.id)}
-              />
+              <CloseIcon type="close" size={18} onClick={() => removeToast(toast.id)} />
             </StyledToast>
           </CSSTransition>
         ))}
