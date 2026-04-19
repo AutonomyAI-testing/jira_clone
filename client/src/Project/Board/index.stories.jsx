@@ -10,10 +10,10 @@ export default {
     layout: 'fullscreen',
   },
   decorators: [
-    (Story) => React.createElement(
-      MemoryRouter,
-      { initialEntries: ['/project/board'] },
-      React.createElement(Story, null),
+    Story => (
+      <MemoryRouter initialEntries={['/project/board']}>
+        <Story />
+      </MemoryRouter>
     ),
   ],
 };
@@ -57,7 +57,13 @@ export const WithManyIssues = {
           reporterId: 1,
           projectId: 1,
           userIds: [1],
-          users: [{ id: 1, name: 'Lord Gaben', avatarUrl: 'https://i.ibb.co/6n0hLML/lord-gaben.jpg' }],
+          users: [
+            {
+              id: 1,
+              name: 'Lord Gaben',
+              avatarUrl: 'https://i.ibb.co/6n0hLML/lord-gaben.jpg',
+            },
+          ],
           productArea: 'UX',
           startDate: '2020-06-05T00:00:00.000Z',
           dueDate: '2020-06-15T00:00:00.000Z',
@@ -81,8 +87,16 @@ export const WithManyIssues = {
           projectId: 1,
           userIds: [2, 3],
           users: [
-            { id: 2, name: 'Pickle Rick', avatarUrl: 'https://i.ibb.co/7JM1P0V/pickle-rick.png' },
-            { id: 3, name: 'Baby Yoda', avatarUrl: 'https://i.ibb.co/6PrN4M5/baby-yoda.jpg' },
+            {
+              id: 2,
+              name: 'Pickle Rick',
+              avatarUrl: 'https://i.ibb.co/7JM1P0V/pickle-rick.png',
+            },
+            {
+              id: 3,
+              name: 'Baby Yoda',
+              avatarUrl: 'https://i.ibb.co/6PrN4M5/baby-yoda.jpg',
+            },
           ],
           productArea: 'Performance',
           startDate: '2020-06-06T00:00:00.000Z',
@@ -106,7 +120,13 @@ export const WithManyIssues = {
           reporterId: 3,
           projectId: 1,
           userIds: [3],
-          users: [{ id: 3, name: 'Baby Yoda', avatarUrl: 'https://i.ibb.co/6PrN4M5/baby-yoda.jpg' }],
+          users: [
+            {
+              id: 3,
+              name: 'Baby Yoda',
+              avatarUrl: 'https://i.ibb.co/6PrN4M5/baby-yoda.jpg',
+            },
+          ],
           productArea: 'QA',
           startDate: '2020-06-07T00:00:00.000Z',
           dueDate: '2020-06-25T00:00:00.000Z',
