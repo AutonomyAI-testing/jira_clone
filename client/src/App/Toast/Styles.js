@@ -11,16 +11,17 @@ export const Container = styled.div`
 `;
 
 export const StyledToast = styled.div`
+  display: flex;
+  align-items: flex-start;
   position: relative;
-  margin-bottom: 5px;
-  width: 300px;
-  padding: 15px 20px;
+  margin-bottom: 8px;
+  width: 320px;
+  padding: 16px 12px 16px 16px;
   border-radius: 3px;
   color: #fff;
   background: ${props => color[props.type]};
   cursor: pointer;
   transition: all 0.15s;
-  ${mixin.clearfix}
   ${mixin.hardwareAccelerate}
 
   &.jira-toast-enter,
@@ -36,24 +37,46 @@ export const StyledToast = styled.div`
   }
 `;
 
-export const CloseIcon = styled(Icon)`
-  position: absolute;
-  top: 13px;
-  right: 14px;
-  font-size: 22px;
-  cursor: pointer;
+export const ToastIcon = styled(Icon)`
+  flex-shrink: 0;
+  font-size: 20px;
+  margin-right: 12px;
+  margin-top: 2px;
   color: #fff;
 `;
 
+export const ToastContent = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const CloseIcon = styled(Icon)`
+  flex-shrink: 0;
+  font-size: 20px;
+  cursor: pointer;
+  color: #fff;
+  margin-left: 8px;
+  margin-top: 2px;
+  opacity: 0.8;
+  transition: opacity 0.1s;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
 export const Title = styled.div`
-  padding-right: 22px;
   ${font.size(15)}
   ${font.medium}
+  color: #fff;
+  margin-bottom: 4px;
 `;
 
 export const Message = styled.div`
-  padding: 8px 10px 0 0;
   white-space: pre-wrap;
   ${font.size(14)}
   ${font.medium}
+  color: #fff;
+  opacity: 0.95;
 `;

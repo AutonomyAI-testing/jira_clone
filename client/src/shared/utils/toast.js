@@ -14,4 +14,22 @@ const error = err => {
   });
 };
 
-export default { show, error, success };
+const warning = (title, message) => {
+  show({
+    type: 'warning',
+    title,
+    message,
+    duration: 5,
+  });
+};
+
+const info = (title, message) => {
+  show({
+    type: 'info',
+    title,
+    message,
+    duration: 5,
+  });
+};
+
+export default { show, error, success, warning, info };
