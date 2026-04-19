@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { color, font, mixin, zIndexValues } from 'shared/utils/styles';
 import { Icon } from 'shared/components';
 
+// Fixed container positioned in the top-right corner, above modals
 export const Container = styled.div`
   z-index: ${zIndexValues.modal + 1};
   position: fixed;
@@ -10,6 +11,7 @@ export const Container = styled.div`
   top: 50px;
 `;
 
+// Main toast notification card with flex layout for icon + content + close button
 export const StyledToast = styled.div`
   display: flex;
   align-items: flex-start;
@@ -18,7 +20,6 @@ export const StyledToast = styled.div`
   width: 320px;
   padding: 16px 12px 16px 16px;
   border-radius: 3px;
-  border: 2px solid red;
   color: #fff;
   background: ${props => color[props.type]};
   cursor: pointer;
@@ -38,6 +39,7 @@ export const StyledToast = styled.div`
   }
 `;
 
+// Icon on the left side indicating the toast type
 export const ToastIcon = styled(Icon)`
   flex-shrink: 0;
   font-size: 20px;
@@ -52,6 +54,7 @@ export const ToastContent = styled.div`
   flex-direction: column;
 `;
 
+// Close button icon on the right side with hover opacity effect
 export const CloseIcon = styled(Icon)`
   flex-shrink: 0;
   font-size: 20px;

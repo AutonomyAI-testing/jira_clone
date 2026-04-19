@@ -10,6 +10,20 @@ export default {
   },
 };
 
+// Reusable container component for all stories
+const StoryContainer = ({ children }) => (
+  <div
+    style={{
+      width: '100vw',
+      height: '100vh',
+      position: 'relative',
+      background: '#f4f5f7',
+    }}
+  >
+    {children}
+  </div>
+);
+
 const AllToastsStory = () => {
   useEffect(() => {
     const toastData = [
@@ -48,17 +62,19 @@ const AllToastsStory = () => {
   }, []);
 
   return (
-    <div style={{ width: '100vw', height: '100vh', position: 'relative', background: '#f4f5f7' }}>
+    <StoryContainer>
       <Toast />
-    </div>
+    </StoryContainer>
   );
 };
 
+// Shows all toast notification types at once with staggered appearance
 export const AllTypes = {
   render: () => <AllToastsStory />,
   name: 'All Toast Types',
 };
 
+// Demonstrates a success notification
 export const SuccessToast = {
   render: () => {
     const Story = () => {
@@ -73,9 +89,9 @@ export const SuccessToast = {
         }, 100);
       }, []);
       return (
-        <div style={{ width: '100vw', height: '100vh', position: 'relative', background: '#f4f5f7' }}>
+        <StoryContainer>
           <Toast />
-        </div>
+        </StoryContainer>
       );
     };
     return <Story />;
@@ -83,6 +99,7 @@ export const SuccessToast = {
   name: 'Success',
 };
 
+// Demonstrates an error/danger notification
 export const DangerToast = {
   render: () => {
     const Story = () => {
@@ -97,9 +114,9 @@ export const DangerToast = {
         }, 100);
       }, []);
       return (
-        <div style={{ width: '100vw', height: '100vh', position: 'relative', background: '#f4f5f7' }}>
+        <StoryContainer>
           <Toast />
-        </div>
+        </StoryContainer>
       );
     };
     return <Story />;
@@ -107,6 +124,7 @@ export const DangerToast = {
   name: 'Danger',
 };
 
+// Demonstrates a warning notification
 export const WarningToast = {
   render: () => {
     const Story = () => {
@@ -121,9 +139,9 @@ export const WarningToast = {
         }, 100);
       }, []);
       return (
-        <div style={{ width: '100vw', height: '100vh', position: 'relative', background: '#f4f5f7' }}>
+        <StoryContainer>
           <Toast />
-        </div>
+        </StoryContainer>
       );
     };
     return <Story />;
@@ -131,6 +149,7 @@ export const WarningToast = {
   name: 'Warning',
 };
 
+// Demonstrates an informational notification
 export const InfoToast = {
   render: () => {
     const Story = () => {
@@ -145,9 +164,9 @@ export const InfoToast = {
         }, 100);
       }, []);
       return (
-        <div style={{ width: '100vw', height: '100vh', position: 'relative', background: '#f4f5f7' }}>
+        <StoryContainer>
           <Toast />
-        </div>
+        </StoryContainer>
       );
     };
     return <Story />;
