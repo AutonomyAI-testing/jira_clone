@@ -6,54 +6,95 @@ import { Icon } from 'shared/components';
 export const Container = styled.div`
   z-index: ${zIndexValues.modal + 1};
   position: fixed;
-  right: 30px;
-  top: 50px;
+  right: 24px;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 360px;
+  pointer-events: none;
+
+  > div {
+    pointer-events: auto;
+  }
 `;
 
 export const StyledToast = styled.div`
   position: relative;
-  margin-bottom: 5px;
-  width: 300px;
-  padding: 15px 20px;
-  border-radius: 3px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+  border-radius: 4px;
+  background: ${props => color[props.type] || color.primary};
   color: #fff;
-  background: ${props => color[props.type]};
-  cursor: pointer;
-  transition: all 0.15s;
-  ${mixin.clearfix}
+  box-shadow: ${mixin.boxShadowMedium};
+  overflow: hidden;
+  transition: all 0.15s ease-out;
   ${mixin.hardwareAccelerate}
 
   &.jira-toast-enter,
   &.jira-toast-exit.jira-toast-exit-active {
     opacity: 0;
-    right: -10px;
+    transform: translateX(10px);
   }
 
   &.jira-toast-exit,
   &.jira-toast-enter.jira-toast-enter-active {
     opacity: 1;
-    right: 0;
+    transform: translateX(0);
   }
 `;
 
-export const CloseIcon = styled(Icon)`
-  position: absolute;
-  top: 13px;
-  right: 14px;
-  font-size: 22px;
-  cursor: pointer;
-  color: #fff;
+export const IconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+`;
+
+export const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  padding-right: 8px;
 `;
 
 export const Title = styled.div`
-  padding-right: 22px;
-  ${font.size(15)}
+  ${font.size(14)}
   ${font.medium}
+  color: #fff;
+  line-height: 1.4;
 `;
 
 export const Message = styled.div`
-  padding: 8px 10px 0 0;
+  ${font.size(13)}
+  ${font.regular}
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.4;
   white-space: pre-wrap;
-  ${font.size(14)}
-  ${font.medium}
+  word-break: break-word;
+`;
+
+export const CloseIcon = styled(Icon)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  font-size: 18px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.15s ease-out;
+  ${mixin.clickable}
+
+  &:hover {
+    color: #fff;
+  }
 `;
