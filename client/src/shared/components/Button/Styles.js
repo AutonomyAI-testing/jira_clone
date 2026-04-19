@@ -12,7 +12,7 @@ export const StyledButton = styled.button`
   line-height: 1;
   padding: 0 ${props => (props.iconOnly ? 9 : 12)}px;
   white-space: nowrap;
-  border-radius: 3px;
+  border-radius: 6px;
   transition: all 0.1s;
   appearance: none;
   ${mixin.clickable}
