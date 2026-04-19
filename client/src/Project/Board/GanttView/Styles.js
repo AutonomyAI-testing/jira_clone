@@ -50,7 +50,7 @@ export const TaskInfo = styled.div`
 
 export const TaskName = styled.div`
   ${font.size(14)}
-  color: ${color.textDark};
+  color: ${color.danger};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -88,7 +88,7 @@ export const MonthCell = styled.div`
   text-align: center;
   ${font.size(13)}
   ${font.medium}
-  color: ${color.textMedium};
+  color: ${color.danger};
   border-right: 1px solid ${color.borderLightest};
 `;
 

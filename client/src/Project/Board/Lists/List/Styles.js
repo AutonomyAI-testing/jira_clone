@@ -15,7 +15,7 @@ export const List = styled.div`
 export const Title = styled.div`
   padding: 13px 10px 17px;
   text-transform: uppercase;
-  color: ${color.textMedium};
+  color: ${color.danger};
   ${font.size(12.5)};
   ${mixin.truncateText}
 `;
