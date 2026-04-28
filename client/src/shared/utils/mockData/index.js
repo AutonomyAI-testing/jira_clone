@@ -65,6 +65,13 @@ const routeMockData = (method, url, variables) => {
     if (url === '/project') {
       return { project: { ...projectData, ...variables } };
     }
+    if (url === '/project/workflow') {
+      // Update workflow configuration in-memory
+      if (projectData.workflow) {
+        projectData.workflow = { ...projectData.workflow, ...variables };
+      }
+      return { workflow: projectData.workflow };
+    }
     if (url.match(/^\/issues\/\d+$/)) {
       const issueId = url.split('/')[2];
       return { issue: { ...getIssueById(issueId), ...variables } };

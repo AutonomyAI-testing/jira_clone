@@ -82,6 +82,7 @@ const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
                 fetchProject={fetchProject}
                 updateLocalProjectIssues={updateLocalProjectIssues}
                 modalClose={modal.close}
+                workflow={project.workflow}
               />
             )}
           />

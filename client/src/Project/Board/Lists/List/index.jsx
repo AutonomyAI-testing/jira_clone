@@ -11,27 +11,45 @@ import { List, Title, IssuesCount, Issues } from './Styles';
 
 const propTypes = {
   status: PropTypes.string.isRequired,
+  column: PropTypes.object,
   project: PropTypes.object.isRequired,
   filters: PropTypes.object.isRequired,
   currentUserId: PropTypes.number,
+  workflow: PropTypes.object,
 };
 
 const defaultProps = {
+  column: null,
   currentUserId: null,
+  workflow: null,
 };
 
-const ProjectBoardList = ({ status, project, filters, currentUserId }) => {
+const ProjectBoardList = ({ status, column, project, filters, currentUserId, workflow }) => {
   const filteredIssues = filterIssues(project.issues, filters, currentUserId);
   const filteredListIssues = getSortedListIssues(filteredIssues, status);
   const allListIssues = getSortedListIssues(project.issues, status);
+
+  // Determine title and color from column or fallback to IssueStatusCopy
+  const columnTitle = column?.title || IssueStatusCopy[status];
+  const columnColor = column?.color || '#dfe1e6';
+  const wipLimit = column?.wipLimit || 0;
+  const issueCount = allListIssues.length;
+
+  // Calculate WIP limit status
+  const isOverLimit = wipLimit > 0 && issueCount > wipLimit;
+  const isAtLimit = wipLimit > 0 && issueCount === wipLimit;
 
   return (
     <Droppable key={status} droppableId={status}>
       {provided => (
         <List>
-          <Title>
-            {`${IssueStatusCopy[status]} `}
-            <IssuesCount>{formatIssuesCount(allListIssues, filteredListIssues)}</IssuesCount>
+          <Title columnColor={columnColor} isOverLimit={isOverLimit} isAtLimit={isAtLimit}>
+            {`${columnTitle} `}
+            <IssuesCount isOverLimit={isOverLimit} isAtLimit={isAtLimit}>
+              {wipLimit > 0
+                ? `${issueCount}/${wipLimit}`
+                : formatIssuesCount(allListIssues, filteredListIssues)}
+            </IssuesCount>
           </Title>
           <Issues
             {...provided.droppableProps}

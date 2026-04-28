@@ -24,6 +24,11 @@ const propTypes = {
   fetchProject: PropTypes.func.isRequired,
   updateLocalProjectIssues: PropTypes.func.isRequired,
   modalClose: PropTypes.func.isRequired,
+  workflow: PropTypes.object,
+};
+
+const defaultProps = {
+  workflow: null,
 };
 
 const ProjectBoardIssueDetails = ({
@@ -32,6 +37,7 @@ const ProjectBoardIssueDetails = ({
   fetchProject,
   updateLocalProjectIssues,
   modalClose,
+  workflow,
 }) => {
   const [{ data, error, setLocalData }, fetchIssue] = useApi.get(`/issues/${issueId}`);
 
@@ -78,7 +84,7 @@ const ProjectBoardIssueDetails = ({
           <Comments issue={issue} fetchIssue={fetchIssue} />
         </Left>
         <Right>
-          <Status issue={issue} updateIssue={updateIssue} />
+          <Status issue={issue} updateIssue={updateIssue} workflow={workflow} />
           <AssigneesReporter issue={issue} updateIssue={updateIssue} projectUsers={projectUsers} />
           <Priority issue={issue} updateIssue={updateIssue} />
           <EstimateTracking issue={issue} updateIssue={updateIssue} />
@@ -90,5 +96,6 @@ const ProjectBoardIssueDetails = ({
 };
 
 ProjectBoardIssueDetails.propTypes = propTypes;
+ProjectBoardIssueDetails.defaultProps = defaultProps;
 
 export default ProjectBoardIssueDetails;

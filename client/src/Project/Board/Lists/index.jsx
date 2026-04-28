@@ -4,8 +4,8 @@ import { DragDropContext } from 'react-beautiful-dnd';
 
 import useCurrentUser from 'shared/hooks/currentUser';
 import api from 'shared/utils/api';
+import toast from 'shared/utils/toast';
 import { moveItemWithinArray, insertItemIntoArray } from 'shared/utils/javascript';
-import { IssueStatus } from 'shared/constants/issues';
 
 import List from './List';
 import { Lists } from './Styles';
@@ -19,17 +19,36 @@ const propTypes = {
 const ProjectBoardLists = ({ project, filters, updateLocalProjectIssues }) => {
   const { currentUserId } = useCurrentUser();
 
+  const workflow = project.workflow || { columns: [], transitions: {} };
+  const sortedColumns = [...workflow.columns].sort((a, b) => a.position - b.position);
+
   const handleIssueDrop = ({ draggableId, destination, source }) => {
     if (!isPositionChanged(source, destination)) return;
 
     const issueId = Number(draggableId);
+    const issue = project.issues.find(({ id }) => id === issueId);
+    const currentStatus = issue?.status;
+    const targetStatus = destination.droppableId;
+
+    // Check if transition is allowed
+    const allowedTransitions = workflow.transitions[currentStatus] || [];
+    if (!allowedTransitions.includes(targetStatus)) {
+      const sourceColumn = workflow.columns.find(col => col.id === currentStatus);
+      const targetColumn = workflow.columns.find(col => col.id === targetStatus);
+      toast.error(
+        `Cannot move from ${sourceColumn?.title || currentStatus} to ${
+          targetColumn?.title || targetStatus
+        }`,
+      );
+      return;
+    }
 
     api.optimisticUpdate(`/issues/${issueId}`, {
       updatedFields: {
         status: destination.droppableId,
         listPosition: calculateIssueListPosition(project.issues, destination, source, issueId),
       },
-      currentFields: project.issues.find(({ id }) => id === issueId),
+      currentFields: issue,
       setLocalData: fields => updateLocalProjectIssues(issueId, fields),
     });
   };
@@ -37,13 +56,15 @@ const ProjectBoardLists = ({ project, filters, updateLocalProjectIssues }) => {
   return (
     <DragDropContext onDragEnd={handleIssueDrop}>
       <Lists>
-        {Object.values(IssueStatus).map(status => (
+        {sortedColumns.map(column => (
           <List
-            key={status}
-            status={status}
+            key={column.id}
+            status={column.id}
+            column={column}
             project={project}
             filters={filters}
             currentUserId={currentUserId}
+            workflow={workflow}
           />
         ))}
       </Lists>
