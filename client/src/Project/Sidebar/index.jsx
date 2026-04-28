@@ -40,7 +40,7 @@ const ProjectSidebar = ({ project }) => {
       {renderLinkItem(match, 'Releases', 'shipping')}
       {renderLinkItem(match, 'Issues and filters', 'issues')}
       {renderLinkItem(match, 'Pages', 'page')}
-      {renderLinkItem(match, 'Reports', 'reports')}
+      {renderLinkItem(match, 'Reports', 'reports', '/reports')}
       {renderLinkItem(match, 'Components', 'component')}
     </Sidebar>
   );
