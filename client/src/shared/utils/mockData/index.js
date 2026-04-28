@@ -2,6 +2,14 @@ import { projectData } from './project';
 import { currentUserData } from './currentUser';
 import { issuesData, getIssueById } from './issues';
 import { authenticationData } from './authentication';
+import {
+  sprintsData,
+  getSprintById,
+  createSprint,
+  updateSprint,
+  deleteSprint,
+  updateSprintIssues,
+} from './sprints';
 
 // Mock data router - matches URL patterns to mock data
 export const getMockData = (method, url, variables) => {
@@ -29,6 +37,13 @@ const routeMockData = (method, url, variables) => {
     if (url.match(/^\/issues\/\d+$/)) {
       const issueId = url.split('/')[2];
       return { issue: getIssueById(issueId) };
+    }
+    if (url === '/sprints') {
+      return { sprints: sprintsData.sprints };
+    }
+    if (url.match(/^\/sprints\/\d+$/)) {
+      const sprintId = url.split('/')[2];
+      return { sprint: getSprintById(sprintId) };
     }
   }
 
@@ -58,6 +73,10 @@ const routeMockData = (method, url, variables) => {
       };
       return { comment: newComment };
     }
+    if (url === '/sprints') {
+      const newSprint = createSprint(variables);
+      return { sprint: newSprint };
+    }
   }
 
   // PUT requests
@@ -77,6 +96,16 @@ const routeMockData = (method, url, variables) => {
       };
       return { comment: updatedComment };
     }
+    if (url.match(/^\/sprints\/\d+$/)) {
+      const sprintId = url.split('/')[2];
+      const updatedSprint = updateSprint(sprintId, variables);
+      return { sprint: updatedSprint };
+    }
+    if (url.match(/^\/sprints\/\d+\/issues$/)) {
+      const sprintId = url.split('/')[2];
+      const updatedSprint = updateSprintIssues(sprintId, variables.issueIds);
+      return { sprint: updatedSprint };
+    }
   }
 
   // PATCH requests (similar to PUT)
@@ -94,6 +123,11 @@ const routeMockData = (method, url, variables) => {
     }
     if (url.match(/^\/comments\/\d+$/)) {
       return { success: true, message: 'Comment deleted successfully' };
+    }
+    if (url.match(/^\/sprints\/\d+$/)) {
+      const sprintId = url.split('/')[2];
+      deleteSprint(sprintId);
+      return { success: true, message: 'Sprint deleted successfully' };
     }
   }
 
