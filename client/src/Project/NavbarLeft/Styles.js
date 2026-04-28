@@ -77,3 +77,20 @@ export const ItemText = styled.div`
     opacity: 1;
   }
 `;
+
+export const NotificationBadge = styled.div`
+  position: absolute;
+  top: 8px;
+  left: 32px;
+  min-width: 18px;
+  height: 18px;
+  background: ${color.danger};
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${font.bold}
+  ${font.size(11)}
+  padding: 0 4px;
+`;

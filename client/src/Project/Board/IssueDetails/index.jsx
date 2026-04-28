@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import api from 'shared/utils/api';
@@ -16,7 +16,8 @@ import AssigneesReporter from './AssigneesReporter';
 import Priority from './Priority';
 import EstimateTracking from './EstimateTracking';
 import Dates from './Dates';
-import { TopActions, TopActionsRight, Content, Left, Right } from './Styles';
+import ActivityTimeline from './ActivityTimeline';
+import { TopActions, TopActionsRight, Content, Left, Right, TabSwitcher, Tab } from './Styles';
 
 const propTypes = {
   issueId: PropTypes.string.isRequired,
@@ -54,6 +55,8 @@ const ProjectBoardIssueDetails = ({
     });
   };
 
+  const [activeTab, setActiveTab] = useState('comments');
+
   return (
     <Fragment>
       <TopActions>
@@ -74,8 +77,21 @@ const ProjectBoardIssueDetails = ({
       <Content>
         <Left>
           <Title issue={issue} updateIssue={updateIssue} />
-          <Description issue={issue} updateIssue={updateIssue} />
-          <Comments issue={issue} fetchIssue={fetchIssue} />
+          <TabSwitcher>
+            <Tab active={activeTab === 'comments'} onClick={() => setActiveTab('comments')}>
+              Comments
+            </Tab>
+            <Tab active={activeTab === 'activity'} onClick={() => setActiveTab('activity')}>
+              Activity
+            </Tab>
+          </TabSwitcher>
+          {activeTab === 'comments' && (
+            <Fragment>
+              <Description issue={issue} updateIssue={updateIssue} />
+              <Comments issue={issue} fetchIssue={fetchIssue} />
+            </Fragment>
+          )}
+          {activeTab === 'activity' && <ActivityTimeline issueId={issue.id} />}
         </Left>
         <Right>
           <Status issue={issue} updateIssue={updateIssue} />

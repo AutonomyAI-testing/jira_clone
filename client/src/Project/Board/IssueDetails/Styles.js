@@ -38,3 +38,28 @@ export const SectionTitle = styled.div`
   ${font.size(12.5)}
   ${font.bold}
 `;
+
+export const TabSwitcher = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid ${color.borderLightest};
+`;
+
+export const Tab = styled.button`
+  padding: 6px 12px;
+  border-radius: 3px;
+  border: 1px solid ${props => (props.active ? color.borderLightest : 'transparent')};
+  background: ${props => (props.active ? color.backgroundLightest : 'transparent')};
+  color: ${props => (props.active ? color.textDarkest : color.textMedium)};
+  ${font.size(13)}
+  ${font.medium}
+  cursor: pointer;
+  transition: all 0.1s;
+
+  &:hover {
+    background: ${color.backgroundLightest};
+    color: ${color.textDarkest};
+  }
+`;
