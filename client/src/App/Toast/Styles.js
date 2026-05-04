@@ -8,52 +8,95 @@ export const Container = styled.div`
   position: fixed;
   right: 30px;
   top: 50px;
+  pointer-events: none;
 `;
 
 export const StyledToast = styled.div`
   position: relative;
-  margin-bottom: 5px;
-  width: 300px;
-  padding: 15px 20px;
-  border-radius: 3px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  width: 360px;
+  padding: 16px 20px;
+  border-radius: 4px;
   color: #fff;
   background: ${props => color[props.type]};
-  cursor: pointer;
-  transition: all 0.15s;
-  ${mixin.clearfix}
+  box-shadow: ${mixin.boxShadowMedium};
+  pointer-events: auto;
+  transition: all 0.2s ease;
   ${mixin.hardwareAccelerate}
 
   &.jira-toast-enter,
   &.jira-toast-exit.jira-toast-exit-active {
     opacity: 0;
-    right: -10px;
+    transform: translateX(400px);
   }
 
   &.jira-toast-exit,
   &.jira-toast-enter.jira-toast-enter-active {
     opacity: 1;
-    right: 0;
+    transform: translateX(0);
   }
 `;
 
-export const CloseIcon = styled(Icon)`
+export const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+`;
+
+export const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+`;
+
+export const CloseButton = styled.button`
   position: absolute;
-  top: 13px;
-  right: 14px;
-  font-size: 22px;
+  top: 12px;
+  right: 12px;
+  padding: 0;
+  border: none;
+  background: transparent;
   cursor: pointer;
   color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.1s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:active {
+    opacity: 0.7;
+  }
 `;
 
 export const Title = styled.div`
-  padding-right: 22px;
-  ${font.size(15)}
   ${font.medium}
+  ${font.size(15)}
+  color: #fff;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 `;
 
 export const Message = styled.div`
-  padding: 8px 10px 0 0;
+  ${font.regular}
+  ${font.size(13)}
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.4;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
   white-space: pre-wrap;
-  ${font.size(14)}
-  ${font.medium}
+`;
+
+export const ToastIcon = styled(Icon)`
+  color: #fff;
 `;
