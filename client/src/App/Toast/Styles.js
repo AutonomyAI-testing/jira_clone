@@ -10,50 +10,109 @@ export const Container = styled.div`
   top: 50px;
 `;
 
+// Map toast types to background colors
+const getBackgroundColor = type => {
+  const backgrounds = {
+    success: color.success,
+    danger: '#F0B429',
+    warning: color.warning,
+    info: color.primary,
+  };
+  return backgrounds[type] || backgrounds.success;
+};
+
+// Map toast types to border colors
+const getBorderColor = type => {
+  const borders = {
+    danger: '#D32E2E',
+  };
+  return borders[type] || null;
+};
+
 export const StyledToast = styled.div`
   position: relative;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   width: 300px;
-  padding: 15px 20px;
-  border-radius: 3px;
+  padding: 12px 16px 12px 40px;
+  border-radius: 4px;
   color: #fff;
-  background: ${props => color[props.type]};
+  background: ${props => getBackgroundColor(props.type)};
+  border: ${props =>
+    getBorderColor(props.type) ? `2px solid ${getBorderColor(props.type)}` : 'none'};
   cursor: pointer;
-  transition: all 0.15s;
-  ${mixin.clearfix}
+  transition: all 0.2s ease;
   ${mixin.hardwareAccelerate}
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 
   &.jira-toast-enter,
   &.jira-toast-exit.jira-toast-exit-active {
     opacity: 0;
-    right: -10px;
+    transform: translateX(20px);
   }
 
   &.jira-toast-exit,
   &.jira-toast-enter.jira-toast-enter-active {
     opacity: 1;
-    right: 0;
+    transform: translateX(0);
   }
+`;
+
+export const ContentWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1;
+`;
+
+export const TextContent = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+export const IconWrapper = styled.div`
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #fff;
+  flex-shrink: 0;
 `;
 
 export const CloseIcon = styled(Icon)`
   position: absolute;
-  top: 13px;
-  right: 14px;
-  font-size: 22px;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  font-size: 18px;
   cursor: pointer;
   color: #fff;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 export const Title = styled.div`
-  padding-right: 22px;
-  ${font.size(15)}
+  ${font.size(14)}
   ${font.medium}
+  line-height: 1.3;
 `;
 
 export const Message = styled.div`
-  padding: 8px 10px 0 0;
   white-space: pre-wrap;
-  ${font.size(14)}
-  ${font.medium}
+  ${font.size(13)}
+  ${font.regular}
+  line-height: 1.4;
+  opacity: 0.95;
 `;
