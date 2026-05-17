@@ -1,43 +1,29 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
 
 import { Button } from 'shared/components';
 
-import { Attachments, Title, AttachmentButton, AttachmentList, AttachmentItem, FileName, RemoveButton } from './Styles';
+import { Attachments, Title, AttachmentButton } from './Styles';
 
-/**
- * ProjectBoardIssueDetailsAttachments renders an attachments section for an issue.
- * Allows users to select and manage file attachments with visual feedback.
- * File upload to server is handled separately and can be integrated as needed.
- */
-const ProjectBoardIssueDetailsAttachments = () => {
+const propTypes = {
+  issue: PropTypes.object.isRequired,
+};
+
+const ProjectBoardIssueDetailsAttachments = ({ issue }) => {
+  // issue prop is passed from parent but not currently used
+  // File attachment management will be implemented in a follow-up
   const fileInputRef = useRef(null);
-  const [selectedFiles, setSelectedFiles] = useState([]);
 
-  // Trigger hidden file input when "Add attachment" button is clicked
   const handleAttachmentClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+    fileInputRef.current?.click();
   };
 
-  // Process selected files and add them to the list
-  const handleFileChange = (event) => {
-    const { files } = event.target;
+  const handleFileChange = event => {
+    const files = event.target.files;
     if (files && files.length > 0) {
-      const fileArray = Array.from(files).map((file, index) => ({
-        id: `${Date.now()}_${index}`,
-        name: file.name,
-        size: file.size,
-        file,
-      }));
-      setSelectedFiles(prev => [...prev, ...fileArray]);
-      // File upload integration will be implemented in a follow-up
+      // File upload logic will be implemented in a follow-up
+      // Currently, this handler is a placeholder for future integration
     }
-  };
-
-  // Remove file from selected files list
-  const handleRemoveFile = (fileId) => {
-    setSelectedFiles(prev => prev.filter(file => file.id !== fileId));
   };
 
   return (
@@ -55,24 +41,10 @@ const ProjectBoardIssueDetailsAttachments = () => {
           Add attachment
         </Button>
       </AttachmentButton>
-      {selectedFiles.length > 0 && (
-        <AttachmentList>
-          {selectedFiles.map(file => (
-            <AttachmentItem key={file.id}>
-              <FileName>{file.name}</FileName>
-              <RemoveButton
-                type="button"
-                aria-label={`Remove ${file.name}`}
-                onClick={() => handleRemoveFile(file.id)}
-              >
-                ×
-              </RemoveButton>
-            </AttachmentItem>
-          ))}
-        </AttachmentList>
-      )}
     </Attachments>
   );
 };
+
+ProjectBoardIssueDetailsAttachments.propTypes = propTypes;
 
 export default ProjectBoardIssueDetailsAttachments;
