@@ -1,0 +1,21 @@
+const path = require('path');
+
+module.exports = {
+  stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
+  core: {
+    builder: 'webpack4',
+  },
+  webpackFinal: async (config) => {
+    // Replicate the project's webpack resolve.modules setting for absolute imports from 'src'
+    config.resolve.modules = [
+      ...(config.resolve.modules || []),
+      path.resolve(__dirname, '../src'),
+    ];
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      shared: path.resolve(__dirname, '../src/shared'),
+    };
+    return config;
+  },
+};
