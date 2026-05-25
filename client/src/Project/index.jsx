@@ -12,6 +12,7 @@ import Board from './Board';
 import IssueSearch from './IssueSearch';
 import IssueCreate from './IssueCreate';
 import ProjectSettings from './ProjectSettings';
+import Toast from './Toast';
 import { ProjectPage } from './Styles';
 
 const Project = () => {
@@ -90,6 +91,8 @@ const Project = () => {
         path={`${match.path}/settings`}
         render={() => <ProjectSettings project={project} fetchProject={fetchProject} />}
       />
+
+      <Route path={`${match.path}/toast`} render={() => <Toast />} />
 
       {match.isExact && <Redirect to={`${match.url}/board`} />}
     </ProjectPage>
