@@ -11,6 +11,7 @@ import Sidebar from './Sidebar';
 import Board from './Board';
 import IssueSearch from './IssueSearch';
 import IssueCreate from './IssueCreate';
+import IssueCreatePage from './IssueCreatePage';
 import ProjectSettings from './ProjectSettings';
 import { ProjectPage } from './Styles';
 
@@ -83,6 +84,13 @@ const Project = () => {
             fetchProject={fetchProject}
             updateLocalProjectIssues={updateLocalProjectIssues}
           />
+        )}
+      />
+
+      <Route
+        path={`${match.path}/create-issue`}
+        render={() => (
+          <IssueCreatePage project={project} fetchProject={fetchProject} />
         )}
       />
 
