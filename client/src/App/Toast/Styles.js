@@ -16,8 +16,8 @@ export const StyledToast = styled.div`
   width: 300px;
   padding: 15px 20px;
   border-radius: 3px;
-  color: #fff;
-  background: ${props => color[props.type]};
+  color: #000000;
+  background: #6cff69;
   cursor: pointer;
   transition: all 0.15s;
   ${mixin.clearfix}
@@ -42,7 +42,7 @@ export const CloseIcon = styled(Icon)`
   right: 14px;
   font-size: 22px;
   cursor: pointer;
-  color: #fff;
+  color: #000000;
 `;
 
 export const Title = styled.div`
