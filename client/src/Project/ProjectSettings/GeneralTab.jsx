@@ -18,7 +18,15 @@ import {
 } from './Styles';
 
 const propTypes = {
-  project: PropTypes.object.isRequired,
+  project: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string,
+    category: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    createdAt: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string.isRequired,
+  }).isRequired,
   fetchProject: PropTypes.func.isRequired,
 };
 
@@ -59,7 +67,7 @@ const GeneralTab = ({ project, fetchProject }) => {
           />
           <Form.Field.Select name="category" label="Project Category" options={categoryOptions} />
 
-          <ActionButton type="submit" variant="primary" isWorking={isUpdating}>
+          <ActionButton htmlType="submit" variant="primary" isWorking={isUpdating}>
             Save changes
           </ActionButton>
 

@@ -9,11 +9,23 @@ import DangerZone from './DangerZone';
 import { Cont, Header, TabsNav, TabNavItem, TabContent } from './Styles';
 
 const propTypes = {
-  project: PropTypes.object.isRequired,
+  project: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    users: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+      }),
+    ).isRequired,
+  }).isRequired,
   fetchProject: PropTypes.func.isRequired,
 };
 
-const ProjectSettings = ({ project, fetchProject }) => {
+const ProjectSettings = ({
+  project,
+  fetchProject,
+}) => {
   const [activeTab, setActiveTab] = useState('general');
 
   return (
@@ -38,7 +50,7 @@ const ProjectSettings = ({ project, fetchProject }) => {
       <DangerZone project={project} />
     </Cont>
   );
-};
+}
 
 ProjectSettings.propTypes = propTypes;
 

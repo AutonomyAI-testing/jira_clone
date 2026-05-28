@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Modal, Button, Icon } from 'shared/components';
@@ -20,13 +20,18 @@ import {
 } from './Styles';
 
 const propTypes = {
-  project: PropTypes.object.isRequired,
+  project: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
-const DangerZone = ({ project }) => {
+const DangerZone = ({
+  project,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [confirmName, setConfirmName] = useState('');
-  const [{ isUpdating }, deleteProject] = useApi.delete('/project');
+  const [{ isDeleting }, deleteProject] = useApi.delete('/project');
 
   const handleDeleteConfirm = async () => {
     try {
@@ -34,17 +39,17 @@ const DangerZone = ({ project }) => {
       toast.success('Project has been deleted.');
       history.push('/');
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message || 'Failed to delete project.');
     }
   };
 
   const isDeleteDisabled = confirmName !== project.name;
 
   return (
-    <Fragment>
+    <React.Fragment>
       <DangerZoneSection>
         <DangerHeading>
-          <Icon icon="warning" size={18} />
+          <Icon type="help" size={18} />
           Danger Zone
         </DangerHeading>
         <DangerDescription>
@@ -88,7 +93,7 @@ const DangerZone = ({ project }) => {
               <Button
                 variant="danger"
                 disabled={isDeleteDisabled}
-                isWorking={isUpdating}
+                isWorking={isDeleting}
                 onClick={handleDeleteConfirm}
               >
                 Delete this project
@@ -97,7 +102,7 @@ const DangerZone = ({ project }) => {
           </DeleteModalCont>
         )}
       />
-    </Fragment>
+    </React.Fragment>
   );
 };
 

@@ -18,10 +18,22 @@ import {
 } from './Styles';
 
 const propTypes = {
-  project: PropTypes.object.isRequired,
+  project: PropTypes.shape({
+    users: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired,
+        avatarUrl: PropTypes.string,
+        createdAt: PropTypes.string.isRequired,
+      }),
+    ),
+  }).isRequired,
 };
 
-const MembersTab = ({ project }) => {
+const MembersTab = ({
+  project,
+}) => {
   const { users = [] } = project;
 
   if (users.length === 0) {
