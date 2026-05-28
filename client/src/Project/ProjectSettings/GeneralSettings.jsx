@@ -7,7 +7,7 @@ import useApi from 'shared/hooks/api';
 import { Form } from 'shared/components';
 
 import {
-  SectionHeading,
+  GeneralSectionHeading,
   SectionContent,
   FormElement,
   FormElementField,
@@ -52,7 +52,7 @@ const GeneralSettings = ({ project, fetchProject }) => {
       }}
     >
       <SectionContent>
-        <SectionHeading>General Settings</SectionHeading>
+        <GeneralSectionHeading>General Settings</GeneralSectionHeading>
 
         <FormElement>
           <FormElementField>

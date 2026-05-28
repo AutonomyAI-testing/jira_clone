@@ -81,6 +81,10 @@ export const SectionHeading = styled.h2`
   padding: 0;
 `;
 
+export const GeneralSectionHeading = styled(SectionHeading)`
+  color: ${color.danger};
+`;
+
 export const SectionDescription = styled.p`
   ${font.regular}
   ${font.size(14)}
