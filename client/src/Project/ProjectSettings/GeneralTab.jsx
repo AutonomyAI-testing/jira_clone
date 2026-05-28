@@ -1,0 +1,97 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import { ProjectCategory, ProjectCategoryCopy } from 'shared/constants/projects';
+import toast from 'shared/utils/toast';
+import { formatDate } from 'shared/utils/dateTime';
+import useApi from 'shared/hooks/api';
+import { Form } from 'shared/components';
+
+import {
+  FormCont,
+  FormElement,
+  ActionButton,
+  MetaSection,
+  MetaRow,
+  MetaLabel,
+  MetaValue,
+} from './Styles';
+
+const propTypes = {
+  project: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string,
+    category: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    createdAt: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string.isRequired,
+  }).isRequired,
+  fetchProject: PropTypes.func.isRequired,
+};
+
+const GeneralTab = ({ project, fetchProject }) => {
+  const [{ isUpdating }, updateProject] = useApi.put('/project');
+
+  return (
+    <Form
+      initialValues={Form.initialValues(project, get => ({
+        name: get('name'),
+        url: get('url'),
+        category: get('category'),
+        description: get('description'),
+      }))}
+      validations={{
+        name: [Form.is.required(), Form.is.maxLength(100)],
+        url: Form.is.url(),
+        category: Form.is.required(),
+      }}
+      onSubmit={async (values, form) => {
+        try {
+          await updateProject(values);
+          await fetchProject();
+          toast.success('Changes have been saved successfully.');
+        } catch (error) {
+          Form.handleAPIError(error, form);
+        }
+      }}
+    >
+      <FormCont>
+        <FormElement>
+          <Form.Field.Input name="name" label="Name" />
+          <Form.Field.Input name="url" label="URL" />
+          <Form.Field.TextEditor
+            name="description"
+            label="Description"
+            tip="Describe the project in as much detail as you'd like."
+          />
+          <Form.Field.Select name="category" label="Project Category" options={categoryOptions} />
+
+          <ActionButton htmlType="submit" variant="primary" isWorking={isUpdating}>
+            Save changes
+          </ActionButton>
+
+          <MetaSection>
+            <MetaRow>
+              <MetaLabel>Created</MetaLabel>
+              <MetaValue>{formatDate(project.createdAt)}</MetaValue>
+            </MetaRow>
+            <MetaRow>
+              <MetaLabel>Last updated</MetaLabel>
+              <MetaValue>{formatDate(project.updatedAt)}</MetaValue>
+            </MetaRow>
+          </MetaSection>
+        </FormElement>
+      </FormCont>
+    </Form>
+  );
+};
+
+const categoryOptions = Object.values(ProjectCategory).map(category => ({
+  value: category,
+  label: ProjectCategoryCopy[category],
+}));
+
+GeneralTab.propTypes = propTypes;
+
+export default GeneralTab;

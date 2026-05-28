@@ -27,6 +27,7 @@ export const attachPrivateRoutes = (app: any): void => {
 
   app.get('/project', projects.getProjectWithUsersAndIssues);
   app.put('/project', projects.update);
+  app.delete('/project', projects.remove);
 
   app.get('/currentUser', users.getCurrentUser);
 };
