@@ -1,6 +1,6 @@
 import { Project } from 'entities';
 import { catchErrors } from 'errors';
-import { findEntityOrThrow, updateEntity } from 'utils/typeorm';
+import { findEntityOrThrow, updateEntity, deleteEntity } from 'utils/typeorm';
 import { issuePartial } from 'serializers/issues';
 
 export const getProjectWithUsersAndIssues = catchErrors(async (req, res) => {
@@ -18,4 +18,9 @@ export const getProjectWithUsersAndIssues = catchErrors(async (req, res) => {
 export const update = catchErrors(async (req, res) => {
   const project = await updateEntity(Project, req.currentUser.projectId, req.body);
   res.respond({ project });
+});
+
+export const remove = catchErrors(async (req, res) => {
+  await deleteEntity(Project, req.currentUser.projectId);
+  res.respond({ message: 'Project has been deleted.' });
 });

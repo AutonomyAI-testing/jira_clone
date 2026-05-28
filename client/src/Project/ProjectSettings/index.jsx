@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { ProjectCategory, ProjectCategoryCopy } from 'shared/constants/projects';
-import toast from 'shared/utils/toast';
-import useApi from 'shared/hooks/api';
-import { Form, Breadcrumbs } from 'shared/components';
+import { Breadcrumbs } from 'shared/components';
 
-import { FormCont, FormHeading, FormElement, ActionButton } from './Styles';
+import GeneralTab from './GeneralTab';
+import MembersTab from './MembersTab';
+import DangerZone from './DangerZone';
+import { Cont, Header, TabsNav, TabNavItem, TabContent } from './Styles';
 
 const propTypes = {
   project: PropTypes.object.isRequired,
@@ -14,58 +14,31 @@ const propTypes = {
 };
 
 const ProjectSettings = ({ project, fetchProject }) => {
-  const [{ isUpdating }, updateProject] = useApi.put('/project');
+  const [activeTab, setActiveTab] = useState('general');
 
   return (
-    <Form
-      initialValues={Form.initialValues(project, get => ({
-        name: get('name'),
-        url: get('url'),
-        category: get('category'),
-        description: get('description'),
-      }))}
-      validations={{
-        name: [Form.is.required(), Form.is.maxLength(100)],
-        url: Form.is.url(),
-        category: Form.is.required(),
-      }}
-      onSubmit={async (values, form) => {
-        try {
-          await updateProject(values);
-          await fetchProject();
-          toast.success('Changes have been saved successfully.');
-        } catch (error) {
-          Form.handleAPIError(error, form);
-        }
-      }}
-    >
-      <FormCont>
-        <FormElement>
-          <Breadcrumbs items={['Projects', project.name, 'Project Details']} />
-          <FormHeading>Project Details</FormHeading>
+    <Cont>
+      <Breadcrumbs items={['Projects', project.name, 'Settings']} />
+      <Header>Project Settings</Header>
 
-          <Form.Field.Input name="name" label="Name" />
-          <Form.Field.Input name="url" label="URL" />
-          <Form.Field.TextEditor
-            name="description"
-            label="Description"
-            tip="Describe the project in as much detail as you'd like."
-          />
-          <Form.Field.Select name="category" label="Project Category" options={categoryOptions} />
+      <TabsNav>
+        <TabNavItem isActive={activeTab === 'general'} onClick={() => setActiveTab('general')}>
+          General
+        </TabNavItem>
+        <TabNavItem isActive={activeTab === 'members'} onClick={() => setActiveTab('members')}>
+          Members
+        </TabNavItem>
+      </TabsNav>
 
-          <ActionButton type="submit" variant="primary" isWorking={isUpdating}>
-            Save changes
-          </ActionButton>
-        </FormElement>
-      </FormCont>
-    </Form>
+      <TabContent>
+        {activeTab === 'general' && <GeneralTab project={project} fetchProject={fetchProject} />}
+        {activeTab === 'members' && <MembersTab project={project} />}
+      </TabContent>
+
+      <DangerZone project={project} />
+    </Cont>
   );
 };
-
-const categoryOptions = Object.values(ProjectCategory).map(category => ({
-  value: category,
-  label: ProjectCategoryCopy[category],
-}));
 
 ProjectSettings.propTypes = propTypes;
 
