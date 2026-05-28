@@ -89,6 +89,9 @@ const routeMockData = (method, url, variables) => {
 
   // DELETE requests
   if (method === 'delete') {
+    if (url === '/project') {
+      return { success: true, message: 'Project deleted successfully' };
+    }
     if (url.match(/^\/issues\/\d+$/)) {
       return { success: true, message: 'Issue deleted successfully' };
     }
