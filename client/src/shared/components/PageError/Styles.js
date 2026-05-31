@@ -42,4 +42,5 @@ export const Title = styled.h1`
   margin-bottom: 16px;
   padding-left: 42px;
   ${font.size(29)}
+  color: red;
 `;
