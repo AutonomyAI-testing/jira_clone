@@ -9,6 +9,7 @@ import { is, generateErrors } from 'shared/utils/validation';
 import Field from './Field';
 
 const propTypes = {
+  children: PropTypes.node,
   validate: PropTypes.func,
   validations: PropTypes.object,
   validateOnBlur: PropTypes.bool,
@@ -18,11 +19,11 @@ const defaultProps = {
   validate: undefined,
   validations: undefined,
   validateOnBlur: false,
+  children: undefined,
 };
 
-const Form = ({ validate, validations, ...otherProps }) => (
+const Form = ({ validate, validations, children, ...otherProps }) => (
   <Formik
-    {...otherProps}
     validate={values => {
       if (validate) {
         return validate(values);
@@ -32,7 +33,10 @@ const Form = ({ validate, validations, ...otherProps }) => (
       }
       return {};
     }}
-  />
+    {...otherProps}
+  >
+    {children}
+  </Formik>
 );
 
 Form.Element = props => <FormikForm noValidate {...props} />;
