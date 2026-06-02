@@ -1,71 +1,82 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { ProjectCategory, ProjectCategoryCopy } from 'shared/constants/projects';
-import toast from 'shared/utils/toast';
-import useApi from 'shared/hooks/api';
-import { Form, Breadcrumbs } from 'shared/components';
+import { Breadcrumbs } from 'shared/components';
 
-import { FormCont, FormHeading, FormElement, ActionButton } from './Styles';
+import ProjectSettingsGeneral from './General';
+import ProjectSettingsMembers from './Members';
+import ProjectSettingsSecurity from './Security';
+import ProjectSettingsDangerZone from './DangerZone';
+import {
+  PageContainer,
+  TabsContainer,
+  TabButton,
+  TabContent,
+  FormCont,
+  FormHeading,
+} from './Styles';
 
 const propTypes = {
   project: PropTypes.object.isRequired,
   fetchProject: PropTypes.func.isRequired,
 };
 
+const TAB_GENERAL = 'general';
+const TAB_MEMBERS = 'members';
+const TAB_SECURITY = 'security';
+const TAB_DANGER = 'danger';
+
+const TABS = [
+  { key: TAB_GENERAL, label: 'General' },
+  { key: TAB_MEMBERS, label: 'Members' },
+  { key: TAB_SECURITY, label: 'Security' },
+  { key: TAB_DANGER, label: 'Danger Zone' },
+];
+
 const ProjectSettings = ({ project, fetchProject }) => {
-  const [{ isUpdating }, updateProject] = useApi.put('/project');
+  const [activeTab, setActiveTab] = useState(TAB_GENERAL);
+
+  // Switch statement allows different props to be passed to each tab component
+  // (e.g., General and DangerZone receive fetchProject, but Members and Security don't)
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case TAB_GENERAL:
+        return <ProjectSettingsGeneral project={project} fetchProject={fetchProject} />;
+      case TAB_MEMBERS:
+        return <ProjectSettingsMembers project={project} />;
+      case TAB_SECURITY:
+        return <ProjectSettingsSecurity />;
+      case TAB_DANGER:
+        return <ProjectSettingsDangerZone project={project} />;
+      default:
+        return null;
+    }
+  };
 
   return (
-    <Form
-      initialValues={Form.initialValues(project, get => ({
-        name: get('name'),
-        url: get('url'),
-        category: get('category'),
-        description: get('description'),
-      }))}
-      validations={{
-        name: [Form.is.required(), Form.is.maxLength(100)],
-        url: Form.is.url(),
-        category: Form.is.required(),
-      }}
-      onSubmit={async (values, form) => {
-        try {
-          await updateProject(values);
-          await fetchProject();
-          toast.success('Changes have been saved successfully.');
-        } catch (error) {
-          Form.handleAPIError(error, form);
-        }
-      }}
-    >
+    <PageContainer>
       <FormCont>
-        <FormElement>
-          <Breadcrumbs items={['Projects', project.name, 'Project Details']} />
-          <FormHeading>Project Details</FormHeading>
+        <FormHeading>Project Settings</FormHeading>
+        <Breadcrumbs items={['Projects', project.name, 'Settings']} />
 
-          <Form.Field.Input name="name" label="Name" />
-          <Form.Field.Input name="url" label="URL" />
-          <Form.Field.TextEditor
-            name="description"
-            label="Description"
-            tip="Describe the project in as much detail as you'd like."
-          />
-          <Form.Field.Select name="category" label="Project Category" options={categoryOptions} />
+        <TabsContainer>
+          {TABS.map(tab => (
+            <TabButton
+              key={tab.key}
+              isActive={activeTab === tab.key}
+              isDanger={tab.key === TAB_DANGER}
+              onClick={() => setActiveTab(tab.key)}
+            >
+              {tab.label}
+            </TabButton>
+          ))}
+        </TabsContainer>
 
-          <ActionButton type="submit" variant="primary" isWorking={isUpdating}>
-            Save changes
-          </ActionButton>
-        </FormElement>
+        <TabContent>{renderTabContent()}</TabContent>
       </FormCont>
-    </Form>
+    </PageContainer>
   );
 };
-
-const categoryOptions = Object.values(ProjectCategory).map(category => ({
-  value: category,
-  label: ProjectCategoryCopy[category],
-}));
 
 ProjectSettings.propTypes = propTypes;
 
