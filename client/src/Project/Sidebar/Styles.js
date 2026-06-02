@@ -83,7 +83,7 @@ export const NotImplemented = styled.div`
   padding: 5px 0 5px 8px;
   border-radius: 3px;
   text-transform: uppercase;
-  color: ${color.textDark};
+  color: ${color.textMedium};
   background: ${color.backgroundMedium};
   opacity: 0;
   ${font.size(11.5)};
