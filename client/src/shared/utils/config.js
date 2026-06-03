@@ -5,5 +5,4 @@
 export const USE_MOCK_DATA = true;
 
 // API base URL (only used when USE_MOCK_DATA is false)
-// eslint-disable-next-line no-undef
-export const API_BASE_URL = (typeof process !== 'undefined' && process.env && process.env.API_URL) || 'http://localhost:3000';
+export const API_BASE_URL = process.env.API_URL || 'http://localhost:3000';

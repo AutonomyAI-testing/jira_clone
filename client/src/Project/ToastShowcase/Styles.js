@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { color, font, mixin } from 'shared/utils/styles';
 import { Button } from 'shared/components';
@@ -71,12 +71,11 @@ export const CodeBlock = styled.pre`
   }
 `;
 
-// Examples Grid
-export const ExamplesGrid = styled.div`
+// Shared grid CSS for Examples and Variations sections
+const showcaseGrid = css`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
-  margin-bottom: 50px;
 
   @media (max-width: 999px) {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -85,6 +84,12 @@ export const ExamplesGrid = styled.div`
   @media (max-width: 680px) {
     grid-template-columns: 1fr;
   }
+`;
+
+// Examples Grid
+export const ExamplesGrid = styled.div`
+  ${showcaseGrid};
+  margin-bottom: 50px;
 `;
 
 // Example Card
@@ -169,17 +174,7 @@ export const ContentVariationsSection = styled.div`
 `;
 
 export const VariationsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-
-  @media (max-width: 999px) {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  }
-
-  @media (max-width: 680px) {
-    grid-template-columns: 1fr;
-  }
+  ${showcaseGrid};
 `;
 
 export const VariationCard = styled(ExampleCard)``;
@@ -240,13 +235,4 @@ export const ApiTable = styled.table`
     ${font.size(12)}
     color: ${color.textDark};
   }
-`;
-
-export const HighlightedMethod = styled.span`
-  background: #f5f5f5;
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-  ${font.size(13)}
-  color: #c7254e;
 `;

@@ -29,6 +29,7 @@ import {
   ApiTable,
 } from './Styles';
 
+// Toast type colors used in variant cards and API reference table
 const toastTypeColors = {
   success: '#0B875B',
   danger: '#E13C3C',
@@ -36,97 +37,83 @@ const toastTypeColors = {
   info: '#0052cc',
 };
 
+// Helper to create a handler that displays a toast with the given options
+const createToastHandler = options => () => {
+  toast.show(options);
+};
+
 const ToastShowcase = () => {
-  const handleShowSuccess = () => {
-    toast.show({
-      type: 'success',
-      title: 'Success!',
-      message: 'Your changes have been saved successfully.',
-      duration: 5,
-    });
-  };
+  // Toast display handlers for interactive examples
+  const handleShowSuccess = createToastHandler({
+    type: 'success',
+    title: 'Success!',
+    message: 'Your changes have been saved successfully.',
+    duration: 5,
+  });
 
-  const handleShowDanger = () => {
-    toast.show({
-      type: 'danger',
-      title: 'Error',
-      message: 'Something went wrong. Please try again.',
-      duration: 5,
-    });
-  };
+  const handleShowDanger = createToastHandler({
+    type: 'danger',
+    title: 'Error',
+    message: 'Something went wrong. Please try again.',
+    duration: 5,
+  });
 
-  const handleShowDangerLong = () => {
-    toast.show({
-      type: 'danger',
-      title: 'Error',
-      message:
-        'Failed to update issue: Connection timeout. Server did not respond within 30 seconds. Please check your network connection and try again.',
-      duration: 0,
-    });
-  };
+  const handleShowDangerLong = createToastHandler({
+    type: 'danger',
+    title: 'Error',
+    message:
+      'Failed to update issue: Connection timeout. Server did not respond within 30 seconds. Please check your network connection and try again.',
+    duration: 0,
+  });
 
-  const handleShowWarning = () => {
-    toast.show({
-      type: 'warning',
-      title: 'Warning',
-      message: 'This action cannot be undone. Please proceed with caution.',
-      duration: 5,
-    });
-  };
+  const handleShowWarning = createToastHandler({
+    type: 'warning',
+    title: 'Warning',
+    message: 'This action cannot be undone. Please proceed with caution.',
+    duration: 5,
+  });
 
-  const handleShowWarningLong = () => {
-    toast.show({
-      type: 'warning',
-      title: 'Warning',
-      message:
-        'This is a multi-line warning message that can span across several lines when the content is longer. Users can still dismiss it by clicking on the toast.',
-      duration: 0,
-    });
-  };
+  const handleShowWarningLong = createToastHandler({
+    type: 'warning',
+    title: 'Warning',
+    message:
+      'This is a multi-line warning message that can span across several lines when the content is longer. Users can still dismiss it by clicking on the toast.',
+    duration: 0,
+  });
 
-  const handleShowInfo = () => {
-    toast.show({
-      type: 'info',
-      title: 'Information',
-      message: 'Project board has been updated with new filters.',
-      duration: 5,
-    });
-  };
+  const handleShowInfo = createToastHandler({
+    type: 'info',
+    title: 'Information',
+    message: 'Project board has been updated with new filters.',
+    duration: 5,
+  });
 
-  const handleShowTitleOnly = () => {
-    toast.show({
-      type: 'success',
-      title: 'Changes saved',
-      duration: 5,
-    });
-  };
+  const handleShowTitleOnly = createToastHandler({
+    type: 'success',
+    title: 'Changes saved',
+    duration: 5,
+  });
 
-  const handleShowMessageOnly = () => {
-    toast.show({
-      type: 'info',
-      message: 'Operation completed successfully',
-      duration: 5,
-    });
-  };
+  const handleShowMessageOnly = createToastHandler({
+    type: 'info',
+    message: 'Operation completed successfully',
+    duration: 5,
+  });
 
-  const handleShowLongTitle = () => {
-    toast.show({
-      type: 'warning',
-      title: 'This is a very long title that might wrap to multiple lines',
-      message: 'Short message',
-      duration: 0,
-    });
-  };
+  const handleShowLongTitle = createToastHandler({
+    type: 'warning',
+    title: 'This is a very long title that might wrap to multiple lines',
+    message: 'Short message',
+    duration: 0,
+  });
 
-  const handleShowBothLong = () => {
-    toast.show({
-      type: 'danger',
-      title: 'Operation Failed',
-      message:
-        'The system encountered multiple validation errors. Please review the following: 1) Email address format is invalid, 2) Password must be at least 8 characters long, 3) Name field cannot be empty.',
-      duration: 0,
-    });
-  };
+  const handleShowBothLong = createToastHandler({
+    type: 'danger',
+    title: 'Operation Failed',
+    message:
+      'The system encountered multiple validation errors. Please review the following: 1) Email address format is invalid, 2) Password must be at least 8 characters long, 3) Name field cannot be empty.',
+    duration: 0,
+  });
 
   return (
     <PageContainer>
@@ -144,7 +131,7 @@ const ToastShowcase = () => {
 
       {/* Introduction Section */}
       <IntroSection>
-        <SectionTitle>Toast Notifications</SectionTitle>
+        <SectionTitle style={{ color: toastTypeColors.danger }}>Toast Notifications</SectionTitle>
         <SectionDescription>
           Toast notifications are non-intrusive messages that appear in the top-right corner of the
           screen to provide user feedback about actions and system updates. They automatically
@@ -156,9 +143,7 @@ const ToastShowcase = () => {
           workflow.
         </SectionDescription>
 
-        <SectionTitle style={{ marginTop: '30px', fontSize: '18px' }}>
-          Quick Start
-        </SectionTitle>
+        <SectionTitle style={{ marginTop: '30px', fontSize: '18px' }}>Quick Start</SectionTitle>
         <CodeBlock>{`import toast from 'shared/utils/toast';
 
 // Show a toast with options
@@ -411,9 +396,7 @@ toast.error(error);  // Extracts message from error object`}</CodeBlock>
           </tbody>
         </ApiTable>
 
-        <SectionTitle style={{ marginTop: '30px', fontSize: '18px' }}>
-          Toast Types
-        </SectionTitle>
+        <SectionTitle style={{ marginTop: '30px', fontSize: '18px' }}>Toast Types</SectionTitle>
         <ApiTable>
           <thead>
             <tr>
