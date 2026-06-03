@@ -4,7 +4,7 @@ import { Router, Switch, Route, Redirect } from 'react-router-dom';
 import history from 'browserHistory';
 import Project from 'Project';
 import Authenticate from 'Auth/Authenticate';
-import PageError from 'shared/components/PageError';
+import { NotFound404 } from 'shared/components';
 
 const Routes = () => (
   <Router history={history}>
@@ -12,7 +12,7 @@ const Routes = () => (
       <Redirect exact from="/" to="/project" />
       <Route path="/authenticate" component={Authenticate} />
       <Route path="/project" component={Project} />
-      <Route component={PageError} />
+      <Route component={NotFound404} />
     </Switch>
   </Router>
 );
