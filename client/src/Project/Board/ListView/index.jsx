@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import moment from 'moment';
-import { intersection } from 'lodash';
 
+import filterIssues from 'shared/utils/filterIssues';
 import { IssueStatusCopy, IssueTypeCopy, IssuePriorityCopy } from 'shared/constants/issues';
 import { Avatar, IssueTypeIcon, IssuePriorityIcon } from 'shared/components';
 import { formatDate } from 'shared/utils/dateTime';
@@ -106,24 +105,7 @@ const ListView = ({ project, filters, currentUserId }) => {
   );
 };
 
-const filterIssues = (projectIssues, filters, currentUserId) => {
-  const { searchTerm, userIds, myOnly, recent } = filters;
-  let issues = projectIssues;
 
-  if (searchTerm) {
-    issues = issues.filter(issue => issue.title.toLowerCase().includes(searchTerm.toLowerCase()));
-  }
-  if (userIds.length > 0) {
-    issues = issues.filter(issue => intersection(issue.userIds, userIds).length > 0);
-  }
-  if (myOnly && currentUserId) {
-    issues = issues.filter(issue => issue.userIds.includes(currentUserId));
-  }
-  if (recent) {
-    issues = issues.filter(issue => moment(issue.updatedAt).isAfter(moment().subtract(3, 'days')));
-  }
-  return issues;
-};
 
 ListView.propTypes = propTypes;
 ListView.defaultProps = defaultProps;
