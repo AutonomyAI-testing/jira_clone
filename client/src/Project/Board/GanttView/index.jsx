@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import moment from 'moment';
 
-import filterIssues from 'shared/utils/filterIssues';
-import { IssueStatusCopy, IssueTypeCopy } from 'shared/constants/issues';
+import { filterIssues } from 'shared/utils/filterIssues';
 import { IssueTypeIcon, Avatar } from 'shared/components';
 
 import {
   GanttContainer,
   GanttHeader,
   TaskListContainer,
+  TaskListHeader,
   TimelineContainer,
   TaskRow,
   TaskInfo,
@@ -22,7 +22,6 @@ import {
   DayCell,
   TaskBar,
   TaskBarInner,
-  DependencyLine,
   AssigneesContainer,
 } from './Styles';
 
@@ -117,8 +116,8 @@ const GanttView = ({ project, filters, currentUserId }) => {
   return (
     <GanttContainer>
       <GanttHeader>
-        <TaskListContainer style={{ width: 400 }}>
-          <div style={{ padding: '12px 16px', fontWeight: 600 }}>Task</div>
+        <TaskListContainer>
+          <TaskListHeader>Task</TaskListHeader>
         </TaskListContainer>
         <TimelineContainer>
           <TimelineHeader>

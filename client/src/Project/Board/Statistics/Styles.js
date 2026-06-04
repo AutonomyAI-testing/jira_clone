@@ -79,16 +79,7 @@ export const CardIcon = styled.div`
   height: 40px;
   border-radius: 4px;
   background-color: ${props => props.color || color.backgroundLight};
-  color: ${props => {
-    switch (props.color) {
-      case color.success:
-        return '#fff';
-      case color.primary:
-        return '#fff';
-      default:
-        return color.textMedium;
-    }
-  }};
+  color: ${props => (props.color ? '#fff' : color.textMedium)};
   flex-shrink: 0;
 `;
 

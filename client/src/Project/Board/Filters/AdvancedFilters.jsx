@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Select, DatePicker } from 'shared/components';
@@ -16,7 +16,6 @@ import {
   AdvancedFiltersContent,
   FilterSection,
   FilterLabel,
-  FilterRow,
   DateRangeContainer,
   ClearAdvancedButton,
 } from './Styles';
@@ -27,23 +26,19 @@ const propTypes = {
   isExpanded: PropTypes.bool.isRequired,
 };
 
+// Helper to build select options from constants
+const buildOptions = (constantValues, copyLabels) =>
+  Object.values(constantValues).map(value => ({
+    value,
+    label: copyLabels[value],
+  }));
+
 const AdvancedFilters = ({ filters, mergeFilters, isExpanded }) => {
   const { statuses = [], priorities = [], types = [], dueDateRange = {} } = filters;
 
-  const statusOptions = Object.values(IssueStatus).map(status => ({
-    value: status,
-    label: IssueStatusCopy[status],
-  }));
-
-  const priorityOptions = Object.values(IssuePriority).map(priority => ({
-    value: priority,
-    label: IssuePriorityCopy[priority],
-  }));
-
-  const typeOptions = Object.values(IssueType).map(type => ({
-    value: type,
-    label: IssueTypeCopy[type],
-  }));
+  const statusOptions = buildOptions(IssueStatus, IssueStatusCopy);
+  const priorityOptions = buildOptions(IssuePriority, IssuePriorityCopy);
+  const typeOptions = buildOptions(IssueType, IssueTypeCopy);
 
   const areAdvancedFiltersActive =
     statuses.length > 0 ||
@@ -60,6 +55,7 @@ const AdvancedFilters = ({ filters, mergeFilters, isExpanded }) => {
     });
   };
 
+  // Only render when expanded; container visibility controlled by parent
   if (!isExpanded) {
     return null;
   }

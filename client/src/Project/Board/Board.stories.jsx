@@ -5,6 +5,7 @@ import Statistics from './Statistics';
 import Filters from './Filters';
 import AdvancedFilters from './Filters/AdvancedFilters';
 import FilterChips from './Filters/FilterChips';
+import ProjectBoardHeader from './Header';
 
 export default {
   title: 'Project/Board',
@@ -167,17 +168,7 @@ const BoardFeaturesContainer = ({ initialFilters, showAdvancedExpandedDirectly }
             borderBottom: '1px solid #dfe1e6',
           }}
         >
-          <h2
-            style={{
-              margin: 0,
-              fontSize: '20px',
-              fontWeight: 600,
-              color: '#172b4d',
-              fontFamily: 'CircularStdBold, -apple-system, BlinkMacSystemFont, sans-serif',
-            }}
-          >
-            Project Board
-          </h2>
+          <ProjectBoardHeader />
         </div>
 
         {/* Filter Bar */}

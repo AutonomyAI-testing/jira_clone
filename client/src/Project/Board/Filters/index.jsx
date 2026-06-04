@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { xor } from 'lodash';
 
@@ -45,7 +45,7 @@ const ProjectBoardFilters = ({ projectUsers, defaultFilters, filters, mergeFilte
   const areAllFiltersCleared = areBasicFiltersCleared && !areAdvancedFiltersActive;
 
   return (
-    <>
+    <Fragment>
       <Filters data-testid="board-filters">
         <FilterBarContainer>
           <SearchInput
@@ -96,7 +96,7 @@ const ProjectBoardFilters = ({ projectUsers, defaultFilters, filters, mergeFilte
         isExpanded={isAdvancedFiltersExpanded}
       />
       <FilterChips filters={filters} mergeFilters={mergeFilters} />
-    </>
+    </Fragment>
   );
 };
 
