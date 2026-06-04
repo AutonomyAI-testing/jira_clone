@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import moment from 'moment';
-import { intersection } from 'lodash';
 
+import { filterIssues } from 'shared/utils/filterIssues';
 import { IssueStatusCopy, IssueTypeCopy, IssuePriorityCopy } from 'shared/constants/issues';
 import { Avatar, IssueTypeIcon, IssuePriorityIcon } from 'shared/components';
 import { formatDate } from 'shared/utils/dateTime';
@@ -19,6 +18,7 @@ import {
   IssueKey,
   IssueTitle,
   AssigneesContainer,
+  IconText,
 } from './Styles';
 
 const propTypes = {
@@ -36,6 +36,7 @@ const ListView = ({ project, filters, currentUserId }) => {
   const match = useRouteMatch();
 
   const filteredIssues = filterIssues(project.issues, filters, currentUserId);
+  // Sort by ID descending to show newest issues first
   const sortedIssues = filteredIssues.sort((a, b) => b.id - a.id);
 
   const handleRowClick = issueId => {
@@ -81,11 +82,11 @@ const ListView = ({ project, filters, currentUserId }) => {
               <TableCell>{issue.productArea || '-'}</TableCell>
               <TableCell>
                 <IssueTypeIcon type={issue.type} size={16} />
-                <span style={{ marginLeft: 6 }}>{IssueTypeCopy[issue.type]}</span>
+                <IconText>{IssueTypeCopy[issue.type]}</IconText>
               </TableCell>
               <TableCell>
                 <IssuePriorityIcon priority={issue.priority} size={16} />
-                <span style={{ marginLeft: 6 }}>{IssuePriorityCopy[issue.priority]}</span>
+                <IconText>{IssuePriorityCopy[issue.priority]}</IconText>
               </TableCell>
               <TableCell>{IssueStatusCopy[issue.status]}</TableCell>
               <TableCell>
@@ -104,25 +105,6 @@ const ListView = ({ project, filters, currentUserId }) => {
       </Table>
     </ListViewContainer>
   );
-};
-
-const filterIssues = (projectIssues, filters, currentUserId) => {
-  const { searchTerm, userIds, myOnly, recent } = filters;
-  let issues = projectIssues;
-
-  if (searchTerm) {
-    issues = issues.filter(issue => issue.title.toLowerCase().includes(searchTerm.toLowerCase()));
-  }
-  if (userIds.length > 0) {
-    issues = issues.filter(issue => intersection(issue.userIds, userIds).length > 0);
-  }
-  if (myOnly && currentUserId) {
-    issues = issues.filter(issue => issue.userIds.includes(currentUserId));
-  }
-  if (recent) {
-    issues = issues.filter(issue => moment(issue.updatedAt).isAfter(moment().subtract(3, 'days')));
-  }
-  return issues;
 };
 
 ListView.propTypes = propTypes;
