@@ -2,5 +2,7 @@ import styled from 'styled-components';
 
 export const Lists = styled.div`
   display: flex;
-  margin: 26px -5px 0;
+  gap: 0;
+  margin: 24px 0 0;
+  flex: 1;
 `;

@@ -28,10 +28,12 @@ const ProjectBoardList = ({ status, project, filters, currentUserId }) => {
   return (
     <Droppable key={status} droppableId={status}>
       {provided => (
-        <List>
+        <List status={status}>
           <Title>
-            {`${IssueStatusCopy[status]} `}
-            <IssuesCount>{formatIssuesCount(allListIssues, filteredListIssues)}</IssuesCount>
+            {IssueStatusCopy[status]}
+            <IssuesCount status={status}>
+              {formatIssuesCount(allListIssues, filteredListIssues)}
+            </IssuesCount>
           </Title>
           <Issues
             {...provided.droppableProps}
