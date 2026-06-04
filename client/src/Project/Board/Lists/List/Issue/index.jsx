@@ -28,7 +28,10 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <Issue isBeingDragged={snapshot.isDragging && !snapshot.isDropAnimating}>
+          <Issue
+            isBeingDragged={snapshot.isDragging && !snapshot.isDropAnimating}
+            issueType={issue.type}
+          >
             <Title>{issue.title}</Title>
             <Bottom>
               <div>
@@ -36,14 +39,18 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
                 <IssuePriorityIcon priority={issue.priority} top={-1} left={4} />
               </div>
               <Assignees>
-                {assignees.map(user => (
-                  <AssigneeAvatar
-                    key={user.id}
-                    size={24}
-                    avatarUrl={user.avatarUrl}
-                    name={user.name}
-                  />
-                ))}
+                {assignees &&
+                  assignees.map(
+                    user =>
+                      user && (
+                        <AssigneeAvatar
+                          key={user.id}
+                          size={24}
+                          avatarUrl={user.avatarUrl}
+                          name={user.name}
+                        />
+                      ),
+                  )}
               </Assignees>
             </Bottom>
           </Issue>
