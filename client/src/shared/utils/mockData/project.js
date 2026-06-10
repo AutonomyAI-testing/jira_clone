@@ -11,7 +11,7 @@ export const projectData = {
     {
       id: 1,
       name: 'Lord Gaben',
-      avatarUrl: 'https://i.ibb.co/6n0hLML/lord-gaben.jpg',
+      avatarUrl: 'https://ui-avatars.com/api/?name=Lord+Gaben&background=5784DA&color=fff&size=60',
       email: 'gaben@jira.guest',
       createdAt: '2020-06-01T00:00:00.000Z',
       updatedAt: '2020-06-01T00:00:00.000Z',
@@ -19,7 +19,7 @@ export const projectData = {
     {
       id: 2,
       name: 'Pickle Rick',
-      avatarUrl: 'https://i.ibb.co/7JM1P0V/pickle-rick.png',
+      avatarUrl: 'https://ui-avatars.com/api/?name=Pickle+Rick&background=DA7657&color=fff&size=60',
       email: 'pickle.rick@jira.guest',
       createdAt: '2020-06-01T00:00:00.000Z',
       updatedAt: '2020-06-01T00:00:00.000Z',
@@ -27,7 +27,7 @@ export const projectData = {
     {
       id: 3,
       name: 'Baby Yoda',
-      avatarUrl: 'https://i.ibb.co/6PrN4M5/baby-yoda.jpg',
+      avatarUrl: 'https://ui-avatars.com/api/?name=Baby+Yoda&background=57DACA&color=fff&size=60',
       email: 'baby.yoda@jira.guest',
       createdAt: '2020-06-01T00:00:00.000Z',
       updatedAt: '2020-06-01T00:00:00.000Z',
@@ -53,12 +53,12 @@ export const projectData = {
         {
           id: 1,
           name: 'Lord Gaben',
-          avatarUrl: 'https://i.ibb.co/6n0hLML/lord-gaben.jpg',
+          avatarUrl: 'https://ui-avatars.com/api/?name=Lord+Gaben&background=5784DA&color=fff&size=60',
         },
         {
           id: 2,
           name: 'Pickle Rick',
-          avatarUrl: 'https://i.ibb.co/7JM1P0V/pickle-rick.png',
+          avatarUrl: 'https://ui-avatars.com/api/?name=Pickle+Rick&background=DA7657&color=fff&size=60',
         },
       ],
       productArea: 'Frontend',
@@ -87,7 +87,7 @@ export const projectData = {
         {
           id: 2,
           name: 'Pickle Rick',
-          avatarUrl: 'https://i.ibb.co/7JM1P0V/pickle-rick.png',
+          avatarUrl: 'https://ui-avatars.com/api/?name=Pickle+Rick&background=DA7657&color=fff&size=60',
         },
       ],
       productArea: 'Authentication',
@@ -116,12 +116,12 @@ export const projectData = {
         {
           id: 1,
           name: 'Lord Gaben',
-          avatarUrl: 'https://i.ibb.co/6n0hLML/lord-gaben.jpg',
+          avatarUrl: 'https://ui-avatars.com/api/?name=Lord+Gaben&background=5784DA&color=fff&size=60',
         },
         {
           id: 3,
           name: 'Baby Yoda',
-          avatarUrl: 'https://i.ibb.co/6PrN4M5/baby-yoda.jpg',
+          avatarUrl: 'https://ui-avatars.com/api/?name=Baby+Yoda&background=57DACA&color=fff&size=60',
         },
       ],
       productArea: 'UI/UX',
@@ -150,7 +150,7 @@ export const projectData = {
         {
           id: 3,
           name: 'Baby Yoda',
-          avatarUrl: 'https://i.ibb.co/6PrN4M5/baby-yoda.jpg',
+          avatarUrl: 'https://ui-avatars.com/api/?name=Baby+Yoda&background=57DACA&color=fff&size=60',
         },
       ],
       productArea: 'Backend',
