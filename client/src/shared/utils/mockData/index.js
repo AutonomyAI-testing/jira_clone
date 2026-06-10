@@ -62,6 +62,9 @@ const routeMockData = (method, url, variables) => {
 
   // PUT requests
   if (method === 'put') {
+    if (url === '/currentUser') {
+      return { currentUser: { ...currentUserData, ...variables } };
+    }
     if (url === '/project') {
       return { project: { ...projectData, ...variables } };
     }
