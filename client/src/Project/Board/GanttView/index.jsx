@@ -4,7 +4,6 @@ import { useHistory, useRouteMatch } from 'react-router-dom';
 import moment from 'moment';
 import { intersection } from 'lodash';
 
-import { IssueStatusCopy, IssueTypeCopy } from 'shared/constants/issues';
 import { IssueTypeIcon, Avatar } from 'shared/components';
 
 import {
@@ -22,7 +21,6 @@ import {
   DayCell,
   TaskBar,
   TaskBarInner,
-  DependencyLine,
   AssigneesContainer,
 } from './Styles';
 

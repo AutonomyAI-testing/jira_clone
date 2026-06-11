@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useRouteMatch } from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 import { Draggable } from 'react-beautiful-dnd';
 
 import { IssueTypeIcon, IssuePriorityIcon } from 'shared/components';
 
-import { IssueLink, Issue, Title, Bottom, Assignees, AssigneeAvatar } from './Styles';
+import {
+  IssueLink,
+  Issue,
+  Title,
+  Bottom,
+  Assignees,
+  AssigneeAvatar,
+  QuickActionButton,
+  QuickActionIcon,
+} from './Styles';
 
 const propTypes = {
   projectUsers: PropTypes.array.isRequired,
@@ -15,8 +24,16 @@ const propTypes = {
 
 const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
   const match = useRouteMatch();
+  const history = useHistory();
+  const [showQuickAction, setShowQuickAction] = useState(false);
 
   const assignees = issue.userIds.map(userId => projectUsers.find(user => user.id === userId));
+
+  const handleQuickAction = e => {
+    e.preventDefault();
+    // Navigate to issue details with a query param to focus on status change
+    history.push(`${match.url}/issues/${issue.id}?focus=status`);
+  };
 
   return (
     <Draggable draggableId={issue.id.toString()} index={index}>
@@ -28,7 +45,11 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <Issue isBeingDragged={snapshot.isDragging && !snapshot.isDropAnimating}>
+          <Issue
+            isBeingDragged={snapshot.isDragging && !snapshot.isDropAnimating}
+            onMouseEnter={() => setShowQuickAction(true)}
+            onMouseLeave={() => setShowQuickAction(false)}
+          >
             <Title>{issue.title}</Title>
             <Bottom>
               <div>
@@ -46,6 +67,11 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
                 ))}
               </Assignees>
             </Bottom>
+            {showQuickAction && (
+              <QuickActionButton onClick={handleQuickAction} aria-label="Quick action - edit status">
+                <QuickActionIcon role="img" aria-hidden="true">⚡</QuickActionIcon>
+              </QuickActionButton>
+            )}
           </Issue>
         </IssueLink>
       )}
