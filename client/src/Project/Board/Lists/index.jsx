@@ -14,9 +14,19 @@ const propTypes = {
   project: PropTypes.object.isRequired,
   filters: PropTypes.object.isRequired,
   updateLocalProjectIssues: PropTypes.func.isRequired,
+  columnVisibility: PropTypes.object.isRequired,
+  sortBy: PropTypes.object.isRequired,
+  onSortChange: PropTypes.func.isRequired,
 };
 
-const ProjectBoardLists = ({ project, filters, updateLocalProjectIssues }) => {
+const ProjectBoardLists = ({
+  project,
+  filters,
+  updateLocalProjectIssues,
+  columnVisibility,
+  sortBy,
+  onSortChange,
+}) => {
   const { currentUserId } = useCurrentUser();
 
   const handleIssueDrop = ({ draggableId, destination, source }) => {
@@ -37,15 +47,20 @@ const ProjectBoardLists = ({ project, filters, updateLocalProjectIssues }) => {
   return (
     <DragDropContext onDragEnd={handleIssueDrop}>
       <Lists>
-        {Object.values(IssueStatus).map(status => (
-          <List
-            key={status}
-            status={status}
-            project={project}
-            filters={filters}
-            currentUserId={currentUserId}
-          />
-        ))}
+        {Object.values(IssueStatus).map(status => {
+          if (!columnVisibility[status]) return null;
+          return (
+            <List
+              key={status}
+              status={status}
+              project={project}
+              filters={filters}
+              currentUserId={currentUserId}
+              sortBy={sortBy[status] || null}
+              onSortChange={newSort => onSortChange({ ...sortBy, [status]: newSort })}
+            />
+          );
+        })}
       </Lists>
     </DragDropContext>
   );

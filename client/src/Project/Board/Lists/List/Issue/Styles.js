@@ -10,6 +10,7 @@ export const IssueLink = styled(Link)`
 `;
 
 export const Issue = styled.div`
+  position: relative;
   padding: 10px;
   border-radius: 3px;
   background: #fff;
@@ -53,4 +54,36 @@ export const Assignees = styled.div`
 export const AssigneeAvatar = styled(Avatar)`
   margin-left: -2px;
   box-shadow: 0 0 0 2px #fff;
+`;
+
+export const QuickActionButton = styled.button`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 3px;
+  background: ${color.primary};
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${mixin.clickable}
+  transition: all 0.15s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background: ${color => color.primary};
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
+export const QuickActionIcon = styled.span`
+  ${font.size(14)}
+  line-height: 1;
 `;
