@@ -54,3 +54,10 @@ export const AssigneeAvatar = styled(Avatar)`
   margin-left: -2px;
   box-shadow: 0 0 0 2px #fff;
 `;
+
+export const DueDateLabel = styled.span`
+  ${font.size(11.5)}
+  color: ${color.textLight};
+  margin-left: 6px;
+  display: inline-block;
+`;
