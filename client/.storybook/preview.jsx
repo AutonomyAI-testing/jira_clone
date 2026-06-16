@@ -1,0 +1,18 @@
+import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
+
+import NormalizeStyles from '../src/App/NormalizeStyles';
+import '../src/App/fontStyles.css';
+
+export const decorators = [
+  Story => (
+    <MemoryRouter initialEntries={['/project/avatar']}>
+      <NormalizeStyles />
+      <Story />
+    </MemoryRouter>
+  ),
+];
+
+export const parameters = {
+  layout: 'fullscreen',
+};
