@@ -9,6 +9,7 @@
     "test:jest": "jest",
     "test:cypress": "node_modules/.bin/cypress open",
     "build": "rm -rf build && NODE_OPTIONS=--openssl-legacy-provider webpack --config webpack.config.production.js --progress",
+    "storybook": "storybook dev -p 6006",
     "pre-commit": "lint-staged"
   },
   "devDependencies": {
@@ -20,8 +21,10 @@
     "@babel/preset-env": "^7.7.4",
     "@babel/preset-react": "^7.7.4",
     "@cypress/webpack-preprocessor": "^4.1.1",
+    "@storybook/addon-links": "7.6.24",
+    "@storybook/react-webpack5": "7.6.24",
     "babel-eslint": "^10.0.3",
-    "babel-loader": "^8.0.6",
+    "babel-loader": "8.0.6",
     "css-loader": "^3.3.2",
     "cypress": "^3.8.1",
     "eslint": "^6.1.0",
@@ -37,6 +40,7 @@
     "jest": "^24.9.0",
     "lint-staged": "^9.5.0",
     "prettier": "^1.19.1",
+    "storybook": "7.6.24",
     "style-loader": "^1.0.1",
     "url-loader": "^3.0.0",
     "webpack": "^4.41.2",
