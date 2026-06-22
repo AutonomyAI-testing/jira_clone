@@ -18,6 +18,7 @@ export const StyledToast = styled.div`
   border-radius: 3px;
   color: #fff;
   background: ${props => color[props.type]};
+  border: 2px solid #000;
   cursor: pointer;
   transition: all 0.15s;
   ${mixin.clearfix}
