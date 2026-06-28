@@ -16,6 +16,7 @@ export const StyledToast = styled.div`
   width: 300px;
   padding: 15px 20px;
   border-radius: 3px;
+  border: 2px solid #e74c3c;
   color: #fff;
   background: ${props => color[props.type]};
   cursor: pointer;
