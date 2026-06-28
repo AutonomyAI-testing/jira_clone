@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { font, mixin } from 'shared/utils/styles';
+import { font } from 'shared/utils/styles';
 
 export const GradientBorderWrapper = styled.div`
   display: inline-flex;
