@@ -2,6 +2,18 @@ import styled from 'styled-components';
 
 import { font, mixin } from 'shared/utils/styles';
 
+export const GradientBorderWrapper = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: ${props => props.size + 6}px;
+  height: ${props => props.size + 6}px;
+  border-radius: 100%;
+  background: linear-gradient(135deg, #00D9FF, #4FC3F7, #7986CB, #9575CD, #AB47BC);
+  padding: 4px;
+  flex-shrink: 0;
+`;
+
 export const Image = styled.div`
   display: inline-block;
   width: ${props => props.size}px;
