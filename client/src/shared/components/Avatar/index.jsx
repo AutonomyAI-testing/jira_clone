@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Image, Letter } from './Styles';
+import { Image, Letter, GradientBorderWrapper } from './Styles';
 
 const propTypes = {
   className: PropTypes.string,
   avatarUrl: PropTypes.string,
   name: PropTypes.string,
   size: PropTypes.number,
+  variant: PropTypes.oneOf(['default', 'gradientBorder']),
 };
 
 const defaultProps = {
@@ -15,25 +16,33 @@ const defaultProps = {
   avatarUrl: null,
   name: '',
   size: 32,
+  variant: 'default',
 };
 
-const Avatar = ({ className, avatarUrl, name, size, ...otherProps }) => {
+const Avatar = ({ className, avatarUrl, name, size, variant, ...otherProps }) => {
   const sharedProps = {
-    className,
     size,
     'data-testid': name ? `avatar:${name}` : 'avatar',
     ...otherProps,
   };
 
-  if (avatarUrl) {
-    return <Image avatarUrl={avatarUrl} {...sharedProps} />;
-  }
-
-  return (
+  const avatarEl = avatarUrl ? (
+    <Image avatarUrl={avatarUrl} {...sharedProps} />
+  ) : (
     <Letter color={getColorFromName(name)} {...sharedProps}>
       <span>{name.charAt(0)}</span>
     </Letter>
   );
+
+  if (variant === 'gradientBorder') {
+    return (
+      <GradientBorderWrapper className={className} size={size}>
+        {avatarEl}
+      </GradientBorderWrapper>
+    );
+  }
+
+  return React.cloneElement(avatarEl, { className });
 };
 
 const colors = [
