@@ -7,6 +7,7 @@ export const Image = styled.div`
   width: ${props => props.size}px;
   height: ${props => props.size}px;
   border-radius: 100%;
+  border: 2px solid #e84040;
   ${props => mixin.backgroundImage(props.avatarUrl)}
 `;
 
@@ -15,6 +16,7 @@ export const Letter = styled.div`
   width: ${props => props.size}px;
   height: ${props => props.size}px;
   border-radius: 100%;
+  border: 2px solid #e84040;
   text-transform: uppercase;
   color: #fff;
   background: ${props => props.color};
@@ -26,4 +28,15 @@ export const Letter = styled.div`
     justify-content: center;
     height: 100%;
   }
+`;
+
+export const WizardAvatar = styled.img`
+  display: inline-block;
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
+  border-radius: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  border: 2px solid #e84040;
+  box-shadow: 0 0 0 2px #e84040;
 `;
