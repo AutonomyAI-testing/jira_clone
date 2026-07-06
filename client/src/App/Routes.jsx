@@ -5,6 +5,7 @@ import history from 'browserHistory';
 import Project from 'Project';
 import Authenticate from 'Auth/Authenticate';
 import LoginPage from 'Auth/LoginPage';
+import AvatarLogin from 'Auth/AvatarLogin';
 import PageError from 'shared/components/PageError';
 
 const Routes = () => (
@@ -12,6 +13,7 @@ const Routes = () => (
     <Switch>
       <Redirect exact from="/" to="/login" />
       <Route path="/login" component={LoginPage} />
+      <Route path="/avatar-login" component={AvatarLogin} />
       <Route path="/authenticate" component={Authenticate} />
       <Route path="/project" component={Project} />
       <Route component={PageError} />
