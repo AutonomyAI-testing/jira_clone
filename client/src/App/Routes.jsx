@@ -4,16 +4,14 @@ import { Router, Switch, Route, Redirect } from 'react-router-dom';
 import history from 'browserHistory';
 import Project from 'Project';
 import Authenticate from 'Auth/Authenticate';
-import LoginPage from 'Auth/LoginPage';
-import AvatarLogin from 'Auth/AvatarLogin';
+import Login from 'Auth/Login';
 import PageError from 'shared/components/PageError';
 
 const Routes = () => (
   <Router history={history}>
     <Switch>
-      <Redirect exact from="/" to="/login" />
-      <Route path="/login" component={LoginPage} />
-      <Route path="/avatar-login" component={AvatarLogin} />
+      <Redirect exact from="/" to="/project" />
+      <Route path="/login" component={Login} />
       <Route path="/authenticate" component={Authenticate} />
       <Route path="/project" component={Project} />
       <Route component={PageError} />
