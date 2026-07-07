@@ -1,20 +1,27 @@
 import React from 'react';
 
-import { ErrorPage, ErrorPageInner, ErrorBox, StyledIcon, Title } from './Styles';
+import {
+  ErrorPage,
+  ErrorCode,
+  ErrorTitle,
+  ErrorSubtext,
+  AvatarWrapper,
+  CharacterImage,
+  BackButton,
+} from './Styles';
+import avatarCharacter from './assets/avatar-character.png';
 
 const PageError = () => (
   <ErrorPage>
-    <ErrorPageInner>
-      <ErrorBox>
-        <StyledIcon type="bug" />
-        <Title>There’s been a glitch…</Title>
-        <p>
-          {'We’re not quite sure what went wrong. Please contact us or try looking on our '}
-          <a href="https://support.atlassian.com/jira-software-cloud/">Help Center</a>
-          {' if you need a hand.'}
-        </p>
-      </ErrorBox>
-    </ErrorPageInner>
+    <ErrorCode>404</ErrorCode>
+    <ErrorTitle>Page Not Found</ErrorTitle>
+    <ErrorSubtext>
+      Looks like this page wandered off. Let&#39;s get you back on track.
+    </ErrorSubtext>
+    <AvatarWrapper>
+      <CharacterImage src={avatarCharacter} alt="404 character" />
+    </AvatarWrapper>
+    <BackButton href="/project">Back to Project</BackButton>
   </ErrorPage>
 );
 
