@@ -4,16 +4,30 @@ import { Router, Switch, Route, Redirect } from 'react-router-dom';
 import history from 'browserHistory';
 import Project from 'Project';
 import Authenticate from 'Auth/Authenticate';
-import Login from 'Auth/Login';
+import LoginPage from 'Auth/LoginPage';
 import PageError from 'shared/components/PageError';
+import { getStoredAuthToken } from 'shared/utils/authToken';
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      getStoredAuthToken() ? (
+        <Component {...props} />
+      ) : (
+        <Redirect to="/login" />
+      )
+    }
+  />
+);
 
 const Routes = () => (
   <Router history={history}>
     <Switch>
-      <Redirect exact from="/" to="/project" />
-      <Route path="/login" component={Login} />
+      <Redirect exact from="/" to="/login" />
+      <Route path="/login" component={LoginPage} />
       <Route path="/authenticate" component={Authenticate} />
-      <Route path="/project" component={Project} />
+      <PrivateRoute path="/project" component={Project} />
       <Route component={PageError} />
     </Switch>
   </Router>
