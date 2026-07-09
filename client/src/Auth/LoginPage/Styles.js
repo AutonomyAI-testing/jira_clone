@@ -1,22 +1,24 @@
 import styled, { keyframes } from 'styled-components';
 import { font } from 'shared/utils/styles';
 
+const float = keyframes`
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+`;
+
 const shimmer = keyframes`
   0% { background-position: -200% center; }
   100% { background-position: 200% center; }
 `;
 
-const float = keyframes`
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-`;
-
 export const PageWrapper = styled.div`
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #0a0a1a 0%, #12122a 40%, #1a1240 70%, #0d0d20 100%);
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
   position: relative;
   overflow: hidden;
 
@@ -24,84 +26,102 @@ export const PageWrapper = styled.div`
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background:
-      radial-gradient(ellipse at 20% 50%, rgba(100, 80, 200, 0.12) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 20%, rgba(60, 120, 255, 0.10) 0%, transparent 50%),
-      radial-gradient(ellipse at 60% 80%, rgba(120, 80, 200, 0.08) 0%, transparent 50%);
+    background: radial-gradient(ellipse at 20% 50%, rgba(76, 0, 130, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(0, 82, 204, 0.1) 0%, transparent 50%);
     pointer-events: none;
   }
 `;
 
+export const StarCanvas = styled.canvas`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+`;
+
 export const Card = styled.div`
   position: relative;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
-  padding: 48px 44px 44px;
-  width: 380px;
-  backdrop-filter: blur(20px);
-  box-shadow:
-    0 24px 80px rgba(0, 0, 0, 0.6),
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0;
-`;
-
-export const AvatarContainer = styled.div`
-  animation: ${float} 4s ease-in-out infinite;
-  margin-bottom: 24px;
-`;
-
-export const AvatarRing = styled.div`
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  padding: 3px;
-  background: linear-gradient(135deg, #64b5f6 0%, #9c6fff 50%, #4fc3f7 100%);
-  background-size: 200% 200%;
-  animation: ${shimmer} 3s linear infinite;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 48px 44px 44px;
+  width: 440px;
+  max-width: 95vw;
+  backdrop-filter: blur(20px);
   box-shadow:
-    0 0 24px rgba(100, 181, 246, 0.4),
-    0 0 48px rgba(156, 111, 255, 0.2);
+    0 25px 60px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+    0 0 80px rgba(0, 82, 204, 0.12);
+`;
+
+export const AvatarWrapper = styled.div`
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  margin-bottom: 28px;
+  position: relative;
+  animation: ${float} 4s ease-in-out infinite;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffd700 0%, #0052cc 50%, #ffd700 100%);
+    background-size: 200% auto;
+    animation: ${shimmer} 3s linear infinite;
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background: #16213e;
+    z-index: 1;
+  }
 `;
 
 export const AvatarImage = styled.img`
+  position: relative;
+  z-index: 2;
   width: 100%;
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  display: block;
-  border: 2px solid #0a0a1a;
+  object-position: center 10%;
 `;
 
-export const WelcomeText = styled.div`
-  text-align: center;
-  margin-bottom: 32px;
-`;
-
-export const Title = styled.h1`
+export const WelcomeText = styled.h1`
   ${font.bold}
-  font-size: 22px;
-  color: #E13C3C;
+  font-size: 26px;
+  color: #ffffff;
   margin: 0 0 6px;
-  letter-spacing: 0.3px;
+  text-align: center;
+  letter-spacing: -0.5px;
 `;
 
-export const Subtitle = styled.p`
+export const SubText = styled.p`
   ${font.regular}
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.45);
-  margin: 0;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 32px;
+  text-align: center;
 `;
 
 export const Form = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 `;
 
 export const InputGroup = styled.div`
@@ -113,22 +133,21 @@ export const InputGroup = styled.div`
 export const Label = styled.label`
   ${font.medium}
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.55);
-  letter-spacing: 0.6px;
+  color: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
+  letter-spacing: 0.8px;
 `;
 
-export const StyledInput = styled.input`
-  width: 100%;
-  padding: 12px 16px;
+export const Input = styled.input`
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 10px;
+  padding: 12px 16px;
   color: #ffffff;
   font-size: 15px;
-  ${font.regular}
-  transition: all 0.2s ease;
+  width: 100%;
   box-sizing: border-box;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
   outline: none;
 
   &::placeholder {
@@ -136,105 +155,94 @@ export const StyledInput = styled.input`
   }
 
   &:focus {
-    border-color: rgba(100, 181, 246, 0.6);
+    border-color: #ffd700;
     background: rgba(255, 255, 255, 0.09);
-    box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.12);
-  }
-
-  &:hover:not(:focus) {
-    border-color: rgba(255, 255, 255, 0.18);
-    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
   }
 `;
 
 export const LoginButton = styled.button`
-  width: 100%;
-  padding: 13px;
   margin-top: 8px;
+  width: 100%;
+  padding: 14px;
   border: none;
   border-radius: 10px;
-  background: linear-gradient(135deg, #64b5f6 0%, #9c6fff 100%);
+  background: linear-gradient(135deg, #0052cc 0%, #0747a6 100%);
   color: #ffffff;
   font-size: 15px;
   ${font.bold}
   cursor: pointer;
-  transition: all 0.2s ease;
-  letter-spacing: 0.3px;
   position: relative;
   overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 20px rgba(0, 82, 204, 0.4);
 
   &::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background: rgba(255, 255, 255, 0);
-    transition: background 0.2s ease;
+    top: 0; left: -100%; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.4s;
   }
 
-  &:hover::before {
-    background: rgba(255, 255, 255, 0.12);
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 28px rgba(0, 82, 204, 0.55);
+
+    &::before {
+      left: 100%;
+    }
   }
 
   &:active {
-    transform: scale(0.98);
+    transform: translateY(0);
   }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-  }
-`;
-
-export const Divider = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 4px 0;
-
-  &::before, &::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.08);
-  }
-`;
-
-export const DividerText = styled.span`
-  ${font.regular}
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.25);
 `;
 
 export const GuestButton = styled.button`
   width: 100%;
   padding: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 10px;
   background: transparent;
   color: rgba(255, 255, 255, 0.55);
   font-size: 14px;
   ${font.regular}
   cursor: pointer;
-  transition: all 0.2s ease;
-  letter-spacing: 0.2px;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
 
   &:hover {
-    border-color: rgba(100, 181, 246, 0.35);
-    color: rgba(255, 255, 255, 0.8);
-    background: rgba(100, 181, 246, 0.06);
+    border-color: rgba(255, 215, 0, 0.4);
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 215, 0, 0.05);
   }
 `;
 
-export const ErrorMessage = styled.p`
+export const Divider = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 12px;
   ${font.regular}
-  font-size: 13px;
-  color: #f48771;
+
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+`;
+
+export const FooterText = styled.p`
+  margin: 24px 0 0;
+  font-size: 12px;
+  ${font.regular}
+  color: rgba(255, 255, 255, 0.25);
   text-align: center;
-  margin: 0;
-  padding: 10px;
-  background: rgba(244, 135, 113, 0.08);
-  border-radius: 8px;
-  border: 1px solid rgba(244, 135, 113, 0.15);
+`;
+
+export const SparkleIcon = styled.span`
+  display: inline-block;
+  margin-right: 6px;
 `;

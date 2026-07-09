@@ -1,68 +1,46 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { storeAuthToken } from 'shared/utils/authToken';
-import avatarImg from '../avatar.png';
+import { useStarField } from 'shared/hooks/useStarField';
+import wizardRobotImg from '../assets/wizard-robot.jpg';
 
 import {
   PageWrapper,
+  StarCanvas,
   Card,
-  AvatarContainer,
-  AvatarRing,
+  AvatarWrapper,
   AvatarImage,
   WelcomeText,
-  Title,
-  Subtitle,
+  SubText,
   Form,
   InputGroup,
   Label,
-  StyledInput,
+  Input,
   LoginButton,
-  Divider,
-  DividerText,
   GuestButton,
-  ErrorMessage,
+  Divider,
+  FooterText,
+  SparkleIcon,
 } from './Styles';
-
-// Mock credentials for demo purposes
-const MOCK_USERS = [
-  { username: 'admin', password: 'password123' },
-  { username: 'demo', password: 'demo' },
-  { username: 'guest', password: 'guest' },
-];
 
 const LoginPage = () => {
   const history = useHistory();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = async (e) => {
+  const canvasRef = useRef(null);
+  useStarField(canvasRef);
+
+  const handleLogin = e => {
     e.preventDefault();
-    setError('');
-
-    if (!username.trim() || !password.trim()) {
-      setError('Please enter your username and password.');
-      return;
-    }
-
     setIsLoading(true);
-
-    // Simulate a brief auth delay for realism
-    await new Promise(resolve => setTimeout(resolve, 600));
-
-    const validUser = MOCK_USERS.find(
-      u => u.username === username.trim() && u.password === password,
-    );
-
-    if (validUser) {
+    // Mock login — store a token and redirect
+    setTimeout(() => {
       storeAuthToken('mock-auth-token');
       history.push('/project');
-    } else {
-      setError('Incorrect username or password. Try: demo / demo');
-      setIsLoading(false);
-    }
+    }, 800);
   };
 
   const handleGuestLogin = () => {
@@ -72,57 +50,56 @@ const LoginPage = () => {
 
   return (
     <PageWrapper>
+      <StarCanvas ref={canvasRef} />
       <Card>
-        <AvatarContainer>
-          <AvatarRing>
-            <AvatarImage src={avatarImg} alt="Avatar" />
-          </AvatarRing>
-        </AvatarContainer>
+        <AvatarWrapper>
+          <AvatarImage src={wizardRobotImg} alt="Wizard Robot — your magic guide" />
+        </AvatarWrapper>
 
-        <WelcomeText>
-          <Title>Welcome back</Title>
-          <Subtitle>Sign in to continue to Jira Clone</Subtitle>
-        </WelcomeText>
+        <WelcomeText>Welcome back, wizard</WelcomeText>
+        <SubText>Sign in to continue your quest</SubText>
 
         <Form onSubmit={handleLogin}>
           <InputGroup>
-            <Label htmlFor="username">Username</Label>
-            <StyledInput
-              id="username"
-              type="text"
-              placeholder="Enter your username"
-              value={username}
-              onChange={e => setUsername(e.target.value)}
-              autoComplete="username"
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              autoComplete="email"
             />
           </InputGroup>
 
           <InputGroup>
             <Label htmlFor="password">Password</Label>
-            <StyledInput
+            <Input
               id="password"
               type="password"
-              placeholder="Enter your password"
+              placeholder="••••••••"
               value={password}
               onChange={e => setPassword(e.target.value)}
               autoComplete="current-password"
             />
           </InputGroup>
 
-          {error && <ErrorMessage>{error}</ErrorMessage>}
-
           <LoginButton type="submit" disabled={isLoading}>
-            {isLoading ? 'Signing in...' : 'Sign In'}
+            <SparkleIcon>✦</SparkleIcon>
+            {isLoading ? 'Casting spell…' : 'Sign In'}
           </LoginButton>
-
-          <Divider>
-            <DividerText>or</DividerText>
-          </Divider>
-
-          <GuestButton type="button" onClick={handleGuestLogin}>
-            Continue as Guest
-          </GuestButton>
         </Form>
+
+        <Divider style={{ marginTop: 20 }}>or</Divider>
+
+        <GuestButton type="button" onClick={handleGuestLogin} style={{ marginTop: 12 }}>
+          Continue as guest
+        </GuestButton>
+
+        <FooterText>
+          Powered by magic &amp; open source{' '}
+          <span role="img" aria-label="sparkles">✨</span>
+        </FooterText>
       </Card>
     </PageWrapper>
   );
