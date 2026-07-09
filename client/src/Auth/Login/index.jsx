@@ -1,141 +1,218 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Formik } from 'formik';
 
-import api from 'shared/utils/api';
-import toast from 'shared/utils/toast';
-import { storeAuthToken } from 'shared/utils/authToken';
-import { USE_MOCK_DATA } from 'shared/utils/config';
+import wizardRobotImage from 'App/assets/wizard-robot.jpg';
+import { getStoredAuthToken, storeAuthToken } from 'shared/utils/authToken';
 
-import avatarImg from './assets/avatar.png';
 import {
-  Page,
-  Card,
-  AvatarWrapper,
-  AvatarInner,
-  AvatarImage,
-  Title,
-  Subtitle,
-  FieldGroup,
-  FieldLabel,
-  FieldInput,
-  FieldError,
-  SubmitButton,
+  PageContainer,
+  LeftPanel,
+  RightPanel,
+  MascotWrapper,
+  MascotImage,
+  AppTitle,
+  AppSubtitle,
+  WelcomeHeading,
+  WelcomeSubheading,
+  SectionLabel,
+  UserCardsGrid,
+  UserCard,
+  UserInfo,
+  UserName,
+  UserEmail,
+  SelectedBadge,
+  ContinueButton,
+  FooterText,
   Divider,
-  GuestLink,
 } from './Styles';
+
+// Demo users available for sign-in
+const DEMO_USERS = [
+  {
+    id: 1,
+    name: 'Lord Gaben',
+    email: 'gaben@jira.guest',
+    avatarUrl: 'https://i.ibb.co/6n0hLML/lord-gaben.jpg',
+    color: '#DA7657',
+  },
+  {
+    id: 2,
+    name: 'Pickle Rick',
+    email: 'pickle.rick@jira.guest',
+    avatarUrl: 'https://i.ibb.co/7JM1P0V/pickle-rick.png',
+    color: '#6ADA57',
+  },
+  {
+    id: 3,
+    name: 'Baby Yoda',
+    email: 'baby.yoda@jira.guest',
+    avatarUrl: 'https://i.ibb.co/6PrN4M5/baby-yoda.jpg',
+    color: '#5784DA',
+  },
+];
+
+// Avatar component with graceful fallback to colored initials
+const UserAvatar = ({ user, isSelected }) => {
+  const [imgFailed, setImgFailed] = React.useState(false);
+  return (
+    <div
+      style={{
+        width: 44,
+        height: 44,
+        borderRadius: '50%',
+        flexShrink: 0,
+        border: `2px solid ${isSelected ? '#0052cc' : 'transparent'}`,
+        transition: 'border-color 0.15s ease',
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: imgFailed ? user.color : 'transparent',
+        fontSize: 18,
+        fontWeight: 700,
+        color: '#fff',
+        textTransform: 'uppercase',
+      }}
+    >
+      {!imgFailed ? (
+        <img
+          src={user.avatarUrl}
+          alt={user.name}
+          onError={() => setImgFailed(true)}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+      ) : (
+        user.name.charAt(0)
+      )}
+    </div>
+  );
+};
 
 const Login = () => {
   const history = useHistory();
-  const [isWorking, setIsWorking] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async ({ email, password }) => {
-    setIsWorking(true);
-    try {
-      if (USE_MOCK_DATA) {
-        // Simulate a short delay for realism
-        await new Promise(resolve => setTimeout(resolve, 500));
-        storeAuthToken('mock-auth-token');
-        history.push('/');
-      } else {
-        const { authToken } = await api.post('/authentication/login', { email, password });
-        storeAuthToken(authToken);
-        history.push('/');
-      }
-    } catch (error) {
-      toast.error(error);
-    } finally {
-      setIsWorking(false);
+  // If already authenticated, skip straight to the project board
+  useEffect(() => {
+    if (getStoredAuthToken()) {
+      history.replace('/project');
     }
+  }, [history]);
+
+  const handleContinue = () => {
+    if (!selectedUserId || isLoading) return;
+    setIsLoading(true);
+
+    // Simulate a brief loading state for polish
+    setTimeout(() => {
+      storeAuthToken('mock-auth-token');
+      history.push('/project');
+    }, 400);
   };
 
-  const handleGuestAccess = () => {
-    storeAuthToken('mock-auth-token');
-    history.push('/');
-  };
-
-  const validate = values => {
-    const errors = {};
-    if (!values.email) {
-      errors.email = 'Email is required';
-    } else if (!/.+@.+\..+/.test(values.email)) {
-      errors.email = 'Must be a valid email';
+  const handleKeyDown = e => {
+    if (e.key === 'Enter' && selectedUserId) {
+      handleContinue();
     }
-    if (!values.password) {
-      errors.password = 'Password is required';
-    } else if (values.password.length < 6) {
-      errors.password = 'Must be at least 6 characters';
-    }
-    return errors;
   };
 
   return (
-    <Page>
-      <Card>
-        <AvatarWrapper>
-          <AvatarInner>
-            <AvatarImage src={avatarImg} alt="Login avatar" />
-          </AvatarInner>
-        </AvatarWrapper>
+    <PageContainer onKeyDown={handleKeyDown}>
+      {/* ── Left Panel: Mascot + Branding ── */}
+      <LeftPanel>
+        <MascotWrapper>
+          <MascotImage
+            src={wizardRobotImage}
+            alt="Jira Clone Mascot — Wizard Robot"
+            onError={e => {
+              // Fallback to an emoji illustration if the image isn't found
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'block';
+            }}
+          />
+          {/* Emoji fallback — hidden until image fails to load */}
+          <div
+            style={{
+              display: 'none',
+              fontSize: '120px',
+              textAlign: 'center',
+              lineHeight: 1,
+              filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.2))',
+            }}
+          >
+            <span role="img" aria-label="robot">
+              🤖
+            </span>
+          </div>
+        </MascotWrapper>
+        <AppTitle>Jira Clone</AppTitle>
+        <AppSubtitle>Track your work. Your way.</AppSubtitle>
+      </LeftPanel>
 
-        <Title>Welcome back</Title>
-        <Subtitle>Sign in to your account to continue</Subtitle>
+      {/* ── Right Panel: Login Form ── */}
+      <RightPanel>
+        <WelcomeHeading>
+          Welcome back <span role="img" aria-label="waving hand">👋</span>
+        </WelcomeHeading>
+        <WelcomeSubheading>Choose your account to continue to the board.</WelcomeSubheading>
 
-        <Formik
-          initialValues={{ email: '', password: '' }}
-          validate={validate}
-          onSubmit={handleSubmit}
-          validateOnBlur
-          validateOnChange={false}
-        >
-          {({ values, errors, touched, handleChange, handleBlur, handleSubmit: formikSubmit }) => (
-            <form onSubmit={formikSubmit} noValidate>
-              <FieldGroup>
-                <FieldLabel htmlFor="login-email">Email</FieldLabel>
-                <FieldInput
-                  id="login-email"
-                  type="email"
-                  name="email"
-                  placeholder="you@example.com"
-                  value={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  invalid={touched.email && !!errors.email}
-                  autoComplete="email"
-                />
-                {touched.email && errors.email && <FieldError>{errors.email}</FieldError>}
-              </FieldGroup>
+        <SectionLabel>Demo Accounts</SectionLabel>
 
-              <FieldGroup>
-                <FieldLabel htmlFor="login-password">Password</FieldLabel>
-                <FieldInput
-                  id="login-password"
-                  type="password"
-                  name="password"
-                  placeholder="••••••••"
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  invalid={touched.password && !!errors.password}
-                  autoComplete="current-password"
-                />
-                {touched.password && errors.password && (
-                  <FieldError>{errors.password}</FieldError>
-                )}
-              </FieldGroup>
-
-              <SubmitButton type="submit" disabled={isWorking}>
-                {isWorking ? 'Signing in…' : 'Sign In'}
-              </SubmitButton>
-            </form>
-          )}
-        </Formik>
+        <UserCardsGrid role="listbox" aria-label="Select a user account">
+          {DEMO_USERS.map(user => {
+            const isSelected = selectedUserId === user.id;
+            return (
+              <UserCard
+                key={user.id}
+                isSelected={isSelected}
+                onClick={() => setSelectedUserId(user.id)}
+                role="option"
+                aria-selected={isSelected}
+                tabIndex={0}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setSelectedUserId(user.id);
+                  }
+                }}
+              >
+                <UserAvatar user={user} isSelected={isSelected} />
+                <UserInfo>
+                  <UserName>{user.name}</UserName>
+                  <UserEmail>{user.email}</UserEmail>
+                </UserInfo>
+                {isSelected && <SelectedBadge aria-hidden="true" />}
+              </UserCard>
+            );
+          })}
+        </UserCardsGrid>
 
         <Divider />
 
-        <GuestLink onClick={handleGuestAccess}>Continue as guest</GuestLink>
-      </Card>
-    </Page>
+        <ContinueButton
+          onClick={handleContinue}
+          disabled={!selectedUserId || isLoading}
+          aria-disabled={!selectedUserId || isLoading}
+        >
+          {isLoading ? 'Signing in…' : 'Continue →'}
+        </ContinueButton>
+
+        <FooterText>
+          Demo app &mdash; no real credentials needed.{' '}
+          <button
+            type="button"
+            onClick={() => {
+              storeAuthToken('mock-auth-token');
+              history.push('/project');
+            }}
+            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: 'inherit', font: 'inherit', textDecoration: 'underline' }}
+          >
+            Enter as guest
+          </button>
+        </FooterText>
+      </RightPanel>
+    </PageContainer>
   );
 };
 
