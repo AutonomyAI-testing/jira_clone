@@ -20,7 +20,8 @@ export const StyledToast = styled.div`
   background: ${props => color[props.type]};
   cursor: pointer;
   transition: all 0.15s;
-  ${mixin.clearfix}
+  display: flex;
+  align-items: center;
   ${mixin.hardwareAccelerate}
 
   &.jira-toast-enter,
@@ -56,4 +57,30 @@ export const Message = styled.div`
   white-space: pre-wrap;
   ${font.size(14)}
   ${font.medium}
+`;
+
+export const AvatarWrapper = styled.div`
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 50%, #55efc4 100%);
+  padding: 2px;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const AvatarImage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+`;
+
+export const ToastContent = styled.div`
+  flex: 1;
+  min-width: 0;
 `;
