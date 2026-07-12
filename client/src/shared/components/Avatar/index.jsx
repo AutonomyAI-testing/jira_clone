@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Image, Letter } from './Styles';
+import animeImage from './assets/anime.png';
+import { Image, Letter, AnimeAvatar, AnimeRing } from './Styles';
 
 const propTypes = {
   className: PropTypes.string,
   avatarUrl: PropTypes.string,
   name: PropTypes.string,
   size: PropTypes.number,
+  variant: PropTypes.oneOf(['default', 'anime']),
 };
 
 const defaultProps = {
@@ -15,15 +17,29 @@ const defaultProps = {
   avatarUrl: null,
   name: '',
   size: 32,
+  variant: 'default',
 };
 
-const Avatar = ({ className, avatarUrl, name, size, ...otherProps }) => {
+const Avatar = ({ className, avatarUrl, name, size, variant, ...otherProps }) => {
   const sharedProps = {
     className,
     size,
     'data-testid': name ? `avatar:${name}` : 'avatar',
     ...otherProps,
   };
+
+  if (variant === 'anime') {
+    return (
+      <AnimeRing
+        size={size}
+        className={className}
+        data-testid={name ? `avatar:${name}` : 'avatar'}
+        {...otherProps}
+      >
+        <AnimeAvatar src={animeImage} alt="anime avatar" />
+      </AnimeRing>
+    );
+  }
 
   if (avatarUrl) {
     return <Image avatarUrl={avatarUrl} {...sharedProps} />;
