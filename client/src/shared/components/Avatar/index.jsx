@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Image, Letter } from './Styles';
+import animeImage from './assets/anime.png';
+import { Image, Letter, AnimeWrapper, AnimeInner } from './Styles';
 
 const propTypes = {
   className: PropTypes.string,
   avatarUrl: PropTypes.string,
   name: PropTypes.string,
   size: PropTypes.number,
+  variant: PropTypes.oneOf(['default', 'anime']),
 };
 
 const defaultProps = {
@@ -15,22 +17,37 @@ const defaultProps = {
   avatarUrl: null,
   name: '',
   size: 32,
+  variant: 'default',
 };
 
-const Avatar = ({ className, avatarUrl, name, size, ...otherProps }) => {
+const Avatar = ({ className, avatarUrl, name, size, variant, ...otherProps }) => {
   const sharedProps = {
     className,
-    size,
     'data-testid': name ? `avatar:${name}` : 'avatar',
     ...otherProps,
   };
 
+  if (variant === 'anime') {
+    const borderWidth = Math.max(2, Math.round(size * 0.08));
+    const innerSize = size - borderWidth * 2;
+    return (
+      <AnimeWrapper
+        style={{ width: size, height: size }}
+        {...sharedProps}
+      >
+        <AnimeInner style={{ width: innerSize, height: innerSize }}>
+          <img src={animeImage} alt="anime avatar" />
+        </AnimeInner>
+      </AnimeWrapper>
+    );
+  }
+
   if (avatarUrl) {
-    return <Image avatarUrl={avatarUrl} {...sharedProps} />;
+    return <Image avatarUrl={avatarUrl} size={size} {...sharedProps} />;
   }
 
   return (
-    <Letter color={getColorFromName(name)} {...sharedProps}>
+    <Letter color={getColorFromName(name)} size={size} {...sharedProps}>
       <span>{name.charAt(0)}</span>
     </Letter>
   );
