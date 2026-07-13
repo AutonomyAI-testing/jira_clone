@@ -11,16 +11,17 @@ export const Container = styled.div`
 `;
 
 export const StyledToast = styled.div`
+  display: flex;
+  align-items: flex-start;
   position: relative;
   margin-bottom: 5px;
   width: 300px;
-  padding: 15px 20px;
+  padding: 14px 18px;
   border-radius: 3px;
   color: #fff;
   background: ${props => color[props.type]};
   cursor: pointer;
   transition: all 0.15s;
-  ${mixin.clearfix}
   ${mixin.hardwareAccelerate}
 
   &.jira-toast-enter,
@@ -36,24 +37,37 @@ export const StyledToast = styled.div`
   }
 `;
 
+export const TypeIcon = styled(Icon)`
+  flex-shrink: 0;
+  margin-right: 10px;
+  margin-top: 1px;
+  color: #fff;
+  font-size: 18px;
+`;
+
+export const Content = styled.div`
+  flex: 1;
+  min-width: 0;
+  padding-right: 20px;
+`;
+
 export const CloseIcon = styled(Icon)`
   position: absolute;
   top: 13px;
   right: 14px;
-  font-size: 22px;
+  font-size: 20px;
   cursor: pointer;
-  color: #fff;
+  color: rgba(255, 255, 255, 0.85);
+  flex-shrink: 0;
 `;
 
 export const Title = styled.div`
-  padding-right: 22px;
   ${font.size(15)}
   ${font.medium}
 `;
 
 export const Message = styled.div`
-  padding: 8px 10px 0 0;
+  padding-top: 5px;
   white-space: pre-wrap;
   ${font.size(14)}
-  ${font.medium}
 `;

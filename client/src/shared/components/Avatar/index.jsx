@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Image, Letter } from './Styles';
+import { Image, GradientRing, Letter } from './Styles';
 
 const propTypes = {
   className: PropTypes.string,
   avatarUrl: PropTypes.string,
   name: PropTypes.string,
   size: PropTypes.number,
+  variant: PropTypes.oneOf(['default', 'gradientBorder']),
 };
 
 const defaultProps = {
@@ -15,15 +16,24 @@ const defaultProps = {
   avatarUrl: null,
   name: '',
   size: 32,
+  variant: 'default',
 };
 
-const Avatar = ({ className, avatarUrl, name, size, ...otherProps }) => {
+const Avatar = ({ className, avatarUrl, name, size, variant, ...otherProps }) => {
   const sharedProps = {
     className,
     size,
     'data-testid': name ? `avatar:${name}` : 'avatar',
     ...otherProps,
   };
+
+  if (variant === 'gradientBorder' && avatarUrl) {
+    return (
+      <GradientRing size={size} className={className} data-testid={sharedProps['data-testid']}>
+        <img src={avatarUrl} alt={name || 'avatar'} />
+      </GradientRing>
+    );
+  }
 
   if (avatarUrl) {
     return <Image avatarUrl={avatarUrl} {...sharedProps} />;
