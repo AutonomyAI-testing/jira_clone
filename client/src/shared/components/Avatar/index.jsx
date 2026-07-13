@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import animeImage from './assets/anime.png';
-import { Image, Letter, GradientBorderWrapper, GradientBorderInner, AnimeImage } from './Styles';
+import animeAvatarImg from './assets/anime.png';
+import { Image, Letter, AnimeRingWrapper, AnimeImage } from './Styles';
 
 const propTypes = {
   className: PropTypes.string,
@@ -28,13 +28,12 @@ const Avatar = ({ className, avatarUrl, name, size, variant, ...otherProps }) =>
     ...otherProps,
   };
 
+  // Anime variant — circular image with pseudo-element gradient ring (teal → blue → purple)
   if (variant === 'anime') {
     return (
-      <GradientBorderWrapper size={size} className={className} {...otherProps}>
-        <GradientBorderInner>
-          <AnimeImage src={animeImage} alt={name || 'anime avatar'} />
-        </GradientBorderInner>
-      </GradientBorderWrapper>
+      <AnimeRingWrapper size={size} className={className}>
+        <AnimeImage src={animeAvatarImg} size={size} alt="anime avatar" />
+      </AnimeRingWrapper>
     );
   }
 
