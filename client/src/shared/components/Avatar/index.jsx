@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Image, Letter } from './Styles';
+import { Image, Letter, GradientRing, OutlineRing, ClipWrapper } from './Styles';
 
 const propTypes = {
   className: PropTypes.string,
   avatarUrl: PropTypes.string,
   name: PropTypes.string,
   size: PropTypes.number,
+  gradientBorder: PropTypes.bool,
+  redOutline: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -15,25 +17,67 @@ const defaultProps = {
   avatarUrl: null,
   name: '',
   size: 32,
+  gradientBorder: false,
+  redOutline: false,
 };
 
-const Avatar = ({ className, avatarUrl, name, size, ...otherProps }) => {
-  const sharedProps = {
-    className,
-    size,
-    'data-testid': name ? `avatar:${name}` : 'avatar',
-    ...otherProps,
-  };
+const Avatar = ({ className, avatarUrl, name, size, gradientBorder, redOutline, ...otherProps }) => {
+  const testId = name ? `avatar:${name}` : 'avatar';
 
-  if (avatarUrl) {
-    return <Image avatarUrl={avatarUrl} {...sharedProps} />;
-  }
+  const hasRing = gradientBorder || redOutline;
 
-  return (
-    <Letter color={getColorFromName(name)} {...sharedProps}>
+  const content = avatarUrl ? (
+    <Image
+      avatarUrl={avatarUrl}
+      size={size}
+      data-testid={!hasRing ? testId : undefined}
+      className={!hasRing ? className : undefined}
+      {...(!hasRing ? otherProps : {})}
+    />
+  ) : (
+    <Letter
+      color={getColorFromName(name)}
+      size={size}
+      data-testid={!hasRing ? testId : undefined}
+      className={!hasRing ? className : undefined}
+      {...(!hasRing ? otherProps : {})}
+    >
       <span>{name.charAt(0)}</span>
     </Letter>
   );
+
+  if (gradientBorder) {
+    return (
+      <GradientRing
+        size={size}
+        className={className}
+        data-testid={testId}
+        {...otherProps}
+      >
+        <ClipWrapper size={size}>
+          {content}
+        </ClipWrapper>
+      </GradientRing>
+    );
+  }
+
+  if (redOutline) {
+    return (
+      <OutlineRing
+        size={size}
+        outlineColor="#E13C3C"
+        className={className}
+        data-testid={testId}
+        {...otherProps}
+      >
+        <ClipWrapper size={size}>
+          {content}
+        </ClipWrapper>
+      </OutlineRing>
+    );
+  }
+
+  return content;
 };
 
 const colors = [
