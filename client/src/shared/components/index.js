@@ -1,5 +1,6 @@
 export { default as AboutTooltip } from './AboutTooltip';
 export { default as Avatar } from './Avatar';
+export { default as AnimatedAvatar } from './AnimatedAvatar';
 export { default as Button } from './Button';
 export { default as Breadcrumbs } from './Breadcrumbs';
 export { default as ConfirmModal } from './ConfirmModal';
