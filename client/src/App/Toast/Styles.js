@@ -7,7 +7,7 @@ export const Container = styled.div`
   z-index: ${zIndexValues.modal + 1};
   position: fixed;
   right: 30px;
-  top: 50px;
+  bottom: 30px;
 `;
 
 export const StyledToast = styled.div`
