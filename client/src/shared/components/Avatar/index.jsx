@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Image, Letter } from './Styles';
+import catAvatarUrl from './assets/catAvatarBase64';
+import { Image } from './Styles';
 
 const propTypes = {
   className: PropTypes.string,
@@ -29,25 +30,9 @@ const Avatar = ({ className, avatarUrl, name, size, ...otherProps }) => {
     return <Image avatarUrl={avatarUrl} {...sharedProps} />;
   }
 
-  return (
-    <Letter color={getColorFromName(name)} {...sharedProps}>
-      <span>{name.charAt(0)}</span>
-    </Letter>
-  );
+  return <Image avatarUrl={catAvatarUrl} {...sharedProps} />;
+
 };
-
-const colors = [
-  '#DA7657',
-  '#6ADA57',
-  '#5784DA',
-  '#AA57DA',
-  '#DA5757',
-  '#DA5792',
-  '#57DACA',
-  '#57A5DA',
-];
-
-const getColorFromName = name => colors[name.toLocaleLowerCase().charCodeAt(0) % colors.length];
 
 Avatar.propTypes = propTypes;
 Avatar.defaultProps = defaultProps;
