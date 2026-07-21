@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Image, Letter } from './Styles';
+import { ImageRing, ImageClip, ImageInner, LetterRing, Letter } from './Styles';
 
 const propTypes = {
   className: PropTypes.string,
@@ -18,21 +18,34 @@ const defaultProps = {
 };
 
 const Avatar = ({ className, avatarUrl, name, size, ...otherProps }) => {
-  const sharedProps = {
-    className,
-    size,
-    'data-testid': name ? `avatar:${name}` : 'avatar',
-    ...otherProps,
-  };
+  const testId = name ? `avatar:${name}` : 'avatar';
 
   if (avatarUrl) {
-    return <Image avatarUrl={avatarUrl} {...sharedProps} />;
+    return (
+      <ImageRing
+        className={className}
+        size={size}
+        data-testid={testId}
+        {...otherProps}
+      >
+        <ImageClip size={size}>
+          <ImageInner src={avatarUrl} alt={name || 'avatar'} />
+        </ImageClip>
+      </ImageRing>
+    );
   }
 
   return (
-    <Letter color={getColorFromName(name)} {...sharedProps}>
-      <span>{name.charAt(0)}</span>
-    </Letter>
+    <LetterRing
+      className={className}
+      size={size}
+      data-testid={testId}
+      {...otherProps}
+    >
+      <Letter color={getColorFromName(name)} size={size}>
+        <span>{name.charAt(0)}</span>
+      </Letter>
+    </LetterRing>
   );
 };
 
