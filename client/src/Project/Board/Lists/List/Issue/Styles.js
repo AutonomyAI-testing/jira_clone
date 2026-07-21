@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import { color, font, mixin } from 'shared/utils/styles';
-import { Avatar } from 'shared/components';
+import { AnimatedAvatar } from 'shared/components';
 
 export const IssueLink = styled(Link)`
   display: block;
@@ -50,7 +50,12 @@ export const Assignees = styled.div`
   margin-left: 2px;
 `;
 
-export const AssigneeAvatar = styled(Avatar)`
+export const AssigneeAvatar = styled(AnimatedAvatar)`
   margin-left: -2px;
   box-shadow: 0 0 0 2px #fff;
+
+  &:hover {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 3px ${mixin.rgba(color.primary, 0.28)},
+      0 6px 12px ${mixin.rgba('#000000', 0.12)};
+  }
 `;

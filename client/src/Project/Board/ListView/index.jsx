@@ -5,7 +5,7 @@ import moment from 'moment';
 import { intersection } from 'lodash';
 
 import { IssueStatusCopy, IssueTypeCopy, IssuePriorityCopy } from 'shared/constants/issues';
-import { Avatar, IssueTypeIcon, IssuePriorityIcon } from 'shared/components';
+import { AnimatedAvatar, IssueTypeIcon, IssuePriorityIcon } from 'shared/components';
 import { formatDate } from 'shared/utils/dateTime';
 
 import {
@@ -91,7 +91,13 @@ const ListView = ({ project, filters, currentUserId }) => {
               <TableCell>
                 <AssigneesContainer>
                   {issue.users.map(user => (
-                    <Avatar key={user.id} size={24} avatarUrl={user.avatarUrl} name={user.name} />
+                    <AnimatedAvatar
+                      key={user.id}
+                      size={24}
+                      name={user.name}
+                      animationVariant="float"
+                      isAnimated
+                    />
                   ))}
                 </AssigneesContainer>
               </TableCell>
