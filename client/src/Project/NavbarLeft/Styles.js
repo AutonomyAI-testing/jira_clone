@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
 import { font, sizes, color, mixin, zIndexValues } from 'shared/utils/styles';
-import { Logo } from 'shared/components';
+import { MascotLogo } from 'shared/components';
 
 export const NavLeft = styled.aside`
   z-index: ${zIndexValues.navLeft};
@@ -29,10 +29,10 @@ export const LogoLink = styled(NavLink)`
   transition: left 0.1s;
 `;
 
-export const StyledLogo = styled(Logo)`
+export const StyledMascotLogo = styled(MascotLogo)`
   display: inline-block;
-  margin-left: 8px;
-  padding: 10px;
+  margin: 12px 0 10px 8px;
+  padding: 2px;
   ${mixin.clickable}
 `;
 
