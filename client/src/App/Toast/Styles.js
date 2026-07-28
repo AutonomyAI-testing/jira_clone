@@ -10,17 +10,28 @@ export const Container = styled.div`
   top: 50px;
 `;
 
+const typeAccentColor = {
+  success: color.success,
+  danger: color.danger,
+  warning: color.warning,
+};
+
 export const StyledToast = styled.div`
   position: relative;
-  margin-bottom: 5px;
-  width: 300px;
-  padding: 15px 20px;
-  border-radius: 3px;
-  color: #fff;
-  background: ${props => color[props.type]};
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 340px;
+  min-height: 90px;
+  padding: 12px 40px 12px 12px;
+  border-radius: 8px;
+  background: #fff;
+  border-left: 5px solid
+    ${props => typeAccentColor[props.type] || color.success};
   cursor: pointer;
+  ${mixin.boxShadowMedium}
+  box-shadow: 0 8px 24px 0 rgba(9, 30, 66, 0.18);
   transition: all 0.15s;
-  ${mixin.clearfix}
   ${mixin.hardwareAccelerate}
 
   &.jira-toast-enter,
@@ -36,24 +47,43 @@ export const StyledToast = styled.div`
   }
 `;
 
+export const MascotImage = styled.img`
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  margin-right: 14px;
+`;
+
+export const TextContent = styled.div`
+  flex: 1;
+  min-width: 0;
+`;
+
 export const CloseIcon = styled(Icon)`
   position: absolute;
-  top: 13px;
-  right: 14px;
-  font-size: 22px;
+  top: 10px;
+  right: 12px;
+  font-size: 18px;
   cursor: pointer;
-  color: #fff;
+  color: ${color.textLight};
+
+  &:hover {
+    color: ${color.textDark};
+  }
 `;
 
 export const Title = styled.div`
-  padding-right: 22px;
-  ${font.size(15)}
-  ${font.medium}
+  padding-right: 4px;
+  color: ${color.textDarkest};
+  ${font.size(14)}
+  ${font.bold}
 `;
 
 export const Message = styled.div`
-  padding: 8px 10px 0 0;
+  padding-top: 4px;
   white-space: pre-wrap;
-  ${font.size(14)}
+  color: ${color.textMedium};
+  ${font.size(13)}
   ${font.medium}
 `;
