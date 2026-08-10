@@ -20,10 +20,11 @@ export const ContentBox = styled.div`
 `;
 
 export const MascotImage = styled.img`
-  width: 200px;
+  width: 220px;
   height: auto;
   margin-bottom: 32px;
-  filter: drop-shadow(0 8px 24px rgba(0, 82, 204, 0.15));
+  user-select: none;
+  pointer-events: none;
 `;
 
 export const Heading = styled.h1`
