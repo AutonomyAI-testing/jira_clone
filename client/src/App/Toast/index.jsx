@@ -3,7 +3,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import pubsub from 'sweet-pubsub';
 import { uniqueId } from 'lodash';
 
-import { Container, StyledToast, CloseIcon, Title, Message } from './Styles';
+import { Container, StyledToast, CloseIcon, TypeIcon, ToastContent, Title, Message } from './Styles';
 
 const Toast = () => {
   const [toasts, setToasts] = useState([]);
@@ -37,8 +37,13 @@ const Toast = () => {
           <CSSTransition key={toast.id} classNames="jira-toast" timeout={200}>
             <StyledToast key={toast.id} type={toast.type} onClick={() => removeToast(toast.id)}>
               <CloseIcon type="close" />
-              {toast.title && <Title>{toast.title}</Title>}
-              {toast.message && <Message>{toast.message}</Message>}
+              <ToastContent>
+                {toast.type === 'danger' && <TypeIcon type="close" />}
+                <div>
+                  {toast.title && <Title>{toast.title}</Title>}
+                  {toast.message && <Message>{toast.message}</Message>}
+                </div>
+              </ToastContent>
             </StyledToast>
           </CSSTransition>
         ))}
