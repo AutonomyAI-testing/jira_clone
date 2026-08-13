@@ -74,8 +74,8 @@ export const GlowRing = styled.div`
   border-radius: 50%;
   background: radial-gradient(
     ellipse at center,
-    rgba(200, 0, 0, 0.08) 0%,
-    rgba(120, 0, 0, 0.12) 40%,
+    rgba(0, 200, 80, 0.08) 0%,
+    rgba(0, 120, 50, 0.12) 40%,
     transparent 70%
   );
   animation: ${pulse} 3s ease-in-out infinite;
@@ -109,11 +109,11 @@ export const Title = styled.h1`
   font-weight: 900;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #ff1a1a;
+  color: #00e84a;
   text-shadow:
-    0 0 20px rgba(255, 50, 50, 0.8),
-    0 0 40px rgba(255, 0, 0, 0.5),
-    0 0 80px rgba(200, 0, 0, 0.3),
+    0 0 20px rgba(0, 232, 74, 0.8),
+    0 0 40px rgba(0, 200, 60, 0.5),
+    0 0 80px rgba(0, 150, 40, 0.3),
     2px 2px 4px rgba(0, 0, 0, 0.8);
   margin: 0;
   animation: ${shimmer} 2.5s ease-in-out infinite;
