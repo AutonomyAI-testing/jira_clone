@@ -20,7 +20,7 @@ export const MascotImage = styled.img`
 `;
 
 export const Title = styled.h1`
-  color: ${color.danger};
+  color: ${color.success};
   ${font.size(48)}
   ${font.bold}
   margin-top: 24px;
