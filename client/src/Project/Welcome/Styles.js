@@ -35,7 +35,7 @@ export const AvatarImage = styled.img`
 
 export const WelcomeHeading = styled.h1`
   margin: 0 0 16px;
-  color: ${color.textDarkest};
+  color: ${color.danger};
   ${font.black}
   ${font.size(42)}
   letter-spacing: -1px;
