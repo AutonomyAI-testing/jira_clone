@@ -45,6 +45,12 @@ export const CloseIcon = styled(Icon)`
   color: #fff;
 `;
 
+export const ToastContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
 export const Title = styled.div`
   padding-right: 22px;
   ${font.size(15)}
