@@ -29,6 +29,6 @@ export const AvatarImage = styled.img`
 export const WelcomeText = styled.span`
   ${font.medium}
   ${font.size(18)}
-  color: ${color.textDark};
+  color: ${color.danger};
   margin-left: 12px;
 `;
