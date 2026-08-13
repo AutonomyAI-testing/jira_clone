@@ -17,5 +17,5 @@ export const HeaderLeft = styled.div`
 export const BoardName = styled.div`
   ${font.size(24)}
   ${font.medium}
-  color: #E13C3C;
+  color: #0B875B;
 `;
