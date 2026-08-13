@@ -47,23 +47,8 @@ export const CloseIcon = styled(Icon)`
 
 export const ToastContent = styled.div`
   display: flex;
-  align-items: flex-start;
-`;
-
-export const TypeIcon = styled(Icon)`
-  flex-shrink: 0;
-  margin-right: 10px;
-  margin-top: 1px;
-  font-size: 18px;
-  color: #fff;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.7);
-  display: flex;
   align-items: center;
-  justify-content: center;
-  line-height: 1;
+  gap: 10px;
 `;
 
 export const Title = styled.div`

@@ -3,7 +3,8 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import pubsub from 'sweet-pubsub';
 import { uniqueId } from 'lodash';
 
-import { Container, StyledToast, CloseIcon, TypeIcon, ToastContent, Title, Message } from './Styles';
+import { Avatar } from 'shared/components';
+import { Container, StyledToast, CloseIcon, ToastContent, Title, Message } from './Styles';
 
 const Toast = () => {
   const [toasts, setToasts] = useState([]);
@@ -38,7 +39,7 @@ const Toast = () => {
             <StyledToast key={toast.id} type={toast.type} onClick={() => removeToast(toast.id)}>
               <CloseIcon type="close" />
               <ToastContent>
-                {toast.type === 'danger' && <TypeIcon type="close" />}
+                {toast.type === 'danger' && <Avatar size={32} name="Error" />}
                 <div>
                   {toast.title && <Title>{toast.title}</Title>}
                   {toast.message && <Message>{toast.message}</Message>}
