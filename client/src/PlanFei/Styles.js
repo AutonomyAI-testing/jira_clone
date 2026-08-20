@@ -26,7 +26,7 @@ export const MascotImage = styled.img`
 export const PlanFeiText = styled.h1`
   position: relative;
   z-index: 10;
-  color: ${color.success};
+  color: ${color.danger};
   ${font.bold}
   font-size: 56px;
   letter-spacing: 2px;
