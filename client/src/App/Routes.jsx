@@ -4,6 +4,7 @@ import { Router, Switch, Route, Redirect } from 'react-router-dom';
 import history from 'browserHistory';
 import Project from 'Project';
 import Authenticate from 'Auth/Authenticate';
+import About from 'About';
 import PageError from 'shared/components/PageError';
 
 const Routes = () => (
@@ -11,6 +12,7 @@ const Routes = () => (
     <Switch>
       <Redirect exact from="/" to="/project" />
       <Route path="/authenticate" component={Authenticate} />
+      <Route path="/about" component={About} />
       <Route path="/project" component={Project} />
       <Route component={PageError} />
     </Switch>
