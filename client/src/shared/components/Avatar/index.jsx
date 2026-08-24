@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Image, Letter } from './Styles';
+import { Wrapper, Image, Letter, CowboyHat } from './Styles';
 
 const propTypes = {
   className: PropTypes.string,
@@ -19,20 +19,24 @@ const defaultProps = {
 
 const Avatar = ({ className, avatarUrl, name, size, ...otherProps }) => {
   const sharedProps = {
-    className,
     size,
     'data-testid': name ? `avatar:${name}` : 'avatar',
     ...otherProps,
   };
 
-  if (avatarUrl) {
-    return <Image avatarUrl={avatarUrl} {...sharedProps} />;
-  }
-
-  return (
+  const avatarEl = avatarUrl ? (
+    <Image avatarUrl={avatarUrl} {...sharedProps} />
+  ) : (
     <Letter color={getColorFromName(name)} {...sharedProps}>
       <span>{name.charAt(0)}</span>
     </Letter>
+  );
+
+  return (
+    <Wrapper className={className} size={size}>
+      {avatarEl}
+      <CowboyHat size={size}>🤠</CowboyHat>
+    </Wrapper>
   );
 };
 
