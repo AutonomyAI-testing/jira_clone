@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { color, font, mixin, zIndexValues } from 'shared/utils/styles';
 import { Icon } from 'shared/components';
 
+import wizardBg from '../../wizard-toast-bg.png';
+
 export const Container = styled.div`
   z-index: ${zIndexValues.modal + 1};
   position: fixed;
@@ -18,10 +20,26 @@ export const StyledToast = styled.div`
   border-radius: 3px;
   color: #fff;
   background: ${props => color[props.type]};
+  overflow: hidden;
   cursor: pointer;
   transition: all 0.15s;
   ${mixin.clearfix}
   ${mixin.hardwareAccelerate}
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    width: 110px;
+    height: 110px;
+    background-image: url(${wizardBg});
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    opacity: 0.9;
+    pointer-events: none;
+  }
 
   &.jira-toast-enter,
   &.jira-toast-exit.jira-toast-exit-active {
