@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import { color, font, mixin, zIndexValues } from 'shared/utils/styles';
 import { Icon } from 'shared/components';
+import wizardImg from './wizard.png';
 
 export const Container = styled.div`
   z-index: ${zIndexValues.modal + 1};
@@ -14,14 +15,30 @@ export const StyledToast = styled.div`
   position: relative;
   margin-bottom: 5px;
   width: 300px;
-  padding: 15px 20px;
+  padding: 15px 20px 15px 20px;
+  padding-right: 90px;
   border-radius: 3px;
   color: #fff;
   background: ${props => color[props.type]};
   cursor: pointer;
   transition: all 0.15s;
+  overflow: hidden;
   ${mixin.clearfix}
   ${mixin.hardwareAccelerate}
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    bottom: -4px;
+    width: 90px;
+    height: 106px;
+    background-image: url(${wizardImg});
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    pointer-events: none;
+  }
 
   &.jira-toast-enter,
   &.jira-toast-exit.jira-toast-exit-active {
