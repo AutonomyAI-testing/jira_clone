@@ -19,6 +19,6 @@ export const BlanFeiPage = styled.div`
 export const Title = styled.h1`
   ${font.bold}
   ${font.size(64)}
-  color: ${color.danger};
+  color: ${color.primary};
   padding-top: 420px;
 `;
