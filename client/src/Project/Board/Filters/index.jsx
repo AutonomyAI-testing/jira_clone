@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { xor } from 'lodash';
 
+import { IssueLabel, IssueLabelCopy } from 'shared/constants/issues';
+import { issueLabelColors } from 'shared/utils/styles';
+
 import {
   Filters,
   SearchInput,
@@ -9,8 +12,17 @@ import {
   AvatarIsActiveBorder,
   StyledAvatar,
   StyledButton,
+  LabelSelect,
+  LabelDot,
+  LabelOption,
+  LabelValueItem,
   ClearAll,
 } from './Styles';
+
+const labelOptions = Object.values(IssueLabel).map(label => ({
+  value: label,
+  label: IssueLabelCopy[label],
+}));
 
 const propTypes = {
   projectUsers: PropTypes.array.isRequired,
@@ -20,9 +32,10 @@ const propTypes = {
 };
 
 const ProjectBoardFilters = ({ projectUsers, defaultFilters, filters, mergeFilters }) => {
-  const { searchTerm, userIds, myOnly, recent } = filters;
+  const { searchTerm, userIds, myOnly, recent, labels } = filters;
 
-  const areFiltersCleared = !searchTerm && userIds.length === 0 && !myOnly && !recent;
+  const areFiltersCleared =
+    !searchTerm && userIds.length === 0 && !myOnly && !recent && labels.length === 0;
 
   return (
     <Filters data-testid="board-filters">
@@ -56,6 +69,28 @@ const ProjectBoardFilters = ({ projectUsers, defaultFilters, filters, mergeFilte
       >
         Recently Updated
       </StyledButton>
+      <LabelSelect
+        isMulti
+        variant="empty"
+        name="labels"
+        placeholder="Labels"
+        dropdownWidth={220}
+        value={labels}
+        options={labelOptions}
+        onChange={newLabels => mergeFilters({ labels: newLabels })}
+        renderValue={({ value: label, removeOptionValue }) => (
+          <LabelValueItem key={label} onClick={removeOptionValue}>
+            <LabelDot color={issueLabelColors[label]} />
+            {IssueLabelCopy[label]}
+          </LabelValueItem>
+        )}
+        renderOption={({ value: label }) => (
+          <LabelOption>
+            <LabelDot color={issueLabelColors[label]} />
+            {IssueLabelCopy[label]}
+          </LabelOption>
+        )}
+      />
       {!areFiltersCleared && (
         <ClearAll onClick={() => mergeFilters(defaultFilters)}>Clear all</ClearAll>
       )}

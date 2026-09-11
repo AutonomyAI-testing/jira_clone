@@ -31,11 +31,24 @@ export const Issue = styled.div`
 `;
 
 export const Title = styled.p`
-  padding-bottom: 11px;
+  padding-bottom: 8px;
   ${font.size(15)}
   @media (max-width: 1100px) {
     ${font.size(14.5)}
   }
+`;
+
+export const Labels = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding-bottom: 8px;
+`;
+
+export const LabelOverflow = styled.span`
+  color: ${color.textLight};
+  ${font.size(11)}
 `;
 
 export const Bottom = styled.div`

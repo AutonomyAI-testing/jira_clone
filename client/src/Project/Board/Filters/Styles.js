@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { color, font, mixin } from 'shared/utils/styles';
-import { InputDebounced, Avatar, Button } from 'shared/components';
+import { InputDebounced, Avatar, Button, Select } from 'shared/components';
 
 export const Filters = styled.div`
   display: flex;
@@ -38,6 +38,31 @@ export const StyledAvatar = styled(Avatar)`
 
 export const StyledButton = styled(Button)`
   margin-left: 6px;
+`;
+
+export const LabelSelect = styled(Select)`
+  margin-left: 6px;
+`;
+
+export const LabelDot = styled.div`
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: ${props => props.color};
+  flex-shrink: 0;
+`;
+
+export const LabelOption = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const LabelValueItem = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 0 5px 5px 0;
+  ${mixin.tag()}
 `;
 
 export const ClearAll = styled.div`

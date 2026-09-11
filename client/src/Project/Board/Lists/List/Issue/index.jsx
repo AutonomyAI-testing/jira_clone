@@ -3,9 +3,18 @@ import PropTypes from 'prop-types';
 import { useRouteMatch } from 'react-router-dom';
 import { Draggable } from 'react-beautiful-dnd';
 
-import { IssueTypeIcon, IssuePriorityIcon } from 'shared/components';
+import { IssueTypeIcon, IssuePriorityIcon, IssueLabelChip } from 'shared/components';
 
-import { IssueLink, Issue, Title, Bottom, Assignees, AssigneeAvatar } from './Styles';
+import {
+  IssueLink,
+  Issue,
+  Title,
+  Labels,
+  LabelOverflow,
+  Bottom,
+  Assignees,
+  AssigneeAvatar,
+} from './Styles';
 
 const propTypes = {
   projectUsers: PropTypes.array.isRequired,
@@ -30,6 +39,16 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
         >
           <Issue isBeingDragged={snapshot.isDragging && !snapshot.isDropAnimating}>
             <Title>{issue.title}</Title>
+            {issue.labels && issue.labels.length > 0 && (
+              <Labels>
+                {issue.labels.slice(0, 3).map(label => (
+                  <IssueLabelChip key={label} label={label} />
+                ))}
+                {issue.labels.length > 3 && (
+                  <LabelOverflow>{`+${issue.labels.length - 3}`}</LabelOverflow>
+                )}
+              </Labels>
+            )}
             <Bottom>
               <div>
                 <IssueTypeIcon type={issue.type} />
