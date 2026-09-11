@@ -5,7 +5,21 @@ import { Draggable } from 'react-beautiful-dnd';
 
 import { IssueTypeIcon, IssuePriorityIcon } from 'shared/components';
 
-import { IssueLink, Issue, Title, Bottom, Assignees, AssigneeAvatar } from './Styles';
+import { IssueLink, Issue, Title, Bottom, Assignees, AssigneeAvatar, PriorityBadge } from './Styles';
+
+const priorityBadgeVariant = {
+  1: 'low',
+  2: 'low',
+  3: 'medium',
+  4: 'high',
+  5: 'high',
+};
+
+const priorityBadgeLabel = {
+  low: 'Low',
+  medium: 'Medium',
+  high: 'High',
+};
 
 const propTypes = {
   projectUsers: PropTypes.array.isRequired,
@@ -34,6 +48,9 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
               <div>
                 <IssueTypeIcon type={issue.type} />
                 <IssuePriorityIcon priority={issue.priority} top={-1} left={4} />
+                <PriorityBadge variant={priorityBadgeVariant[issue.priority]}>
+                  {priorityBadgeLabel[priorityBadgeVariant[issue.priority]]}
+                </PriorityBadge>
               </div>
               <Assignees>
                 {assignees.map(user => (
