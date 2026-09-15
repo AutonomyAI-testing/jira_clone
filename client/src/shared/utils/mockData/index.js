@@ -37,6 +37,21 @@ const routeMockData = (method, url, variables) => {
     if (url === '/authentication/guest') {
       return authenticationData;
     }
+    if (url === '/authentication/login') {
+      return {
+        authToken: `mock-login-token-${Math.random()
+          .toString(36)
+          .substring(7)}`,
+      };
+    }
+    if (url.match(/^\/authentication\/social\/(google|facebook|github)$/)) {
+      const provider = url.split('/')[3];
+      return {
+        authToken: `mock-${provider}-token-${Math.random()
+          .toString(36)
+          .substring(7)}`,
+      };
+    }
     if (url === '/issues') {
       // Return a mock newly created issue
       const newIssue = {
