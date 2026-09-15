@@ -1,0 +1,35 @@
+[08:06:52.957] [INFO] storybook v10.4.1
+[08:06:53.760] [DEBUG] Getting package.json info for /home/user/jira_clone/client/package.json...
+[08:06:53.779] [INFO] Storybook collects completely anonymous usage telemetry. We use it to shape Storybook's roadmap and prioritize features. You can learn more, including how to opt out, at https://storybook.js.org/telemetry
+[08:06:54.208] [WARN]   Failed to load preset: {"type":"presets","name":"/home/user/jira_clone/client/node_modules/@storybook/react/dist/preset.js"}
+[08:06:54.209] [ERROR] file://./node_modules/@storybook/react/dist/preset.js:13638
+import React__default, { Fragment, isValidElement as isValidElement2 } from "react";
+                         ^^^^^^^^
+[38;2;241;97;97mSyntaxError: The requested module 'react' does not provide an export named 'Fragment'[39m
+    at ModuleJob._instantiate (node:internal/modules/esm/module_job:213:21)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:320:5)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+    at async importModule (file://./node_modules/storybook/dist/_node-chunks/chunk-UHVMRW65.js:737:11)
+    at async loadPreset (file://./node_modules/storybook/dist/_node-chunks/chunk-PNYLLFX3.js:9122:72)
+    at async Promise.all (index 2)
+    at async loadPresets (file://./node_modules/storybook/dist/_node-chunks/chunk-PNYLLFX3.js:9166:73)
+    at async getPresets (file://./node_modules/storybook/dist/_node-chunks/chunk-PNYLLFX3.js:9197:23)
+    at async buildDevStandalone (file://./node_modules/storybook/dist/core-server/index.js:19456:13)
+    at async withTelemetry (file://./node_modules/storybook/dist/_node-chunks/chunk-CUZMMOHY.js:655:12)
+[08:06:54.236] [INFO] Starting...
+[08:06:54.435] [DEBUG] Starting preview..
+[08:06:54.591] [DEBUG] Using tsconfig paths for react-docgen
+[08:06:54.591] [ERROR] Failed to build the preview
+[08:06:54.592] [ERROR] [38;2;241;97;97mTypeError: Cannot read properties of undefined (reading 'alias')[39m
+    at Object.viteFinal (file://./.storybook/main.js:15:25)
+    at file://./node_modules/storybook/dist/_node-chunks/chunk-PNYLLFX3.js:9190:36
+    at async createViteServer (file://./node_modules/@storybook/builder-vite/dist/index.js:1575:21)
+    at async Module.start (file://./node_modules/@storybook/builder-vite/dist/index.js:1606:17)
+    at async storybookDevServer (file://./node_modules/storybook/dist/core-server/index.js:18917:158)
+    at async buildOrThrow (file://./node_modules/storybook/dist/core-server/index.js:8205:12)
+    at async buildDevStandalone (file://./node_modules/storybook/dist/core-server/index.js:19478:41)
+    at async withTelemetry (file://./node_modules/storybook/dist/_node-chunks/chunk-CUZMMOHY.js:655:12)
+    at async dev (file://./node_modules/storybook/dist/bin/core.js:2736:3)
+    at async _Command.<anonymous> (file://./node_modules/storybook/dist/bin/core.js:2806:92)
+[08:06:54.595] [WARN] Broken build, fix the error above.
+You may need to refresh the browser.
