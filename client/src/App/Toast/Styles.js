@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import { color, font, mixin, zIndexValues } from 'shared/utils/styles';
 import { Icon } from 'shared/components';
+import wizardSrc from './assets/wizardBase64';
 
 export const Container = styled.div`
   z-index: ${zIndexValues.modal + 1};
@@ -17,7 +18,11 @@ export const StyledToast = styled.div`
   padding: 15px 20px;
   border-radius: 3px;
   color: #fff;
-  background: ${props => color[props.type]};
+  background-color: ${props => color[props.type]};
+  background-image: url(${wizardSrc});
+  background-repeat: no-repeat;
+  background-size: 80px auto;
+  background-position: right 8px bottom;
   cursor: pointer;
   transition: all 0.15s;
   ${mixin.clearfix}
