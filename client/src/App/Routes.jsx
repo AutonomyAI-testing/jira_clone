@@ -5,12 +5,14 @@ import history from 'browserHistory';
 import Project from 'Project';
 import Authenticate from 'Auth/Authenticate';
 import PageError from 'shared/components/PageError';
+import ToastPage from 'App/ToastPage';
 
 const Routes = () => (
   <Router history={history}>
     <Switch>
       <Redirect exact from="/" to="/project" />
       <Route path="/authenticate" component={Authenticate} />
+      <Route path="/toast" component={ToastPage} />
       <Route path="/project" component={Project} />
       <Route component={PageError} />
     </Switch>
