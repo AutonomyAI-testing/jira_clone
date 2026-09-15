@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Image, Letter } from './Styles';
+import animeImage from './assets/avatar-image.png';
+import { Image, Letter, GradientBorderWrapper, GradientBorderInner, GradientImage } from './Styles';
 
 const propTypes = {
   className: PropTypes.string,
   avatarUrl: PropTypes.string,
   name: PropTypes.string,
   size: PropTypes.number,
+  variant: PropTypes.oneOf(['default', 'anime']),
 };
 
 const defaultProps = {
@@ -15,15 +17,27 @@ const defaultProps = {
   avatarUrl: null,
   name: '',
   size: 32,
+  variant: 'default',
 };
 
-const Avatar = ({ className, avatarUrl, name, size, ...otherProps }) => {
+const Avatar = ({ className, avatarUrl, name, size, variant, ...otherProps }) => {
   const sharedProps = {
     className,
     size,
     'data-testid': name ? `avatar:${name}` : 'avatar',
     ...otherProps,
   };
+
+  if (variant === 'anime') {
+    const borderWidth = Math.max(2, Math.round(size / 10));
+    return (
+      <GradientBorderWrapper size={size} borderWidth={borderWidth}>
+        <GradientBorderInner size={size}>
+          <GradientImage src={animeImage} alt="avatar" size={size} />
+        </GradientBorderInner>
+      </GradientBorderWrapper>
+    );
+  }
 
   if (avatarUrl) {
     return <Image avatarUrl={avatarUrl} {...sharedProps} />;
