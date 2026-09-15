@@ -12,6 +12,7 @@ import ListView from './ListView';
 import GanttView from './GanttView';
 import ViewSwitcher from './ViewSwitcher';
 import IssueDetails from './IssueDetails';
+import WelcomeSection from './WelcomeSection';
 
 const propTypes = {
   project: PropTypes.object.isRequired,
@@ -36,6 +37,7 @@ const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
   return (
     <Fragment>
       <Breadcrumbs items={['Projects', project.name, 'Board']} />
+      <WelcomeSection />
       <Header>
         <ViewSwitcher currentView={currentView} onViewChange={setCurrentView} />
       </Header>
