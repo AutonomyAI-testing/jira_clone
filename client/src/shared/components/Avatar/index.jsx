@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Image, Letter } from './Styles';
+import { Image, Letter, RingContainer } from './Styles';
 
 const propTypes = {
   className: PropTypes.string,
   avatarUrl: PropTypes.string,
   name: PropTypes.string,
   size: PropTypes.number,
+  hasGradientBorder: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -15,25 +16,35 @@ const defaultProps = {
   avatarUrl: null,
   name: '',
   size: 32,
+  hasGradientBorder: false,
 };
 
-const Avatar = ({ className, avatarUrl, name, size, ...otherProps }) => {
+const Avatar = ({ className, avatarUrl, name, size, hasGradientBorder, ...otherProps }) => {
   const sharedProps = {
-    className,
     size,
     'data-testid': name ? `avatar:${name}` : 'avatar',
     ...otherProps,
   };
 
-  if (avatarUrl) {
-    return <Image avatarUrl={avatarUrl} {...sharedProps} />;
-  }
-
-  return (
+  const avatarElement = avatarUrl ? (
+    <Image avatarUrl={avatarUrl} {...sharedProps} />
+  ) : (
     <Letter color={getColorFromName(name)} {...sharedProps}>
       <span>{name.charAt(0)}</span>
     </Letter>
   );
+
+  // When using gradient border, wrap in RingContainer.
+  // Without the ring, apply className directly to the inner element via cloneElement.
+  if (hasGradientBorder) {
+    return (
+      <RingContainer className={className} size={size} hasGradientBorder>
+        {avatarElement}
+      </RingContainer>
+    );
+  }
+
+  return React.cloneElement(avatarElement, { className });
 };
 
 const colors = [

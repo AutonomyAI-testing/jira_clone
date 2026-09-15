@@ -4,8 +4,9 @@ import { useRouteMatch } from 'react-router-dom';
 import { Draggable } from 'react-beautiful-dnd';
 
 import { IssueTypeIcon, IssuePriorityIcon } from 'shared/components';
+import { formatDate } from 'shared/utils/dateTime';
 
-import { IssueLink, Issue, Title, Bottom, Assignees, AssigneeAvatar } from './Styles';
+import { IssueLink, Issue, Title, Bottom, Assignees, AssigneeAvatar, DueDateLabel } from './Styles';
 
 const propTypes = {
   projectUsers: PropTypes.array.isRequired,
@@ -34,6 +35,7 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
               <div>
                 <IssueTypeIcon type={issue.type} />
                 <IssuePriorityIcon priority={issue.priority} top={-1} left={4} />
+                {issue.dueDate && <DueDateLabel>{formatDate(issue.dueDate, 'MMM D')}</DueDateLabel>}
               </div>
               <Assignees>
                 {assignees.map(user => (
