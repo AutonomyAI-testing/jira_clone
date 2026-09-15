@@ -8,6 +8,7 @@ export const color = {
   success: '#0B875B', // green
   danger: '#E13C3C', // red
   warning: '#F89C1C', // orange
+  info: '#0052cc', // Blue (same as primary)
   secondary: '#F4F5F7', // light grey
 
   textDarkest: '#172b4d',
