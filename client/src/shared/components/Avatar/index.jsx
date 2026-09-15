@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Image, Letter } from './Styles';
+import { Image, Letter, GradientBorder } from './Styles';
 
 const propTypes = {
   className: PropTypes.string,
   avatarUrl: PropTypes.string,
   name: PropTypes.string,
   size: PropTypes.number,
+  gradientBorder: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 };
 
 const defaultProps = {
@@ -15,25 +16,39 @@ const defaultProps = {
   avatarUrl: null,
   name: '',
   size: 32,
+  gradientBorder: false,
 };
 
-const Avatar = ({ className, avatarUrl, name, size, ...otherProps }) => {
+const Avatar = ({ className, avatarUrl, name, size, gradientBorder, ...otherProps }) => {
   const sharedProps = {
-    className,
     size,
     'data-testid': name ? `avatar:${name}` : 'avatar',
     ...otherProps,
   };
 
+  let avatarEl;
   if (avatarUrl) {
-    return <Image avatarUrl={avatarUrl} {...sharedProps} />;
+    avatarEl = <Image avatarUrl={avatarUrl} {...sharedProps} />;
+  } else {
+    avatarEl = (
+      <Letter color={getColorFromName(name)} {...sharedProps}>
+        <span>{name.charAt(0)}</span>
+      </Letter>
+    );
   }
 
-  return (
-    <Letter color={getColorFromName(name)} {...sharedProps}>
-      <span>{name.charAt(0)}</span>
-    </Letter>
-  );
+  if (gradientBorder) {
+    return (
+      <GradientBorder
+        className={className}
+        gradient={typeof gradientBorder === 'string' ? gradientBorder : undefined}
+      >
+        {avatarEl}
+      </GradientBorder>
+    );
+  }
+
+  return React.cloneElement(avatarEl, { className });
 };
 
 const colors = [
