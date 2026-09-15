@@ -76,7 +76,7 @@ const ProjectIssueSearch = ({ project }) => {
       {!isSearchTermEmpty && !isLoading && matchingIssues.length === 0 && (
         <NoResults>
           <NoResultsSVG />
-          <NoResultsTitle>We couldn&apos;t find anything matching your search</NoResultsTitle>
+          <NoResultsTitle>We couldn't find anything matching your search</NoResultsTitle>
           <NoResultsTip>Try again with a different term.</NoResultsTip>
         </NoResults>
       )}
