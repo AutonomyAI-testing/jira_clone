@@ -32,6 +32,7 @@ export const Issue = styled.div`
 
 export const Title = styled.p`
   padding-bottom: 11px;
+  color: red;
   ${font.size(15)}
   @media (max-width: 1100px) {
     ${font.size(14.5)}
