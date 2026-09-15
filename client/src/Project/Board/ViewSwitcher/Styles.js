@@ -12,7 +12,7 @@ export const ViewButton = styled.button`
   padding: 8px 16px;
   border-radius: 4px;
   border: 1px solid ${color.borderLightest};
-  background: ${props => (props.active ? color.primary : 'white')};
+  background: ${props => (props.active ? '#22c55e' : 'white')};
   color: ${props => (props.active ? 'white' : color.textDark)};
   ${font.size(14)}
   ${font.medium}
@@ -20,6 +20,6 @@ export const ViewButton = styled.button`
   transition: all 0.1s;
 
   &:hover {
-    background: ${props => (props.active ? color.primary : color.backgroundLight)};
+    background: ${props => (props.active ? '#16a34a' : color.backgroundLight)};
   }
 `;
