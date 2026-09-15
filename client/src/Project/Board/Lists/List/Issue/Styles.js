@@ -13,6 +13,7 @@ export const Issue = styled.div`
   padding: 10px;
   border-radius: 3px;
   background: #fff;
+  border: 2px solid blue;
   box-shadow: 0px 1px 2px 0px rgba(9, 30, 66, 0.25);
   transition: background 0.1s;
   ${mixin.clickable}
@@ -32,6 +33,7 @@ export const Issue = styled.div`
 
 export const Title = styled.p`
   padding-bottom: 11px;
+  color: green;
   ${font.size(15)}
   @media (max-width: 1100px) {
     ${font.size(14.5)}
