@@ -42,4 +42,9 @@ export const Title = styled.h1`
   margin-bottom: 16px;
   padding-left: 42px;
   ${font.size(29)}
+  color: #d32f2f; /* Using Material Design error red for consistency */
+`;
+
+export const ErrorText = styled.p`
+  color: #d32f2f; /* Using Material Design error red for consistency */
 `;
