@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Image, Letter } from './Styles';
+import { Image, Letter, GradientBorderWrapper, RedOutlineWrapper } from './Styles';
 
 const propTypes = {
   className: PropTypes.string,
   avatarUrl: PropTypes.string,
   name: PropTypes.string,
   size: PropTypes.number,
+  variant: PropTypes.oneOf(['default', 'gradientBorder', 'redOutline']),
 };
 
 const defaultProps = {
@@ -15,9 +16,10 @@ const defaultProps = {
   avatarUrl: null,
   name: '',
   size: 32,
+  variant: 'default',
 };
 
-const Avatar = ({ className, avatarUrl, name, size, ...otherProps }) => {
+const Avatar = ({ className, avatarUrl, name, size, variant, ...otherProps }) => {
   const sharedProps = {
     className,
     size,
@@ -26,6 +28,32 @@ const Avatar = ({ className, avatarUrl, name, size, ...otherProps }) => {
   };
 
   if (avatarUrl) {
+    if (variant === 'gradientBorder') {
+      return (
+        <GradientBorderWrapper size={size} className={className}>
+          <img
+            src={avatarUrl}
+            alt={name || 'avatar'}
+            width={size}
+            height={size}
+            data-testid={name ? `avatar:${name}` : 'avatar'}
+          />
+        </GradientBorderWrapper>
+      );
+    }
+    if (variant === 'redOutline') {
+      return (
+        <RedOutlineWrapper size={size} className={className}>
+          <img
+            src={avatarUrl}
+            alt={name || 'avatar'}
+            width={size}
+            height={size}
+            data-testid={name ? `avatar:${name}` : 'avatar'}
+          />
+        </RedOutlineWrapper>
+      );
+    }
     return <Image avatarUrl={avatarUrl} {...sharedProps} />;
   }
 
