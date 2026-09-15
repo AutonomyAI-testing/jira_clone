@@ -5,6 +5,7 @@ import history from 'browserHistory';
 import Project from 'Project';
 import Authenticate from 'Auth/Authenticate';
 import PageError from 'shared/components/PageError';
+import TestFei from 'TestFei';
 
 const Routes = () => (
   <Router history={history}>
@@ -12,6 +13,7 @@ const Routes = () => (
       <Redirect exact from="/" to="/project" />
       <Route path="/authenticate" component={Authenticate} />
       <Route path="/project" component={Project} />
+      <Route path="/test-fei" component={TestFei} />
       <Route component={PageError} />
     </Switch>
   </Router>
