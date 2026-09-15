@@ -19,6 +19,7 @@ export const StyledToast = styled.div`
   color: #fff;
   background: ${props => color[props.type]};
   cursor: pointer;
+  border: 2px solid #000;
   transition: all 0.15s;
   ${mixin.clearfix}
   ${mixin.hardwareAccelerate}
