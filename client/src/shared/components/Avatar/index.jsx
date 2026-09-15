@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import wizardAvatarImg from './assets/wizard-avatar.jpg';
 import { Image, Letter } from './Styles';
 
 const propTypes = {
@@ -8,6 +9,7 @@ const propTypes = {
   avatarUrl: PropTypes.string,
   name: PropTypes.string,
   size: PropTypes.number,
+  variant: PropTypes.oneOf(['default', 'wizard']),
 };
 
 const defaultProps = {
@@ -15,15 +17,20 @@ const defaultProps = {
   avatarUrl: null,
   name: '',
   size: 32,
+  variant: 'default',
 };
 
-const Avatar = ({ className, avatarUrl, name, size, ...otherProps }) => {
+const Avatar = ({ className, avatarUrl, name, size, variant, ...otherProps }) => {
   const sharedProps = {
     className,
     size,
     'data-testid': name ? `avatar:${name}` : 'avatar',
     ...otherProps,
   };
+
+  if (variant === 'wizard') {
+    return <Image avatarUrl={wizardAvatarImg} {...sharedProps} />;
+  }
 
   if (avatarUrl) {
     return <Image avatarUrl={avatarUrl} {...sharedProps} />;
