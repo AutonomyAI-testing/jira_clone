@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Image, Letter } from './Styles';
+import animeAvatarImg from './assets/anime.png';
+import { Image, Letter, AnimeRingWrapper, AnimeImage } from './Styles';
 
 const propTypes = {
   className: PropTypes.string,
   avatarUrl: PropTypes.string,
   name: PropTypes.string,
   size: PropTypes.number,
+  variant: PropTypes.oneOf(['default', 'anime']),
 };
 
 const defaultProps = {
@@ -15,15 +17,25 @@ const defaultProps = {
   avatarUrl: null,
   name: '',
   size: 32,
+  variant: 'default',
 };
 
-const Avatar = ({ className, avatarUrl, name, size, ...otherProps }) => {
+const Avatar = ({ className, avatarUrl, name, size, variant, ...otherProps }) => {
   const sharedProps = {
     className,
     size,
     'data-testid': name ? `avatar:${name}` : 'avatar',
     ...otherProps,
   };
+
+  // Anime variant — circular image with pseudo-element gradient ring (teal → blue → purple)
+  if (variant === 'anime') {
+    return (
+      <AnimeRingWrapper size={size} className={className}>
+        <AnimeImage src={animeAvatarImg} size={size} alt="anime avatar" />
+      </AnimeRingWrapper>
+    );
+  }
 
   if (avatarUrl) {
     return <Image avatarUrl={avatarUrl} {...sharedProps} />;
