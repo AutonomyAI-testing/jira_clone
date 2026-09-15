@@ -54,3 +54,32 @@ export const AssigneeAvatar = styled(Avatar)`
   margin-left: -2px;
   box-shadow: 0 0 0 2px #fff;
 `;
+
+const badgeColors = {
+  low: css`
+    background: ${color.backgroundMedium};
+    color: ${color.textDark};
+  `,
+  medium: css`
+    background: ${color.warning};
+    color: #fff;
+  `,
+  high: css`
+    background: ${color.danger};
+    color: #fff;
+    ${font.black}
+    letter-spacing: 0.5px;
+  `,
+};
+
+export const PriorityBadge = styled.span`
+  margin-left: 8px;
+  padding: 0 8px;
+  height: 18px;
+  line-height: 18px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  ${font.size(11)}
+  ${font.bold}
+  ${props => badgeColors[props.variant]}
+`;
