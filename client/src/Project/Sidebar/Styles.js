@@ -32,7 +32,7 @@ export const ProjectTexts = styled.div`
 `;
 
 export const ProjectName = styled.div`
-  color: ${color.textDark};
+  color: #ff69b4;
   ${font.size(15)};
   ${font.medium};
 `;
