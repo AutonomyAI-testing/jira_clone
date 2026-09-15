@@ -5,6 +5,8 @@ import { color, font } from 'shared/utils/styles';
 export const Content = styled.div`
   display: flex;
   padding: 0 30px 60px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
 `;
 
 export const Left = styled.div`

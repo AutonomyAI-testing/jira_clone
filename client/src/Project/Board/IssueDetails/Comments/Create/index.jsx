@@ -10,11 +10,12 @@ import ProTip from './ProTip';
 import { Create, UserAvatar, Right, FakeTextarea } from './Styles';
 
 const propTypes = {
-  issueId: PropTypes.number.isRequired,
+  issueId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   fetchIssue: PropTypes.func.isRequired,
+  projectUsers: PropTypes.array.isRequired,
 };
 
-const ProjectBoardIssueDetailsCommentsCreate = ({ issueId, fetchIssue }) => {
+const ProjectBoardIssueDetailsCommentsCreate = ({ issueId, fetchIssue, projectUsers }) => {
   const [isFormOpen, setFormOpen] = useState(false);
   const [isCreating, setCreating] = useState(false);
   const [body, setBody] = useState('');
@@ -29,7 +30,9 @@ const ProjectBoardIssueDetailsCommentsCreate = ({ issueId, fetchIssue }) => {
       setFormOpen(false);
       setCreating(false);
       setBody('');
+      toast.success('Comment added successfully');
     } catch (error) {
+      setCreating(false);
       toast.error(error);
     }
   };
@@ -45,6 +48,7 @@ const ProjectBoardIssueDetailsCommentsCreate = ({ issueId, fetchIssue }) => {
             isWorking={isCreating}
             onSubmit={handleCommentCreate}
             onCancel={() => setFormOpen(false)}
+            projectUsers={projectUsers}
           />
         ) : (
           <Fragment>

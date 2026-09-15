@@ -10,12 +10,14 @@ import Type from './Type';
 import Delete from './Delete';
 import Title from './Title';
 import Description from './Description';
+import Attachments from './Attachments';
 import Comments from './Comments';
 import Status from './Status';
 import AssigneesReporter from './AssigneesReporter';
 import Priority from './Priority';
 import EstimateTracking from './EstimateTracking';
 import Dates from './Dates';
+import KeyboardShortcuts from './KeyboardShortcuts';
 import { TopActions, TopActionsRight, Content, Left, Right } from './Styles';
 
 const propTypes = {
@@ -59,6 +61,7 @@ const ProjectBoardIssueDetails = ({
       <TopActions>
         <Type issue={issue} updateIssue={updateIssue} />
         <TopActionsRight>
+          <KeyboardShortcuts modalClose={modalClose} />
           <AboutTooltip
             renderLink={linkProps => (
               <Button icon="feedback" variant="empty" {...linkProps}>
@@ -75,7 +78,8 @@ const ProjectBoardIssueDetails = ({
         <Left>
           <Title issue={issue} updateIssue={updateIssue} />
           <Description issue={issue} updateIssue={updateIssue} />
-          <Comments issue={issue} fetchIssue={fetchIssue} />
+          <Attachments issue={issue} updateIssue={updateIssue} />
+          <Comments issue={issue} fetchIssue={fetchIssue} projectUsers={projectUsers} />
         </Left>
         <Right>
           <Status issue={issue} updateIssue={updateIssue} />
