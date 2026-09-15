@@ -14,4 +14,12 @@ const error = err => {
   });
 };
 
-export default { show, error, success };
+const wizard = (title, message) =>
+  show({
+    type: 'wizard',
+    title,
+    message,
+    duration: 5,
+  });
+
+export default { show, error, success, wizard };
