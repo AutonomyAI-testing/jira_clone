@@ -28,8 +28,8 @@ export const AvatarWrapper = styled.div`
   margin-bottom: 32px;
   border: 3px solid transparent;
   background: linear-gradient(#0d1117, #0d1117) padding-box,
-    linear-gradient(135deg, #7ee8a2, #80d0c7, #7b8dff, #c77dff) border-box;
-  box-shadow: 0 0 32px rgba(126, 232, 162, 0.2), 0 0 64px rgba(123, 141, 255, 0.15);
+    linear-gradient(135deg, #ff6b6b, #ffa94d, #ff8787, #e03131) border-box;
+  box-shadow: 0 0 32px rgba(255, 107, 107, 0.2), 0 0 64px rgba(224, 49, 49, 0.15);
 
   img {
     width: 100%;
@@ -44,7 +44,7 @@ export const ErrorCode = styled.h1`
   font-size: 96px;
   line-height: 1;
   margin: 0 0 16px;
-  background: linear-gradient(135deg, #7ee8a2 0%, #80d0c7 40%, #7b8dff 70%, #c77dff 100%);
+  background: linear-gradient(135deg, #ff6b6b 0%, #ffa94d 40%, #ff8787 70%, #e03131 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -54,7 +54,7 @@ export const ErrorCode = styled.h1`
 export const Title = styled.h2`
   ${font.bold}
   font-size: 28px;
-  color: #ffffff;
+  color: #e03131;
   margin: 0 0 12px;
   letter-spacing: -0.5px;
 `;
@@ -74,7 +74,7 @@ export const HomeButton = styled.a`
   gap: 8px;
   padding: 12px 28px;
   border-radius: 8px;
-  background: linear-gradient(135deg, #7b8dff, #c77dff);
+  background: linear-gradient(135deg, #e03131, #ff6b6b);
   color: #ffffff;
   ${font.medium}
   font-size: 15px;

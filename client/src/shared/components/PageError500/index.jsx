@@ -12,21 +12,21 @@ import {
 
 import avatarImage from './assets/avatar.png';
 
-const PageError = () => (
+const PageError500 = () => (
   <ErrorPage>
     <ErrorPageInner>
       <AvatarWrapper>
-        <img src={avatarImage} alt="404 character" />
+        <img src={avatarImage} alt="500 character" />
       </AvatarWrapper>
-      <ErrorCode>404</ErrorCode>
-      <Title>Page not found</Title>
+      <ErrorCode>500</ErrorCode>
+      <Title>Internal server error</Title>
       <Description>
-        Looks like you&apos;ve wandered somewhere that doesn&apos;t exist. The page may have been
-        moved, deleted, or never existed in the first place.
+        Something went wrong on our end. We&apos;re working to fix it &mdash; please try again in
+        a moment or contact support if the issue persists.
       </Description>
       <HomeButton href="/">← Back to Home</HomeButton>
     </ErrorPageInner>
   </ErrorPage>
 );
 
-export default PageError;
+export default PageError500;
