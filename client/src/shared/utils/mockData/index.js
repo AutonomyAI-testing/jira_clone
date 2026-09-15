@@ -65,6 +65,9 @@ const routeMockData = (method, url, variables) => {
     if (url === '/project') {
       return { project: { ...projectData, ...variables } };
     }
+    if (url === '/currentUser') {
+      return { currentUser: { ...currentUserData, ...variables } };
+    }
     if (url.match(/^\/issues\/\d+$/)) {
       const issueId = url.split('/')[2];
       return { issue: { ...getIssueById(issueId), ...variables } };
