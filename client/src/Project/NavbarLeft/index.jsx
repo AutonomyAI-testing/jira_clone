@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Icon, AboutTooltip } from 'shared/components';
+import UserMenu from './UserMenu';
 
 import { NavLeft, LogoLink, StyledLogo, Bottom, Item, ItemText } from './Styles';
 
@@ -27,6 +28,7 @@ const ProjectNavbarLeft = ({ issueSearchModalOpen, issueCreateModalOpen }) => (
     </Item>
 
     <Bottom>
+      <UserMenu />
       <AboutTooltip
         placement="right"
         offset={{ top: -218 }}
