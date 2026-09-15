@@ -9,11 +9,17 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: '[name]-[hash].js',
+    filename: '[name]-[contenthash].js',
     publicPath: '/',
   },
   module: {
     rules: [
+      {
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
@@ -51,7 +57,7 @@ module.exports = {
   },
   resolve: {
     modules: [path.join(__dirname, 'src'), 'node_modules'],
-    extensions: ['*', '.js', '.jsx', '.css'],
+    extensions: ['.*', '.js', '.jsx', '.css'],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -64,6 +70,6 @@ module.exports = {
         API_URL: JSON.stringify('https://jira-api.ivorreic.com'),
       },
     }),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
   ],
 };

@@ -16,7 +16,7 @@ export const StyledToast = styled.div`
   width: 300px;
   padding: 15px 20px;
   border-radius: 3px;
-  color: #fff;
+  color: ${props => props.type === 'warning' ? '#172b4d' : '#fff'};
   background: ${props => color[props.type]};
   cursor: pointer;
   transition: all 0.15s;
@@ -42,7 +42,7 @@ export const CloseIcon = styled(Icon)`
   right: 14px;
   font-size: 22px;
   cursor: pointer;
-  color: #fff;
+  color: ${props => props.toastType === 'warning' ? '#172b4d' : '#fff'};
 `;
 
 export const Title = styled.div`

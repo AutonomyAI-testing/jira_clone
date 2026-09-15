@@ -36,7 +36,7 @@ const Toast = () => {
         {toasts.map(toast => (
           <CSSTransition key={toast.id} classNames="jira-toast" timeout={200}>
             <StyledToast key={toast.id} type={toast.type} onClick={() => removeToast(toast.id)}>
-              <CloseIcon type="close" />
+              <CloseIcon type="close" toastType={toast.type} />
               {toast.title && <Title>{toast.title}</Title>}
               {toast.message && <Message>{toast.message}</Message>}
             </StyledToast>
