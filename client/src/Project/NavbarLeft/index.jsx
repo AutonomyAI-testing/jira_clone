@@ -1,16 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Icon, AboutTooltip } from 'shared/components';
+import useCurrentUser from 'shared/hooks/currentUser';
+import { Icon, AboutTooltip, Avatar } from 'shared/components';
 
 import { NavLeft, LogoLink, StyledLogo, Bottom, Item, ItemText } from './Styles';
 
 const propTypes = {
   issueSearchModalOpen: PropTypes.func.isRequired,
   issueCreateModalOpen: PropTypes.func.isRequired,
+  avatarPickerModalOpen: PropTypes.func.isRequired,
 };
 
-const ProjectNavbarLeft = ({ issueSearchModalOpen, issueCreateModalOpen }) => (
+const ProjectNavbarLeft = ({ issueSearchModalOpen, issueCreateModalOpen, avatarPickerModalOpen }) => {
+  const { currentUser } = useCurrentUser();
+
+  return (
   <NavLeft>
     <LogoLink to="/">
       <StyledLogo color="#fff" />
@@ -27,6 +32,15 @@ const ProjectNavbarLeft = ({ issueSearchModalOpen, issueCreateModalOpen }) => (
     </Item>
 
     <Bottom>
+      <Item onClick={avatarPickerModalOpen}>
+        <Avatar
+          avatarUrl={currentUser && currentUser.avatarUrl}
+          name={(currentUser && currentUser.name) || ''}
+          size={26}
+          style={{ position: 'absolute', left: 18, top: 8 }}
+        />
+        <ItemText>My Avatar</ItemText>
+      </Item>
       <AboutTooltip
         placement="right"
         offset={{ top: -218 }}
@@ -39,7 +53,8 @@ const ProjectNavbarLeft = ({ issueSearchModalOpen, issueCreateModalOpen }) => (
       />
     </Bottom>
   </NavLeft>
-);
+  );
+};
 
 ProjectNavbarLeft.propTypes = propTypes;
 

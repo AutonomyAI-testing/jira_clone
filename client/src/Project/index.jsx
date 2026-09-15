@@ -2,16 +2,19 @@ import React from 'react';
 import { Route, Redirect, useRouteMatch, useHistory } from 'react-router-dom';
 
 import useApi from 'shared/hooks/api';
+import toast from 'shared/utils/toast';
 import { updateArrayItemById } from 'shared/utils/javascript';
 import { createQueryParamModalHelpers } from 'shared/utils/queryParamModal';
 import { PageLoader, PageError, Modal } from 'shared/components';
 
+import useCurrentUser from 'shared/hooks/currentUser';
 import NavbarLeft from './NavbarLeft';
 import Sidebar from './Sidebar';
 import Board from './Board';
 import IssueSearch from './IssueSearch';
 import IssueCreate from './IssueCreate';
 import ProjectSettings from './ProjectSettings';
+import AvatarPicker from './AvatarPicker';
 import { ProjectPage } from './Styles';
 
 const Project = () => {
@@ -20,8 +23,10 @@ const Project = () => {
 
   const issueSearchModalHelpers = createQueryParamModalHelpers('issue-search');
   const issueCreateModalHelpers = createQueryParamModalHelpers('issue-create');
+  const avatarPickerModalHelpers = createQueryParamModalHelpers('avatar-picker');
 
   const [{ data, error, setLocalData }, fetchProject] = useApi.get('/project');
+  const { currentUser } = useCurrentUser();
 
   if (!data) return <PageLoader />;
   if (error) return <PageError />;
@@ -42,6 +47,7 @@ const Project = () => {
       <NavbarLeft
         issueSearchModalOpen={issueSearchModalHelpers.open}
         issueCreateModalOpen={issueCreateModalHelpers.open}
+        avatarPickerModalOpen={avatarPickerModalHelpers.open}
       />
 
       <Sidebar project={project} />
@@ -69,6 +75,25 @@ const Project = () => {
               project={project}
               fetchProject={fetchProject}
               onCreate={() => history.push(`${match.url}/board`)}
+              modalClose={modal.close}
+            />
+          )}
+        />
+      )}
+
+      {avatarPickerModalHelpers.isOpen() && (
+        <Modal
+          isOpen
+          testid="modal:avatar-picker"
+          width={700}
+          withCloseIcon
+          onClose={avatarPickerModalHelpers.close}
+          renderContent={modal => (
+            <AvatarPicker
+              currentAvatarUrl={currentUser && currentUser.avatarUrl}
+              onSave={async newAvatarUrl => {
+                toast.success('Avatar updated successfully.');
+              }}
               modalClose={modal.close}
             />
           )}
