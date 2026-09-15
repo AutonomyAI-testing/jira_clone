@@ -7,6 +7,7 @@ import { createQueryParamModalHelpers } from 'shared/utils/queryParamModal';
 import { PageLoader, PageError, Modal } from 'shared/components';
 
 import NavbarLeft from './NavbarLeft';
+import AvatarPage from './Avatar';
 import Sidebar from './Sidebar';
 import Board from './Board';
 import IssueSearch from './IssueSearch';
@@ -89,6 +90,11 @@ const Project = () => {
       <Route
         path={`${match.path}/settings`}
         render={() => <ProjectSettings project={project} fetchProject={fetchProject} />}
+      />
+
+      <Route
+        path={`${match.path}/avatar`}
+        render={() => <AvatarPage />}
       />
 
       {match.isExact && <Redirect to={`${match.url}/board`} />}
