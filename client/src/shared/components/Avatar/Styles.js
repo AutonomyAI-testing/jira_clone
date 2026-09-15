@@ -27,3 +27,12 @@ export const Letter = styled.div`
     height: 100%;
   }
 `;
+
+export const WizardImage = styled.img`
+  display: inline-block;
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
+  object-fit: contain;
+  border-radius: 0;
+  background: transparent;
+`;
