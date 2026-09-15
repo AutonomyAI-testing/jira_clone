@@ -17,6 +17,7 @@ export const FormHeading = styled.h1`
   padding: 6px 0 15px;
   ${font.size(24)}
   ${font.medium}
+  color: red;
 `;
 
 export const ActionButton = styled(Button)`
