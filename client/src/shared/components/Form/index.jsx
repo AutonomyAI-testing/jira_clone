@@ -20,9 +20,8 @@ const defaultProps = {
   validateOnBlur: false,
 };
 
-const Form = ({ validate, validations, ...otherProps }) => (
+const Form = ({ validate, validations, children, ...otherProps }) => (
   <Formik
-    {...otherProps}
     validate={values => {
       if (validate) {
         return validate(values);
@@ -32,7 +31,10 @@ const Form = ({ validate, validations, ...otherProps }) => (
       }
       return {};
     }}
-  />
+    {...otherProps}
+  >
+    {children}
+  </Formik>
 );
 
 Form.Element = props => <FormikForm noValidate {...props} />;
