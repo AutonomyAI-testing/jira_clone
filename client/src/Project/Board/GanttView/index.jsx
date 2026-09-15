@@ -4,8 +4,7 @@ import { useHistory, useRouteMatch } from 'react-router-dom';
 import moment from 'moment';
 import { intersection } from 'lodash';
 
-import { IssueStatusCopy, IssueTypeCopy } from 'shared/constants/issues';
-import { IssueTypeIcon, Avatar } from 'shared/components';
+import { IssueTypeIcon, AnimatedAvatar } from 'shared/components';
 
 import {
   GanttContainer,
@@ -22,7 +21,6 @@ import {
   DayCell,
   TaskBar,
   TaskBarInner,
-  DependencyLine,
   AssigneesContainer,
 } from './Styles';
 
@@ -144,7 +142,13 @@ const GanttView = ({ project, filters, currentUserId }) => {
               <TaskMeta>
                 <AssigneesContainer>
                   {issue.users.slice(0, 3).map(user => (
-                    <Avatar key={user.id} size={20} avatarUrl={user.avatarUrl} name={user.name} />
+                    <AnimatedAvatar
+                      key={user.id}
+                      size={20}
+                      name={user.name}
+                      animationVariant="float"
+                      isAnimated
+                    />
                   ))}
                 </AssigneesContainer>
               </TaskMeta>
