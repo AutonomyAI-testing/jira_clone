@@ -1,7 +1,19 @@
 import styled from 'styled-components';
 
-import { color, font, mixin, zIndexValues } from 'shared/utils/styles';
-import { Icon } from 'shared/components';
+import { zIndexValues } from 'shared/utils/styles';
+import sunflowerBg from './assets/sunflowerBase64';
+
+export const PageBackground = styled.div`
+  position: fixed;
+  inset: 0;
+  background-color: #000;
+  background-image: url(${sunflowerBg});
+  background-size: cover;
+  background-position: 50% 35%;
+  background-repeat: no-repeat;
+  z-index: ${zIndexValues.modal};
+  pointer-events: none;
+`;
 
 export const Container = styled.div`
   z-index: ${zIndexValues.modal + 1};
@@ -16,12 +28,8 @@ export const StyledToast = styled.div`
   width: 300px;
   padding: 15px 20px;
   border-radius: 3px;
-  color: #fff;
-  background: ${props => color[props.type]};
+  background: transparent;
   cursor: pointer;
-  transition: all 0.15s;
-  ${mixin.clearfix}
-  ${mixin.hardwareAccelerate}
 
   &.jira-toast-enter,
   &.jira-toast-exit.jira-toast-exit-active {
@@ -36,24 +44,10 @@ export const StyledToast = styled.div`
   }
 `;
 
-export const CloseIcon = styled(Icon)`
-  position: absolute;
-  top: 13px;
-  right: 14px;
-  font-size: 22px;
-  cursor: pointer;
-  color: #fff;
-`;
-
-export const Title = styled.div`
-  padding-right: 22px;
-  ${font.size(15)}
-  ${font.medium}
-`;
-
-export const Message = styled.div`
-  padding: 8px 10px 0 0;
-  white-space: pre-wrap;
-  ${font.size(14)}
-  ${font.medium}
+export const FindFeiTitle = styled.div`
+  color: #ff0000;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: CircularStdBold, sans-serif;
+  letter-spacing: 0.02em;
 `;
