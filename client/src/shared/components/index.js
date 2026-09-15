@@ -13,6 +13,7 @@ export { default as IssueTypeIcon } from './IssueTypeIcon';
 export { default as IssuePriorityIcon } from './IssuePriorityIcon';
 export { default as Logo } from './Logo';
 export { default as Modal } from './Modal';
+export { default as NotFound404 } from './NotFound404';
 export { default as PageError } from './PageError';
 export { default as PageLoader } from './PageLoader';
 export { default as ProjectAvatar } from './ProjectAvatar';
