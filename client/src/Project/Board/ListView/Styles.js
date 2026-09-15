@@ -41,23 +41,23 @@ export const TableHeaderCell = styled.th`
   padding: 12px 16px;
   text-align: left;
   ${font.medium}
-  color: ${color.textMedium};
+  color: ${color.danger};
   ${props => props.width && `width: ${props.width};`}
 `;
 
 export const TableCell = styled.td`
   padding: 12px 16px;
-  color: ${color.textDark};
+  color: ${color.danger};
   vertical-align: middle;
 `;
 
 export const IssueKey = styled.span`
   ${font.medium}
-  color: ${color.textMedium};
+  color: ${color.danger};
 `;
 
 export const IssueTitle = styled.div`
-  color: ${color.textDark};
+  color: ${color.danger};
   ${font.size(14)}
 `;
 

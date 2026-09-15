@@ -46,10 +46,10 @@ export const ClearAll = styled.div`
   margin-left: 15px;
   padding-left: 12px;
   border-left: 1px solid ${color.borderLightest};
-  color: ${color.textDark};
+  color: ${color.danger};
   ${font.size(14.5)}
   ${mixin.clickable}
   &:hover {
-    color: ${color.textMedium};
+    color: ${color.danger};
   }
 `;

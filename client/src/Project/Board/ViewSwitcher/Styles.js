@@ -12,14 +12,14 @@ export const ViewButton = styled.button`
   padding: 8px 16px;
   border-radius: 4px;
   border: 1px solid ${color.borderLightest};
-  background: ${props => (props.active ? color.primary : 'white')};
-  color: ${props => (props.active ? 'white' : color.textDark)};
+  background: ${props => (props.active ? color.danger : 'white')};
+  color: ${props => (props.active ? 'white' : color.danger)};
   ${font.size(14)}
   ${font.medium}
   cursor: pointer;
   transition: all 0.1s;
 
   &:hover {
-    background: ${props => (props.active ? color.primary : color.backgroundLight)};
+    background: ${props => (props.active ? color.danger : color.backgroundLight)};
   }
 `;

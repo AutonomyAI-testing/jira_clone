@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { color, font } from 'shared/utils/styles';
 
 export const Container = styled.div`
-  color: ${color.textMedium};
+  color: ${color.danger};
   ${font.size(15)};
 `;
 
