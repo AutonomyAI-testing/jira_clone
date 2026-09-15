@@ -35,6 +35,7 @@ const ProjectSidebar = ({ project }) => {
       </ProjectInfo>
 
       {renderLinkItem(match, 'Kanban Board', 'board', '/board')}
+      {renderLinkItem(match, 'Toast Notifications', 'feedback', '/toast')}
       {renderLinkItem(match, 'Project settings', 'settings', '/settings')}
       <Divider />
       {renderLinkItem(match, 'Releases', 'shipping')}
