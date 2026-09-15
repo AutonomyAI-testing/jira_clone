@@ -2,15 +2,15 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import moment from 'moment';
-import { intersection } from 'lodash';
 
-import { IssueStatusCopy, IssueTypeCopy } from 'shared/constants/issues';
+import { filterIssues } from 'shared/utils/filterIssues';
 import { IssueTypeIcon, Avatar } from 'shared/components';
 
 import {
   GanttContainer,
   GanttHeader,
   TaskListContainer,
+  TaskListHeader,
   TimelineContainer,
   TaskRow,
   TaskInfo,
@@ -22,7 +22,6 @@ import {
   DayCell,
   TaskBar,
   TaskBarInner,
-  DependencyLine,
   AssigneesContainer,
 } from './Styles';
 
@@ -117,8 +116,8 @@ const GanttView = ({ project, filters, currentUserId }) => {
   return (
     <GanttContainer>
       <GanttHeader>
-        <TaskListContainer style={{ width: 400 }}>
-          <div style={{ padding: '12px 16px', fontWeight: 600 }}>Task</div>
+        <TaskListContainer>
+          <TaskListHeader>Task</TaskListHeader>
         </TaskListContainer>
         <TimelineContainer>
           <TimelineHeader>
@@ -175,24 +174,7 @@ const GanttView = ({ project, filters, currentUserId }) => {
   );
 };
 
-const filterIssues = (projectIssues, filters, currentUserId) => {
-  const { searchTerm, userIds, myOnly, recent } = filters;
-  let issues = projectIssues;
 
-  if (searchTerm) {
-    issues = issues.filter(issue => issue.title.toLowerCase().includes(searchTerm.toLowerCase()));
-  }
-  if (userIds.length > 0) {
-    issues = issues.filter(issue => intersection(issue.userIds, userIds).length > 0);
-  }
-  if (myOnly && currentUserId) {
-    issues = issues.filter(issue => issue.userIds.includes(currentUserId));
-  }
-  if (recent) {
-    issues = issues.filter(issue => moment(issue.updatedAt).isAfter(moment().subtract(3, 'days')));
-  }
-  return issues;
-};
 
 GanttView.propTypes = propTypes;
 GanttView.defaultProps = defaultProps;

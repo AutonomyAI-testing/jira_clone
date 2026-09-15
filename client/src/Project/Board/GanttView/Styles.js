@@ -37,6 +37,12 @@ export const TaskListContainer = styled.div`
   gap: 4px;
 `;
 
+export const TaskListHeader = styled.div`
+  padding: 12px 16px;
+  ${font.medium}
+  color: ${color.textDark};
+`;
+
 export const TaskInfo = styled.div`
   display: flex;
   align-items: center;

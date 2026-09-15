@@ -66,3 +66,7 @@ export const AssigneesContainer = styled.div`
   gap: 4px;
   align-items: center;
 `;
+
+export const IconText = styled.span`
+  margin-left: 6px;
+`;
