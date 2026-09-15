@@ -47,6 +47,7 @@ export const CloseIcon = styled(Icon)`
 
 export const Title = styled.div`
   padding-right: 22px;
+  color: #E13C3C;
   ${font.size(15)}
   ${font.medium}
 `;
