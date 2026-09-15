@@ -9,7 +9,7 @@ export const StyledField = styled.div`
 export const FieldLabel = styled.label`
   display: block;
   padding-bottom: 5px;
-  color: ${color.textMedium};
+  color: red;
   ${font.medium}
   ${font.size(13)}
 `;
