@@ -13,11 +13,9 @@ const Authenticate = () => {
   useEffect(() => {
     const createGuestAccount = async () => {
       try {
-        // If using mock data, automatically set a mock auth token
+        // If using mock data, redirect to login page
         if (USE_MOCK_DATA) {
-          console.log('[Auth] Using mock authentication');
-          storeAuthToken('mock-auth-token');
-          history.push('/');
+          history.push('/login');
           return;
         }
 
@@ -32,6 +30,8 @@ const Authenticate = () => {
 
     if (!getStoredAuthToken()) {
       createGuestAccount();
+    } else {
+      history.push('/');
     }
   }, [history]);
 
