@@ -27,3 +27,12 @@ export const Letter = styled.div`
     height: 100%;
   }
 `;
+
+export const CustomAvatar = styled.img`
+  display: inline-block;
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
+  border-radius: 100%;
+  object-fit: cover;
+  object-position: center;
+`;
