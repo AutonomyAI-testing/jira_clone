@@ -19,6 +19,9 @@ const ViewSwitcher = ({ currentView, onViewChange }) => (
     <ViewButton active={currentView === 'gantt'} onClick={() => onViewChange('gantt')}>
       Gantt
     </ViewButton>
+    <ViewButton active={currentView === 'dashboard'} onClick={() => onViewChange('dashboard')}>
+      Dashboard
+    </ViewButton>
   </ViewSwitcherContainer>
 );
 
