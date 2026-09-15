@@ -1,0 +1,31 @@
+[17:59:43.960] [INFO] storybook v10.3.5
+[17:59:44.361] [DEBUG] Getting package.json info for /home/user/jira_clone/client/package.json...
+[17:59:44.610] [WARN] Using CommonJS in your main configuration file is deprecated with Vite.
+- Refer to the migration guide at https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#commonjs-with-vite-is-deprecated
+[17:59:44.653] [WARN]   Failed to load preset: {"type":"presets","name":"/home/user/jira_clone/client/node_modules/@storybook/react/dist/preset.js"}
+[17:59:44.654] [ERROR] Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'typescript' imported from ./node_modules/@storybook/react/dist/preset.js
+    at packageResolve (node:internal/modules/esm/resolve:873:9)
+    at moduleResolve (node:internal/modules/esm/resolve:946:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1188:11)
+    at nextResolve (node:internal/modules/esm/hooks:864:28)
+    at Hooks.resolve (node:internal/modules/esm/hooks:306:30)
+    at handleMessage (node:internal/modules/esm/worker:196:24)
+    at Immediate.checkForMessages (node:internal/modules/esm/worker:138:28)
+    at process.processImmediate (node:internal/timers:483:21)
+[17:59:44.712] [INFO] Starting...
+[17:59:44.839] [WARN] No story files found for the specified pattern: src/**/*.mdx
+[17:59:45.074] [DEBUG] Starting preview..
+[17:59:45.226] [DEBUG] Using tsconfig paths for react-docgen
+[17:59:45.349] [ERROR] [38;2;241;97;97mError: listen EADDRINUSE: address already in use :::6006[39m
+    at Server.setupListenHandle [as _listen2] (node:net:1908:16)
+    at listenInCluster (node:net:1965:12)
+    at Server.listen (node:net:2067:7)
+    at _Polka.listen (file://./node_modules/storybook/dist/core-server/index.js:7175:110)
+    at file://./node_modules/storybook/dist/core-server/index.js:7513:39
+    at new Promise (<anonymous>)
+    at storybookDevServer (file://./node_modules/storybook/dist/core-server/index.js:7512:19)
+    at async buildOrThrow (file://./node_modules/storybook/dist/core-server/index.js:4508:12)
+    at async buildDevStandalone (file://./node_modules/storybook/dist/core-server/index.js:8033:41)
+    at async withTelemetry (file://./node_modules/storybook/dist/_node-chunks/chunk-FIR43JGQ.js:225:12)
+[17:59:45.353] [WARN] Broken build, fix the error above.
+You may need to refresh the browser.
