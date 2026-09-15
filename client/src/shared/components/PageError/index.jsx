@@ -1,17 +1,17 @@
 import React from 'react';
 
-import { ErrorPage, ErrorPageInner, ErrorBox, StyledIcon, Title } from './Styles';
+import { ErrorPage, ErrorPageInner, WizardImage, ErrorBox, Title } from './Styles';
 
 const PageError = () => (
   <ErrorPage>
     <ErrorPageInner>
+      <WizardImage />
       <ErrorBox>
-        <StyledIcon type="bug" />
-        <Title>There’s been a glitch…</Title>
+        <Title>Our wizard is stumped…</Title>
         <p>
-          {'We’re not quite sure what went wrong. Please contact us or try looking on our '}
+          {'Something went sideways in the spellbook. Please contact us or try our '}
           <a href="https://support.atlassian.com/jira-software-cloud/">Help Center</a>
-          {' if you need a hand.'}
+          {" if the magic isn't back yet."}
         </p>
       </ErrorBox>
     </ErrorPageInner>
