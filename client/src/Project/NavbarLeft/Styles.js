@@ -77,3 +77,17 @@ export const ItemText = styled.div`
     opacity: 1;
   }
 `;
+
+export const PlayItem = styled(Item)`
+  color: #ff4444;
+  &:hover {
+    background: rgba(255, 50, 50, 0.15);
+    color: #ff6666;
+  }
+  i {
+    color: #ff4444;
+  }
+  &:hover i {
+    color: #ff6666;
+  }
+`;
