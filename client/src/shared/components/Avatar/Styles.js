@@ -4,10 +4,14 @@ import { font, mixin } from 'shared/utils/styles';
 
 export const Image = styled.div`
   display: inline-block;
+  flex-shrink: 0;
   width: ${props => props.size}px;
   height: ${props => props.size}px;
   border-radius: 100%;
   ${props => mixin.backgroundImage(props.avatarUrl)}
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  outline: 3px solid #e53935;
+  outline-offset: 1px;
 `;
 
 export const Letter = styled.div`
