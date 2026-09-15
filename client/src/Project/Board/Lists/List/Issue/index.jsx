@@ -16,7 +16,10 @@ const propTypes = {
 const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
   const match = useRouteMatch();
 
-  const assignees = issue.userIds.map(userId => projectUsers.find(user => user.id === userId));
+  // Map user IDs to actual user objects, filtering out any not found
+  const assignees = issue.userIds
+    .map(userId => projectUsers.find(user => user.id === userId))
+    .filter(Boolean);
 
   return (
     <Draggable draggableId={issue.id.toString()} index={index}>
