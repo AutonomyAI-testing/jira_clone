@@ -20,10 +20,20 @@ export const TaskRow = styled.div`
   display: flex;
   border-bottom: 1px solid ${color.borderLightest};
   min-height: 56px;
+  transition: background 0.2s, box-shadow 0.2s;
 
   &:hover {
-    background: ${color.backgroundLightest};
+    background: ${props => props.isEditing ? '#fff' : color.backgroundLightest};
   }
+
+  ${props =>
+    props.isEditing &&
+    `
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(9, 30, 66, 0.2);
+    position: relative;
+    z-index: 10;
+  `}
 `;
 
 export const TaskListContainer = styled.div`
@@ -154,4 +164,11 @@ export const DependencyLine = styled.svg`
   height: 100%;
   pointer-events: none;
   z-index: 1;
+`;
+
+export const ActionsRow = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  justify-content: flex-end;
 `;

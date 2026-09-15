@@ -30,9 +30,9 @@ const defaultProps = {
 
 const Button = forwardRef(
   ({ children, variant, icon, iconSize, disabled, isWorking, onClick, ...buttonProps }, ref) => {
-    const handleClick = () => {
+    const handleClick = (e) => {
       if (!disabled && !isWorking) {
-        onClick();
+        onClick(e);
       }
     };
 

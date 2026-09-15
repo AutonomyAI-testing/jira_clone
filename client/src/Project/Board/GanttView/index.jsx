@@ -1,11 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import moment from 'moment';
 import { intersection } from 'lodash';
 
-import { IssueStatusCopy, IssueTypeCopy } from 'shared/constants/issues';
-import { IssueTypeIcon, Avatar } from 'shared/components';
+import { IssueType, IssueTypeCopy, IssueStatus, IssueStatusCopy, IssuePriority, IssuePriorityCopy } from 'shared/constants/issues';
+import { IssueTypeIcon, IssuePriorityIcon, Avatar, Select, Icon, Button } from 'shared/components';
+import { KeyCodes } from 'shared/constants/keyCodes';
+import api from 'shared/utils/api';
 
 import {
   GanttContainer,
@@ -24,21 +26,26 @@ import {
   TaskBarInner,
   DependencyLine,
   AssigneesContainer,
+  ActionsRow,
 } from './Styles';
 
 const propTypes = {
   project: PropTypes.object.isRequired,
   filters: PropTypes.object.isRequired,
   currentUserId: PropTypes.number,
+  updateLocalProjectIssues: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   currentUserId: null,
 };
 
-const GanttView = ({ project, filters, currentUserId }) => {
+const GanttView = ({ project, filters, currentUserId, updateLocalProjectIssues }) => {
   const history = useHistory();
   const match = useRouteMatch();
+  const [editingIssueId, setEditingIssueId] = useState(null);
+  const [editedTitle, setEditedTitle] = useState('');
+  const [editedFields, setEditedFields] = useState({});
 
   const filteredIssues = filterIssues(project.issues, filters, currentUserId);
   const sortedIssues = filteredIssues.sort((a, b) => {
@@ -99,8 +106,64 @@ const GanttView = ({ project, filters, currentUserId }) => {
     return monthsList;
   }, [startDate, endDate]);
 
-  const handleTaskClick = issueId => {
-    history.push(`${match.url}/issues/${issueId}`);
+  const handleTaskClick = (issueId, issue, e) => {
+    if (e) {
+      e.stopPropagation();
+    }
+    if (editingIssueId !== issueId) {
+      setEditingIssueId(issueId);
+      setEditedTitle(issue.title);
+      setEditedFields({
+        type: issue.type,
+        priority: issue.priority,
+        status: issue.status,
+        userIds: issue.userIds,
+      });
+    }
+  };
+
+  const updateIssue = (issueId, updatedFields) => {
+    const issue = project.issues.find(i => i.id === issueId);
+    api.optimisticUpdate(`/issues/${issueId}`, {
+      updatedFields,
+      currentFields: issue,
+      setLocalData: fields => updateLocalProjectIssues(issueId, fields),
+    });
+  };
+
+  const handleSave = (issueId) => {
+    const trimmedTitle = editedTitle.trim();
+    const updatedFields = {};
+    
+    if (trimmedTitle) {
+      updatedFields.title = trimmedTitle;
+    }
+    if (editedFields.type !== undefined) updatedFields.type = editedFields.type;
+    if (editedFields.priority !== undefined) updatedFields.priority = editedFields.priority;
+    if (editedFields.status !== undefined) updatedFields.status = editedFields.status;
+    if (editedFields.userIds !== undefined) {
+      updatedFields.userIds = editedFields.userIds;
+      updatedFields.users = editedFields.userIds.map(userId => project.users.find(u => u.id === userId));
+    }
+    
+    updateIssue(issueId, updatedFields);
+    setEditingIssueId(null);
+    setEditedFields({});
+  };
+
+  const handleCancel = (issue) => {
+    setEditedTitle(issue.title);
+    setEditingIssueId(null);
+    setEditedFields({});
+  };
+
+  const handleTitleKeyDown = (e, issueId, issue) => {
+    if (e.keyCode === KeyCodes.ENTER) {
+      e.preventDefault();
+      handleSave(issueId);
+    } else if (e.keyCode === KeyCodes.ESCAPE) {
+      handleCancel(issue);
+    }
   };
 
   const calculateTaskPosition = issue => {
@@ -133,21 +196,149 @@ const GanttView = ({ project, filters, currentUserId }) => {
 
       {sortedIssues.map(issue => {
         const { left, width } = calculateTaskPosition(issue);
+        const isEditing = editingIssueId === issue.id;
 
         return (
-          <TaskRow key={issue.id}>
+          <TaskRow key={issue.id} isEditing={isEditing}>
             <TaskListContainer>
-              <TaskInfo onClick={() => handleTaskClick(issue.id)}>
-                <IssueTypeIcon type={issue.type} size={16} />
-                <TaskName>{issue.title}</TaskName>
-              </TaskInfo>
-              <TaskMeta>
-                <AssigneesContainer>
-                  {issue.users.slice(0, 3).map(user => (
-                    <Avatar key={user.id} size={20} avatarUrl={user.avatarUrl} name={user.name} />
-                  ))}
-                </AssigneesContainer>
-              </TaskMeta>
+              {isEditing ? (
+                <div style={{ padding: '8px 12px' }}>
+                  <input
+                    value={editedTitle}
+                    onChange={(e) => setEditedTitle(e.target.value)}
+                    onKeyDown={(e) => handleTitleKeyDown(e, issue.id, issue)}
+                    autoFocus
+                    style={{
+                      width: '100%',
+                      padding: '6px 8px',
+                      border: '1px solid #4C9AFF',
+                      borderRadius: 3,
+                      fontSize: 14,
+                      outline: 'none',
+                      marginBottom: 8,
+                    }}
+                  />
+                  <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+                    <Select
+                      variant="empty"
+                      withClearValue={false}
+                      name="type"
+                      value={editedFields.type}
+                      dropdownWidth={200}
+                      options={Object.values(IssueType).map(type => ({
+                        value: type,
+                        label: IssueTypeCopy[type],
+                      }))}
+                      onChange={(type) => setEditedFields({ ...editedFields, type })}
+                      renderValue={({ value: type }) => (
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <IssueTypeIcon type={type} size={14} />
+                          <span style={{ marginLeft: 4, fontSize: 12 }}>{IssueTypeCopy[type]}</span>
+                        </div>
+                      )}
+                    />
+                    <Select
+                      variant="empty"
+                      withClearValue={false}
+                      name="priority"
+                      value={editedFields.priority}
+                      dropdownWidth={200}
+                      options={Object.values(IssuePriority).map(priority => ({
+                        value: priority,
+                        label: IssuePriorityCopy[priority],
+                      }))}
+                      onChange={(priority) => setEditedFields({ ...editedFields, priority })}
+                      renderValue={({ value: priority }) => (
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <IssuePriorityIcon priority={priority} size={14} />
+                          <span style={{ marginLeft: 4, fontSize: 12 }}>{IssuePriorityCopy[priority]}</span>
+                        </div>
+                      )}
+                    />
+                  </div>
+                  <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+                    <Select
+                      variant="empty"
+                      withClearValue={false}
+                      name="status"
+                      value={editedFields.status}
+                      dropdownWidth={200}
+                      options={Object.values(IssueStatus).map(status => ({
+                        value: status,
+                        label: IssueStatusCopy[status],
+                      }))}
+                      onChange={(status) => setEditedFields({ ...editedFields, status })}
+                      renderValue={({ value: status }) => (
+                        <span style={{ fontSize: 12 }}>{IssueStatusCopy[status]}</span>
+                      )}
+                    />
+                  </div>
+                  <Select
+                    isMulti
+                    variant="empty"
+                    placeholder="Unassigned"
+                    name="assignees"
+                    value={editedFields.userIds}
+                    dropdownWidth={250}
+                    options={project.users.map(user => ({ value: user.id, label: user.name }))}
+                    onChange={(userIds) => setEditedFields({ ...editedFields, userIds })}
+                    renderValue={({ value: userId, removeOptionValue }) => {
+                      const user = project.users.find(u => u.id === userId);
+                      return (
+                        <div
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 4,
+                            padding: '2px 6px',
+                            background: '#f4f5f7',
+                            borderRadius: 3,
+                            marginRight: 4,
+                            marginBottom: 4,
+                            cursor: 'pointer',
+                          }}
+                          onClick={(e) => { e.stopPropagation(); removeOptionValue(); }}
+                        >
+                          <Avatar avatarUrl={user.avatarUrl} name={user.name} size={16} />
+                          <span style={{ fontSize: 11 }}>{user.name}</span>
+                          <Icon type="close" size={10} />
+                          </div>
+                      );
+                    }}
+                    renderOption={({ value: userId }) => {
+                      const user = project.users.find(u => u.id === userId);
+                      return (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <Avatar avatarUrl={user.avatarUrl} name={user.name} size={24} />
+                          <span>{user.name}</span>
+                        </div>
+                      );
+                    }}
+                  />
+                  <ActionsRow>
+                    <Button variant="empty" onClick={(e) => { e.stopPropagation(); handleCancel(issue); }}>
+                      Cancel
+                    </Button>
+                    <Button variant="primary" onClick={(e) => { e.stopPropagation(); handleSave(issue.id); }}>
+                      Save
+                    </Button>
+                  </ActionsRow>
+                </div>
+              ) : (
+                <div>
+                  <TaskInfo onClick={(e) => handleTaskClick(issue.id, issue, e)}>
+                    <IssueTypeIcon type={issue.type} size={16} />
+                    <TaskName>{issue.title}</TaskName>
+                  </TaskInfo>
+                  <TaskMeta>
+                    <AssigneesContainer>
+                      {issue.users.slice(0, 3).map(user => (
+                        <Avatar key={user.id} size={20} avatarUrl={user.avatarUrl} name={user.name} />
+                      ))}
+                    </AssigneesContainer>
+                  </TaskMeta>
+                </div>
+              )}
             </TaskListContainer>
             <TimelineContainer>
               <Timeline width={totalDays * dayWidth}>
@@ -160,7 +351,7 @@ const GanttView = ({ project, filters, currentUserId }) => {
                   left={left}
                   width={width}
                   status={issue.status}
-                  onClick={() => handleTaskClick(issue.id)}
+                  onClick={(e) => handleTaskClick(issue.id, issue, e)}
                 >
                   <TaskBarInner>
                     {issue.title.length > 20 ? `${issue.title.substring(0, 20)}...` : issue.title}

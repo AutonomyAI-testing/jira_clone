@@ -44,6 +44,7 @@ const ProjectBoardLists = ({ project, filters, updateLocalProjectIssues }) => {
             project={project}
             filters={filters}
             currentUserId={currentUserId}
+            updateLocalProjectIssues={updateLocalProjectIssues}
           />
         ))}
       </Lists>
