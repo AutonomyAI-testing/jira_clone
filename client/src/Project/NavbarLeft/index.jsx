@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Icon, AboutTooltip } from 'shared/components';
+import { Icon, AboutTooltip, MascotLogo } from 'shared/components';
 
-import { NavLeft, LogoLink, StyledLogo, Bottom, Item, ItemText } from './Styles';
+import { NavLeft, LogoLink, StyledMascotLogo, Bottom, Item, ItemText } from './Styles';
 
 const propTypes = {
   issueSearchModalOpen: PropTypes.func.isRequired,
@@ -13,7 +13,7 @@ const propTypes = {
 const ProjectNavbarLeft = ({ issueSearchModalOpen, issueCreateModalOpen }) => (
   <NavLeft>
     <LogoLink to="/">
-      <StyledLogo color="#fff" />
+      <StyledMascotLogo size={36} />
     </LogoLink>
 
     <Item onClick={issueSearchModalOpen}>
