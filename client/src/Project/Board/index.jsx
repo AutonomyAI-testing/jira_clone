@@ -26,12 +26,23 @@ const defaultFilters = {
   recent: false,
 };
 
+const defaultColumnVisibility = {
+  backlog: true,
+  selected: true,
+  inprogress: true,
+  done: true,
+};
+
+const defaultSortBy = {};
+
 const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
   const match = useRouteMatch();
   const history = useHistory();
 
   const [filters, mergeFilters] = useMergeState(defaultFilters);
   const [currentView, setCurrentView] = useState('kanban');
+  const [columnVisibility, setColumnVisibility] = useState(defaultColumnVisibility);
+  const [sortBy, setSortBy] = useState(defaultSortBy);
 
   return (
     <Fragment>
@@ -44,12 +55,18 @@ const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
         defaultFilters={defaultFilters}
         filters={filters}
         mergeFilters={mergeFilters}
+        columnVisibility={columnVisibility}
+        onColumnVisibilityChange={setColumnVisibility}
+        defaultColumnVisibility={defaultColumnVisibility}
       />
       {currentView === 'kanban' && (
         <Lists
           project={project}
           filters={filters}
           updateLocalProjectIssues={updateLocalProjectIssues}
+          columnVisibility={columnVisibility}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
         />
       )}
       {currentView === 'list' && (
