@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Image, Letter } from './Styles';
+import wizardRobotSrc from './assets/wizardRobotBase64';
+import { Image, Letter, WizardWrapper } from './Styles';
 
 const propTypes = {
   className: PropTypes.string,
@@ -27,6 +28,14 @@ const Avatar = ({ className, avatarUrl, name, size, ...otherProps }) => {
 
   if (avatarUrl) {
     return <Image avatarUrl={avatarUrl} {...sharedProps} />;
+  }
+
+  if (!name) {
+    return (
+      <WizardWrapper {...sharedProps}>
+        <img src={wizardRobotSrc} alt="Wizard Robot Avatar" />
+      </WizardWrapper>
+    );
   }
 
   return (
