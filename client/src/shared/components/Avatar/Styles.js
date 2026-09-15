@@ -7,6 +7,7 @@ export const Image = styled.div`
   width: ${props => props.size}px;
   height: ${props => props.size}px;
   border-radius: 100%;
+  border: 2px solid red;
   ${props => mixin.backgroundImage(props.avatarUrl)}
 `;
 
@@ -15,6 +16,7 @@ export const Letter = styled.div`
   width: ${props => props.size}px;
   height: ${props => props.size}px;
   border-radius: 100%;
+  border: 2px solid red;
   text-transform: uppercase;
   color: #fff;
   background: ${props => props.color};
