@@ -6,29 +6,41 @@ import { InputDebounced, Avatar, Button } from 'shared/components';
 export const Filters = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 24px;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 12px 16px;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(9, 30, 66, 0.1);
+  flex-wrap: wrap;
+  gap: 12px;
 `;
 
 export const SearchInput = styled(InputDebounced)`
-  margin-right: 18px;
-  width: 160px;
+  margin-right: 0;
+  width: 180px;
+  flex-shrink: 0;
 `;
 
 export const Avatars = styled.div`
   display: flex;
   flex-direction: row-reverse;
-  margin: 0 12px 0 2px;
+  gap: 2px;
+  align-items: center;
+  margin: 0;
+  padding: 0 8px;
+  border-left: 1px solid ${color.borderLightest};
+  border-right: 1px solid ${color.borderLightest};
 `;
 
 export const AvatarIsActiveBorder = styled.div`
   display: inline-flex;
-  margin-left: -2px;
   border-radius: 50%;
   transition: transform 0.1s;
   ${mixin.clickable};
-  ${props => props.isActive && `box-shadow: 0 0 0 4px ${color.primary}`}
+  ${props => props.isActive && `box-shadow: 0 0 0 3px ${color.primary}`}
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
   }
 `;
 
@@ -37,19 +49,25 @@ export const StyledAvatar = styled(Avatar)`
 `;
 
 export const StyledButton = styled(Button)`
-  margin-left: 6px;
+  padding: 6px 12px;
+  ${font.size(13)}
+  ${props =>
+    props.isActive &&
+    `
+    background: ${color.backgroundLightPrimary};
+    color: ${color.primary};
+  `}
 `;
 
 export const ClearAll = styled.div`
   height: 32px;
   line-height: 32px;
-  margin-left: 15px;
-  padding-left: 12px;
-  border-left: 1px solid ${color.borderLightest};
+  padding: 0 8px;
   color: ${color.textDark};
-  ${font.size(14.5)}
+  ${font.size(13)}
   ${mixin.clickable}
   &:hover {
-    color: ${color.textMedium};
+    color: ${color.primary};
+    text-decoration: underline;
   }
 `;

@@ -7,6 +7,7 @@ import { Breadcrumbs, Modal } from 'shared/components';
 
 import Header from './Header';
 import Filters from './Filters';
+import SprintStats from './SprintStats';
 import Lists from './Lists';
 import ListView from './ListView';
 import GanttView from './GanttView';
@@ -45,6 +46,7 @@ const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
         filters={filters}
         mergeFilters={mergeFilters}
       />
+      <SprintStats issues={project.issues} />
       {currentView === 'kanban' && (
         <Lists
           project={project}

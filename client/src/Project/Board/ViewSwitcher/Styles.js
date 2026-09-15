@@ -1,25 +1,39 @@
 import styled from 'styled-components';
 
-import { color, font } from 'shared/utils/styles';
+import { color, font, mixin } from 'shared/utils/styles';
 
 export const ViewSwitcherContainer = styled.div`
-  display: flex;
-  gap: 8px;
+  display: inline-flex;
   align-items: center;
+  gap: 0;
+  padding: 4px;
+  background: ${color.backgroundLightest};
+  border-radius: 20px;
+  border: 1px solid ${color.borderLightest};
+  height: 36px;
 `;
 
 export const ViewButton = styled.button`
-  padding: 8px 16px;
-  border-radius: 4px;
-  border: 1px solid ${color.borderLightest};
-  background: ${props => (props.active ? color.primary : 'white')};
-  color: ${props => (props.active ? 'white' : color.textDark)};
-  ${font.size(14)}
+  padding: 6px 14px;
+  border: none;
+  background: ${props => (props.active ? color.primary : 'transparent')};
+  color: ${props => (props.active ? '#fff' : color.textDark)};
+  ${font.size(13)}
   ${font.medium}
+  border-radius: 16px;
   cursor: pointer;
-  transition: all 0.1s;
+  transition: all 0.15s;
+  ${mixin.clickable}
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     background: ${props => (props.active ? color.primary : color.backgroundLight)};
+  }
+
+  &:active {
+    transform: scale(0.98);
   }
 `;
