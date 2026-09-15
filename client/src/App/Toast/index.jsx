@@ -3,7 +3,17 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import pubsub from 'sweet-pubsub';
 import { uniqueId } from 'lodash';
 
-import { Container, StyledToast, CloseIcon, Title, Message } from './Styles';
+import mascotWizard from 'App/assets/mascotWizardBase64';
+import { Avatar } from 'shared/components';
+import {
+  Container,
+  MascotWrapper,
+  StyledToast,
+  CloseIcon,
+  ToastContent,
+  Title,
+  Message,
+} from './Styles';
 
 const Toast = () => {
   const [toasts, setToasts] = useState([]);
@@ -30,15 +40,22 @@ const Toast = () => {
     setToasts(currentToasts => currentToasts.filter(toast => toast.id !== id));
   };
 
+  if (toasts.length === 0) return null;
+
   return (
     <Container>
-      <TransitionGroup>
-        {toasts.map(toast => (
+      <MascotWrapper>
+        <Avatar avatarUrl={mascotWizard} name="Mascot" size={72} />
+      </MascotWrapper>
+      <TransitionGroup component={null}>
+        {toasts.map((toast, index) => (
           <CSSTransition key={toast.id} classNames="jira-toast" timeout={200}>
-            <StyledToast key={toast.id} type={toast.type} onClick={() => removeToast(toast.id)}>
+            <StyledToast key={toast.id} type={toast.type} isFirst={index === 0} onClick={() => removeToast(toast.id)}>
               <CloseIcon type="close" />
-              {toast.title && <Title>{toast.title}</Title>}
-              {toast.message && <Message>{toast.message}</Message>}
+              <ToastContent>
+                {toast.title && <Title>{toast.title}</Title>}
+                {toast.message && <Message>{toast.message}</Message>}
+              </ToastContent>
             </StyledToast>
           </CSSTransition>
         ))}
