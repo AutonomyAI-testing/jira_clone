@@ -11,6 +11,7 @@ import Sidebar from './Sidebar';
 import Board from './Board';
 import IssueSearch from './IssueSearch';
 import IssueCreate from './IssueCreate';
+import IssuePage from './IssuePage';
 import ProjectSettings from './ProjectSettings';
 import { ProjectPage } from './Styles';
 
@@ -19,7 +20,6 @@ const Project = () => {
   const history = useHistory();
 
   const issueSearchModalHelpers = createQueryParamModalHelpers('issue-search');
-  const issueCreateModalHelpers = createQueryParamModalHelpers('issue-create');
 
   const [{ data, error, setLocalData }, fetchProject] = useApi.get('/project');
 
@@ -41,7 +41,7 @@ const Project = () => {
     <ProjectPage>
       <NavbarLeft
         issueSearchModalOpen={issueSearchModalHelpers.open}
-        issueCreateModalOpen={issueCreateModalHelpers.open}
+        onCreateIssue={() => history.push(`${match.url}/issues/new`)}
       />
 
       <Sidebar project={project} />
@@ -57,23 +57,26 @@ const Project = () => {
         />
       )}
 
-      {issueCreateModalHelpers.isOpen() && (
-        <Modal
-          isOpen
-          testid="modal:issue-create"
-          width={800}
-          withCloseIcon={false}
-          onClose={issueCreateModalHelpers.close}
-          renderContent={modal => (
-            <IssueCreate
-              project={project}
-              fetchProject={fetchProject}
-              onCreate={() => history.push(`${match.url}/board`)}
-              modalClose={modal.close}
-            />
-          )}
-        />
-      )}
+      <Route
+        path={`${match.path}/issues/new`}
+        render={() => (
+          <IssueCreate
+            project={project}
+            fetchProject={fetchProject}
+          />
+        )}
+      />
+
+      <Route
+        path={`${match.path}/issues/:issueId`}
+        render={() => (
+          <IssuePage
+            project={project}
+            fetchProject={fetchProject}
+            updateLocalProjectIssues={updateLocalProjectIssues}
+          />
+        )}
+      />
 
       <Route
         path={`${match.path}/board`}

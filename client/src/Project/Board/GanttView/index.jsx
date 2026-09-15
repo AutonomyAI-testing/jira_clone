@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import { intersection } from 'lodash';
 
@@ -38,7 +38,6 @@ const defaultProps = {
 
 const GanttView = ({ project, filters, currentUserId }) => {
   const history = useHistory();
-  const match = useRouteMatch();
 
   const filteredIssues = filterIssues(project.issues, filters, currentUserId);
   const sortedIssues = filteredIssues.sort((a, b) => {
@@ -100,7 +99,7 @@ const GanttView = ({ project, filters, currentUserId }) => {
   }, [startDate, endDate]);
 
   const handleTaskClick = issueId => {
-    history.push(`${match.url}/issues/${issueId}`);
+    history.push(`/project/issues/${issueId}`);
   };
 
   const calculateTaskPosition = issue => {
