@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { Avatar, Select, Icon } from 'shared/components';
+import { getDisplayName } from 'shared/utils/user';
 
 import { SectionTitle } from '../Styles';
 import { User, Username } from './Styles';
@@ -61,7 +62,7 @@ const renderUser = (user, isSelectValue, removeOptionValue) => (
     onClick={() => removeOptionValue && removeOptionValue()}
   >
     <Avatar avatarUrl={user.avatarUrl} name={user.name} size={24} />
-    <Username>{user.name}</Username>
+    <Username>{getDisplayName(user)}</Username>
     {removeOptionValue && <Icon type="close" top={1} />}
   </User>
 );
