@@ -120,7 +120,7 @@ export const TaskBar = styled.div`
       case 'inprogress':
         return color.primary;
       case 'selected':
-        return '#FFB800';
+        return color.warning;
       default:
         return color.textMedium;
     }
