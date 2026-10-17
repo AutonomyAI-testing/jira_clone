@@ -19,6 +19,16 @@ export const IssuePriority = {
   LOWEST: '1',
 };
 
+export const IssueLabel = {
+  BUG: 'bug',
+  FEATURE: 'feature',
+  ENHANCEMENT: 'enhancement',
+  DESIGN: 'design',
+  FRONTEND: 'frontend',
+  BACKEND: 'backend',
+  DOCUMENTATION: 'documentation',
+};
+
 export const IssueTypeCopy = {
   [IssueType.TASK]: 'Task',
   [IssueType.BUG]: 'Bug',
@@ -38,4 +48,14 @@ export const IssuePriorityCopy = {
   [IssuePriority.MEDIUM]: 'Medium',
   [IssuePriority.LOW]: 'Low',
   [IssuePriority.LOWEST]: 'Lowest',
+};
+
+export const IssueLabelCopy = {
+  [IssueLabel.BUG]: 'Bug',
+  [IssueLabel.FEATURE]: 'Feature',
+  [IssueLabel.ENHANCEMENT]: 'Enhancement',
+  [IssueLabel.DESIGN]: 'Design',
+  [IssueLabel.FRONTEND]: 'Frontend',
+  [IssueLabel.BACKEND]: 'Backend',
+  [IssueLabel.DOCUMENTATION]: 'Documentation',
 };

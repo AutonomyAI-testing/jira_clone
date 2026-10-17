@@ -1,7 +1,7 @@
 import { css } from 'styled-components';
 import Color from 'color';
 
-import { IssueType, IssueStatus, IssuePriority } from 'shared/constants/issues';
+import { IssueType, IssueStatus, IssuePriority, IssueLabel } from 'shared/constants/issues';
 
 export const color = {
   primary: '#0052cc', // Blue
@@ -54,6 +54,26 @@ export const issueStatusBackgroundColors = {
   [IssueStatus.INPROGRESS]: color.primary,
   [IssueStatus.SELECTED]: color.backgroundMedium,
   [IssueStatus.DONE]: color.success,
+};
+
+export const issueLabelColors = {
+  [IssueLabel.BUG]: '#E44D42', // red
+  [IssueLabel.FEATURE]: '#0052cc', // blue
+  [IssueLabel.ENHANCEMENT]: '#65BA43', // green
+  [IssueLabel.DESIGN]: '#8777D9', // purple
+  [IssueLabel.FRONTEND]: '#4FADE6', // light blue
+  [IssueLabel.BACKEND]: '#F89C1C', // orange
+  [IssueLabel.DOCUMENTATION]: '#8993a4', // grey
+};
+
+export const issueLabelBackgroundColors = {
+  [IssueLabel.BUG]: '#FCEBEA',
+  [IssueLabel.FEATURE]: '#D2E5FE',
+  [IssueLabel.ENHANCEMENT]: '#EAF6E4',
+  [IssueLabel.DESIGN]: '#EEEBFB',
+  [IssueLabel.FRONTEND]: '#E7F3FC',
+  [IssueLabel.BACKEND]: '#FEF1DD',
+  [IssueLabel.DOCUMENTATION]: '#F4F5F7',
 };
 
 export const sizes = {
