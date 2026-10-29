@@ -1,4 +1,4 @@
-<h1 align="center">A simplified Jira clone built with React and Node</h1>
+<h1 align="center">Jirik — a simplified Jira clone built with React and Node</h1>
 
 <div align="center">Auto formatted with Prettier, tested with Cypress 🎗</div>
 
